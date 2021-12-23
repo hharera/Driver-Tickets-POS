@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <!--    TODO set Background to the screen-->
+
+    <!--    TODO get logo from the xd file-->
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <!--    TODO how to make the un-chosen item transparent-->
+    <!--    TODO get icomns from the xd file-->
+    <!--    TODO add animation -->
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/payment_methods"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="160dp"
+        android:layout_marginTop="15dp"
+        android:paddingStart="@dimen/_40sdp"
+        android:paddingEnd="@dimen/_40sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="logo"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/ticket_quantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#0A09427D"
+        android:minHeight="0dp"
+        android:text="@string/view_more"
+        android:textColor="@color/red_500"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toStartOf="@+id/ticket_plus"
+        app:layout_constraintTop_toBottomOf="@+id/payment_methods"
+        app:layout_constraintVertical_bias="1" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/ticket_plus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="24dp"
+        android:background="#0A09427D"
+        android:minHeight="0dp"
+        android:text="@string/view_more"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ticket_quantity"
+        app:layout_constraintVertical_bias="1" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ticket_minus"
+        android:layout_width="@dimen/_80sdp"
+        android:layout_height="@dimen/_120sdp"
+        android:background="#0A09427D"
+        android:minHeight="0dp"
+        android:text="@string/view_more"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/payment_methods"
+        app:layout_constraintVertical_bias="1" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

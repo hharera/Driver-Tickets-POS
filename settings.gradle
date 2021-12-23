@@ -1,0 +1,24 @@
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        jcenter() // Warning: this repository is going to shut down soon
+    }
+}
+rootProject.name = "Ticket"
+
+
+include ':app'
+include ':common'
+include ':navigation:ticket'
+include ':datastore'
+
+include ':data:repository'
+include ':data:model'
+include ':data:remote:api'
+include ':data:local:room'
+
+include ':features:login'
+include ':features:splah'
+include ':features:ticket'

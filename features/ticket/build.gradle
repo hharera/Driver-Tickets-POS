@@ -1,0 +1,24 @@
+apply from: "$rootDir/common-feature-di.gradle"
+
+dependencies {
+    implementation(Libs.adMob)
+
+    kapt(Libs.hiltAndroidCompiler)
+    implementation(Libs.hiltAndroid)
+    implementation(Libs.playServicesTasks)
+    implementation(Libs.viewModels)
+    implementation(Libs.fragments)
+
+    implementation(Libs.androidxCore)
+    implementation(Libs.appcompat)
+
+    implementation(Libs.navigationUi)
+    implementation(Libs.navigationFragment)
+
+    implementation(Libs.picasso)
+
+    kapt(Libs.lifeCycleCompiler)
+
+    //modules
+    implementation project(Base.common)
+}

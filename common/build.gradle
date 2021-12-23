@@ -1,0 +1,73 @@
+apply plugin: ("dagger.hilt.android.plugin")
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion DefaultConfig.compileSdk
+
+    defaultConfig {
+        minSdkVersion DefaultConfig.minSdk
+        targetSdkVersion DefaultConfig.targetSdk
+        versionCode Releases.versionCode
+        versionName Releases.versionName
+    }
+
+    buildTypes {
+        debug {
+            debuggable true
+            buildConfigField("String", "RootPackage", "\"com.christopher_elias.movies\"")
+        }
+    }
+
+    android {
+        viewBinding{
+            enabled true
+        }
+    }
+
+    kotlinOptions.jvmTarget = "1.8"
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/ASL2.0'
+        exclude 'META-INF/LGPL2.1'
+        exclude 'META-INF/AL2.0'
+        exclude "META-INF/*.kotlin_module"
+        exclude 'META-INF/proguard/androidx-annotations.pro'
+    }
+}
+
+dependencies {
+    api project(Data.datastore)
+
+    implementation Libs.kotlin
+    testImplementation Libs.junit4
+
+    implementation(Libs.viewModels)
+    implementation(Libs.activity)
+
+    api(Libs.intuit)
+    implementation(Libs.hiltAndroid)
+    kapt(Libs.hiltAndroidCompiler)
+
+    implementation(Libs.appcompat)
+    implementation(Libs.androidxCore)
+    implementation(Libs.materialDesign)
+    implementation(Libs.gligarPicker)
+
+    testImplementation(Libs.junit4)
+    androidTestImplementation(Libs.junitExt)
+
+    implementation(Libs.playServicesMaps)
+    implementation(Libs.firebaseFirestore)
+
+    implementation(Libs.roomRunTime)
+    api(Libs.jodaTime)
+}

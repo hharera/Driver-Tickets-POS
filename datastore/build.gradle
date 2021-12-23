@@ -1,0 +1,13 @@
+apply from: "$rootDir/data-module-di.gradle"
+apply from: "$rootDir/hilt-dependencies.gradle"
+apply plugin: ("dagger.hilt.android.plugin")
+
+android {
+    defaultConfig {
+        testInstrumentationRunner "com.englizya.datastore.HiltTestRunner"
+    }
+}
+
+dependencies {
+
+}

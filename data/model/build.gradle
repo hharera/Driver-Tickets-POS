@@ -1,0 +1,9 @@
+apply from:"$rootDir/android-library.gradle"
+
+dependencies {
+    implementation(Libs.firebaseFirestore)
+    implementation(Libs.playServicesMaps)
+
+    implementation(Libs.roomRunTime)
+    annotationProcessor(Libs.roomCompiler)
+}

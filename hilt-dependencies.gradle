@@ -1,0 +1,12 @@
+dependencies {
+    //hilt
+    kapt(Libs.hiltAndroidCompiler)
+    implementation(Libs.hiltAndroid)
+    implementation Libs.testRunner
+
+    androidTestImplementation(Libs.hiltTesting)
+    kaptAndroidTest(Libs.hiltAndroidCompiler)
+
+    testImplementation(Libs.hiltTesting)
+    kaptTest(Libs.hiltAndroidCompiler)
+}

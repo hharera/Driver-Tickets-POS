@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="preloaded_fonts" translatable="false">
+        <item>@font/abeezee</item>
+        <item>@font/aclonica</item>
+        <item>@font/aguafina_script</item>
+        <item>@font/akronim</item>
+        <item>@font/alex_brush</item>
+        <item>@font/amita</item>
+        <item>@font/anton</item>
+        <item>@font/arizonia</item>
+        <item>@font/basic</item>
+        <item>@font/el_messiri_bold</item>
+        <item>@font/lalezar</item>
+        <item>@font/lemonada_bold</item>
+        <item>@font/noto_sans_bold</item>
+        <item>@font/shadows_into_light_two</item>
+    </array>
+</resources>
