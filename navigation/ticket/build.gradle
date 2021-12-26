@@ -1,5 +1,7 @@
-apply from:"$rootDir/common-feature-di.gradle"
+apply from: "$rootDir/common-feature-di.gradle"
 
 dependencies {
-
+    api(project(Features.login))
+    api(project(Features.splash))
+    api(project(Features.ticket))
 }

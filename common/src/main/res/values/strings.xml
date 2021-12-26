@@ -139,7 +139,7 @@
     <string name="loren"> "لوريم إيبسوم هو ببساطة نص شكلي (بمعنى الغاية هي الشكل وليس المحتوى) في صناعات المطابع ودور النشر. بشكل عشوائي ، مما يجعله مثالياً بشكل عشوائي مقاطع من هذا النص ، وعاد لينتشر مرة أخرى ظهرت مؤخرًا برامج نشر إلكترونية مثل مشاهدة حوت أيضًا على نسخ من نص لوريم إيبسوم. "</string>
     <string name="category_name"> اسم القسم </string>
     <string name="show_products"> عرض المنتجات </string>
-    <string name="password_error"> كلمة مرور خاطئ </string>
+    <string name="invalid_password_error"> كلمة مرور خاطئ </string>
     <string name="email_error"> حساب خاطئ </string>
     <string name="move_to_fsvourite"> نقل إلى المفضلة </string>
     <string name="register_now"> سجل الآن </string>
@@ -159,6 +159,7 @@
     <string name="invalid_email_error">Invalid email</string>
     <string name="empty_password">Password is required</string>
     <string name="last_name">Last name</string>
+    <string name="empty_username_error">أدخل كود السائق</string>
     <string name="offers_group">اسم قائمة العروض</string>
     <string name="is_required">Is Required</string>
     <string name="add_offers_group">Add Offers Group</string>
@@ -167,4 +168,10 @@
     <string name="cash">CASH</string>
     <string name="scan_qr">SCAN QR</string>
     <string name="card">CARD</string>
+    <string name="driver_code">Driver code</string>
+    <string name="cannot_login">لم نتمكن من تسجيل الدخول</string>
+    <string name="invalid_username_error">كود السائق غير صحيح</string>
+    <string name="empty_password_error">أدخل كلمة المرور</string>
+    <string name="englizya_pay">ENGLIZYA PAY</string>
+    <string name="redirect">Redirect</string>
 </resources>

@@ -11,4 +11,6 @@
     <color name="app_blue">#20ADDC</color>
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
+    <color name="grey">#CC000000</color>
+    <color name="blue">#03264F</color>
 </resources>

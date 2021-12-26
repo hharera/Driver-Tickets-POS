@@ -3,6 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: ("dagger.hilt.android.plugin")
 apply plugin: 'kotlin-kapt'
 apply plugin: 'androidx.navigation.safeargs'
+apply from:"$rootDir/hilt-dependencies.gradle"
 android {
     compileSdkVersion DefaultConfig.compileSdk
 
@@ -14,12 +15,6 @@ android {
     }
     buildFeatures{
         viewBinding true
-    }
-    buildTypes {
-        debug {
-            debuggable true
-            buildConfigField("String", "RootPackage", "\"com.christopher_elias.movies\"")
-        }
     }
 
     kotlinOptions.jvmTarget = "1.8"
@@ -41,16 +36,21 @@ android {
 }
 
 dependencies {
-    implementation Libs.kotlin
-    testImplementation Libs.junit4
-
-    implementation project(Data.repository)
-    implementation project(Base.common)
+    api project(Base.common)
+    api project(Data.repository)
 
     implementation(Libs.coroutinesCore)
-    implementation(Compose.composeLivedata)
 
-    //hilt
-    implementation Libs.hiltAndroid
-    kapt(Libs.hiltAndroidCompiler)
+    implementation(Libs.appcompat)
+    implementation(Libs.activity)
+    implementation(Libs.fragments)
+    implementation(Libs.navigationFragment)
+
+    implementation Libs.liveData
+    implementation Libs.androidxCore
+
+    implementation Libs.materialDesign
+    implementation Libs.lifeCycleRuntime
+
+    implementation Libs.kotlin
 }

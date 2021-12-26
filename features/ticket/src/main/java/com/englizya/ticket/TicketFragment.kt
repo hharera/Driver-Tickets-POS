@@ -6,13 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.englizya.common.base.BaseFragment
 import com.englizya.ticket.databinding.FragmentTicketBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 
 //TODO rec
-@AndroidEntryPoint
-class TicketFragment : Fragment() {
+class TicketFragment : BaseFragment() {
 
     private lateinit var ticketViewModel: TicketViewModel
     private lateinit var bind: FragmentTicketBinding

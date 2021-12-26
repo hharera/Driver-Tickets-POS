@@ -9,6 +9,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 open class BaseActivity : AppCompatActivity() {
+
     private val loadingDialog: LoadingDialog by lazy {
         LoadingDialog(this)
     }
@@ -41,14 +42,15 @@ open class BaseActivity : AppCompatActivity() {
         this.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
     }
 
-    fun handleFailure(exception: Exception?, messageRes: Int?) {
+    fun handleFailure(exception: Exception?, messageRes: Int? = null) {
+//        TODO handle every single exception
         exception?.printStackTrace()
         messageRes?.let { res ->
             showToast(res)
         }
     }
 
-    fun handleFailure(throwable: Throwable?, messageRes: Int?) {
+    fun handleFailure(throwable: Throwable?, messageRes: Int? = null) {
         throwable?.printStackTrace()
         messageRes?.let { res ->
             showToast(res)
