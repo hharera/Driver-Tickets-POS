@@ -1,5 +1,6 @@
 package com.englyzia.datastore.di
 
+import android.app.Application
 import android.content.Context
 import com.englyzia.datastore.core.CarDataStore
 import com.englyzia.datastore.core.CompanyDataStore
@@ -20,21 +21,21 @@ class DataStoreModule {
 
         @Provides
         @Singleton
-        fun provideDriverDataStore(context: Context): DriverDataStore =
-            DriverDataStore(context = context)
+        fun provideDriverDataStore(application: Application): DriverDataStore =
+            DriverDataStore(context = application)
 
         @Provides
         @Singleton
-        fun provideTicketDataStore(context: Context): TicketDataStore =
+        fun provideTicketDataStore(context: Application): TicketDataStore =
             TicketDataStore(context = context)
 
         @Provides
         @Singleton
-        fun provideCarDataStore(context: Context): CarDataStore = CarDataStore(context = context)
+        fun provideCarDataStore(context: Application): CarDataStore = CarDataStore(context = context)
 
         @Provides
         @Singleton
-        fun provideCompanyDataStore(context: Context): CompanyDataStore =
+        fun provideCompanyDataStore(context: Application): CompanyDataStore =
             CompanyDataStore(context = context)
 
     }

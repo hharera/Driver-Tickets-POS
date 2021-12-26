@@ -8,7 +8,7 @@ import com.englyzia.datastore.base.GeneralConstants.NULL_INT
 import com.englyzia.datastore.base.GeneralConstants.NULL_STRING
 import com.englyzia.datastore.base.SourceConstants
 
-class CarDataStore(private val context: Context) {
+class CarDataStore(context: Context) {
 
     private val carSharedPreferences =
         context.getSharedPreferences(SourceConstants.CAR_SHARED_PREFERENCES, Context.MODE_PRIVATE)

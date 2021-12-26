@@ -1,6 +1,5 @@
 plugins {
     id 'com.android.application'
-    id 'com.google.gms.google-services'
     id 'kotlin-android'
 }
 apply plugin: 'kotlin-kapt'
@@ -43,6 +42,7 @@ android {
 
 dependencies {
     implementation project(Base.common)
+    implementation project(Navigation.payment)
 
     //hilt
     implementation(Libs.hiltAndroid)

@@ -9,5 +9,6 @@ android {
 }
 
 dependencies {
-
+    implementation(Libs.truth)
+    testImplementation(Libs.truth)
 }

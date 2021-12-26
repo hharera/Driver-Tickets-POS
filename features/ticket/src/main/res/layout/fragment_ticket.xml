@@ -1,19 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/ticket_background">
     <!--    TODO set Background to the screen-->
 
     <!--    TODO get logo from the xd file-->
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.1" />
+
     <ImageView
         android:id="@+id/logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/logo_colored"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.2"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/guideline"
+        app:layout_constraintWidth_percent="0.4" />
 
 
     <!--    TODO how to make the un-chosen item transparent-->
@@ -21,55 +32,75 @@
     <!--    TODO add animation -->
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/payment_methods"
-        android:layout_width="@dimen/_100sdp"
-        android:layout_height="160dp"
-        android:layout_marginTop="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_160sdp"
+        android:layout_marginTop="@dimen/_15sdp"
         android:paddingStart="@dimen/_40sdp"
         android:paddingEnd="@dimen/_40sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="logo"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/logo" />
 
-    <com.google.android.material.button.MaterialButton
+    <TextView
         android:id="@+id/ticket_quantity"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="#0A09427D"
-        android:minHeight="0dp"
-        android:text="@string/view_more"
-        android:textColor="@color/red_500"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toStartOf="@+id/ticket_plus"
-        app:layout_constraintTop_toBottomOf="@+id/payment_methods"
-        app:layout_constraintVertical_bias="1" />
+        android:layout_height="0dp"
+        android:layout_marginTop="25dp"
+        android:background="@drawable/quantity_background"
+        android:gravity="center"
+        android:text="1"
+        android:textColor="@color/white"
+        android:textSize="80sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/payment_methods" />
 
-    <com.google.android.material.button.MaterialButton
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/ticket_plus"
+        android:layout_width="@dimen/_60sdp"
+        android:layout_height="@dimen/_60sdp"
+        android:layout_marginStart="@dimen/_25sdp"
+        android:src="@drawable/plus_background"
+        android:textSize="60sp"
+        app:layout_constraintBottom_toBottomOf="@+id/ticket_quantity"
+        app:layout_constraintStart_toEndOf="@+id/ticket_quantity"
+        app:layout_constraintTop_toTopOf="@+id/ticket_quantity" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/ticket_minus"
+        android:layout_width="@dimen/_60sdp"
+        android:layout_height="@dimen/_60sdp"
+        android:layout_marginEnd="@dimen/_25sdp"
+        android:minHeight="0dp"
+        android:src="@drawable/minus_background"
+        android:textSize="60sp"
+        app:layout_constraintBottom_toBottomOf="@+id/ticket_quantity"
+        app:layout_constraintEnd_toStartOf="@+id/ticket_quantity"
+        app:layout_constraintTop_toTopOf="@+id/ticket_quantity" />
+
+
+    <TextView
+        android:id="@+id/ticket_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="24dp"
-        android:background="#0A09427D"
-        android:minHeight="0dp"
-        android:text="@string/view_more"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ticket_quantity"
-        app:layout_constraintVertical_bias="1" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/ticket_minus"
-        android:layout_width="@dimen/_80sdp"
-        android:layout_height="@dimen/_120sdp"
-        android:background="#0A09427D"
-        android:minHeight="0dp"
-        android:text="@string/view_more"
-        android:textSize="12sp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:text="القيمة: 5 جنيهات"
+        android:textSize="36sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/payment_methods"
-        app:layout_constraintVertical_bias="1" />
+        app:layout_constraintTop_toBottomOf="@+id/ticket_quantity" />
 
+
+    <com.google.android.material.button.MaterialButton
+        style="@style/TextButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="طباعة"
+        android:textColor="@color/white"
+        android:textSize="36sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

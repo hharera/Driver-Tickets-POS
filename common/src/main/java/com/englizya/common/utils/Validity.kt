@@ -31,5 +31,9 @@ class Validity {
 
         fun checkEmail(email: String): Boolean =
             email.matches(Regex("^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}\$"))
+
+        fun checkUsername(username: String): Boolean {
+            return username.matches(Regex("^[\\d]{1,30}\$"))
+        }
     }
 }

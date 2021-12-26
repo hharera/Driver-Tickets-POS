@@ -1,17 +1,5 @@
 apply from: "$rootDir/common-feature-di.gradle"
 
 dependencies {
-    implementation project(Data.repository)
-    implementation project(Base.common)
-    implementation project(Navigation.payment)
 
-    implementation Libs.liveData
-    implementation Libs.androidxCore
-
-    kapt(Libs.hiltAndroidCompiler)
-    implementation(Libs.hiltAndroid)
-    implementation Libs.playServicesTasks
-
-    implementation Libs.navigationFragment
-    implementation Libs.materialDesign
 }

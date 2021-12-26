@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.englizya.common.network.ConnectionLiveData
+import com.englizya.common.utils.network.ConnectionLiveData
 import com.englizya.common.ui.LoadingDialog
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -51,14 +51,14 @@ open class BaseFragment : Fragment() {
         requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
     }
 
-    fun handleFailure(exception: Exception?, messageRes: Int?) {
+    fun handleFailure(exception: Exception?, messageRes: Int? = null) {
         exception?.printStackTrace()
         messageRes?.let { res ->
             showToast(res)
         }
     }
 
-    fun handleFailure(throwable: Throwable?, messageRes: Int?) {
+    fun handleFailure(throwable: Throwable?, messageRes: Int? = null) {
         throwable?.printStackTrace()
         messageRes?.let { res ->
             showToast(res)

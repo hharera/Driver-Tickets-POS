@@ -25,7 +25,7 @@ object Versions {
     const val GOOGLE_MAPS_VERSION = "17.0.1"
     const val LEGACY_VERSION = "1.0.0"
 
-    const val KOTLIN_VERSION = "1.6.0"
+    const val KOTLIN_VERSION = "1.5.30"
     const val HILT_VERSION = "2.37"
     const val NAV_VERSION = "2.3.1"
     const val COROUTINES_VERSION = "1.5.0"

@@ -1,5 +1,4 @@
 apply from:"$rootDir/android-library.gradle"
-apply plugin: 'com.google.gms.google-services'
 apply plugin: ("dagger.hilt.android.plugin")
 
 dependencies {

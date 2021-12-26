@@ -20,5 +20,8 @@ include ':data:remote:api'
 include ':data:local:room'
 
 include ':features:login'
-include ':features:splah'
 include ':features:ticket'
+include ':features:splash'
+
+include ':ui-components'
+include ':ui-components:no-internet'
