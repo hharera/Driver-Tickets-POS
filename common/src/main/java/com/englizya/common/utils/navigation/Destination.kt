@@ -4,5 +4,4 @@ object Destination {
     const val SPLASH = "splash"
     const val LOGIN: String = "login"
     const val TICKET = "ticket"
-
 }

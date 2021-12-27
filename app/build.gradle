@@ -42,7 +42,7 @@ android {
 
 dependencies {
     implementation project(Base.common)
-    implementation project(Navigation.payment)
+    implementation project(Features.splash)
 
     //hilt
     implementation(Libs.hiltAndroid)

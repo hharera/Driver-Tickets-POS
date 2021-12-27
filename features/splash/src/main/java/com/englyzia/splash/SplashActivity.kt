@@ -1,54 +1,42 @@
 package com.englyzia.splash
 
+import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.animation.AnimationUtils
-import androidx.fragment.app.viewModels
+import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
-import com.englizya.common.base.BaseFragment
+import com.englizya.common.base.BaseActivity
+import com.englizya.common.utils.navigation.Arguments
 import com.englizya.common.utils.navigation.Destination
-import com.englizya.common.utils.navigation.Domain
-import com.englizya.common.utils.navigation.NavigationUtils
-import com.englyzia.splash.databinding.FragmentSplashBinding
+import com.englyzia.navigation.HomeActivity
+import com.englyzia.splash.databinding.ActivitySplashBinding
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class SplashFragment : BaseFragment() {
+class SplashActivity : BaseActivity() {
 
     private val splashViewModel: SplashViewModel by viewModels()
-    private lateinit var bind: FragmentSplashBinding
+    private lateinit var bind: ActivitySplashBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-    }
+        bind = ActivitySplashBinding.inflate(layoutInflater)
+        setContentView(bind.root)
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View {
-        bind = FragmentSplashBinding.inflate(layoutInflater)
+        window?.statusBarColor = resources.getColor(R.color.splash_status_color)
 
         //TODO test
         lifecycleScope.launch {
             delay(1000)
             goTicket()
         }
-
-//        TODO
-        activity?.window?.statusBarColor = resources.getColor(R.color.splash_status_color)
-
-        return bind.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+
+    override fun onResume() {
+        super.onResume()
 
         splashViewModel.checkLoginState()
-        splashViewModel.loginState.observe(viewLifecycleOwner) { state ->
+        splashViewModel.loginState.observe(this) { state ->
             checkLoginState(state)
         }
     }
@@ -73,9 +61,9 @@ class SplashFragment : BaseFragment() {
 //            bind.appName.startAnimation(anim)
 //            bind.imageBackground.startAnimation(inAnim)
             delay(300)
-            findNavController().navigate(NavigationUtils.getUriNavigation(Domain.ENGLIZYA_PAY,
-                Destination.TICKET))
+            val intent = Intent(this@SplashActivity, HomeActivity::class.java).putExtra(Arguments.Destination, Destination.TICKET)
+            startActivity(intent)
+            finish()
         }
     }
-
 }

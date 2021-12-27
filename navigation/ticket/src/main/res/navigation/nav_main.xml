@@ -3,14 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_main"
-    app:startDestination="@id/navigation_splash">
-
-    <fragment
-        android:id="@+id/navigation_splash"
-        android:name="com.englyzia.splash.SplashFragment"
-        tools:layout="@layout/fragment_splash" >
-
-    </fragment>
+    app:startDestination="@id/navigation_ticket">
 
     <fragment
         android:id="@+id/navigation_login"

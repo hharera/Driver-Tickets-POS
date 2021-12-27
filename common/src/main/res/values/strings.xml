@@ -168,7 +168,7 @@
     <string name="cash">CASH</string>
     <string name="scan_qr">QR</string>
     <string name="card">CARD</string>
-    <string name="driver_code">Driver code</string>
+    <string name="driver_code">كود السائق</string>
     <string name="cannot_login">لم نتمكن من تسجيل الدخول</string>
     <string name="invalid_username_error">كود السائق غير صحيح</string>
     <string name="empty_password_error">أدخل كلمة المرور</string>
