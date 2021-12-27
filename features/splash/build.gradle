@@ -3,5 +3,5 @@ apply from: "$rootDir/common-feature-di.gradle"
 dependencies {
     implementation Libs.playServicesTasks
 
-
+    api project(Navigation.payment)
 }

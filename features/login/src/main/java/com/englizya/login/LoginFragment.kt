@@ -1,6 +1,7 @@
 package com.englizya.login
 
 import android.os.Bundle
+import android.provider.Settings.Global.getString
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,6 +32,8 @@ class LoginFragment : BaseFragment() {
                 loginViewModel.setRedirectRouting(redirect)
             }
         }
+
+        activity?.window?.statusBarColor = resources.getColor(R.color.splash_status_color)
     }
 
     override fun onCreateView(
