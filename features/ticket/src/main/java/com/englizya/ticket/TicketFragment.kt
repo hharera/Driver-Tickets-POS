@@ -14,6 +14,7 @@ class TicketFragment : BaseFragment() {
 
     private lateinit var ticketViewModel: TicketViewModel
     private lateinit var bind: FragmentTicketBinding
+//    private lateinit var bind: FragmentTicketBinding
 
     private lateinit var paymentMethodsAdapter: PaymentMethodsAdapter
 
@@ -21,7 +22,7 @@ class TicketFragment : BaseFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?, savedInstanceState: Bundle?,
     ): View {
-        bind = FragmentTicketBinding.inflate(layoutInflater)
+        bind = FragmentTicketBinding.inflate(layoutInflater, container, false)
         ticketViewModel = ViewModelProvider(this).get(TicketViewModel::class.java)
 
 
@@ -32,8 +33,8 @@ class TicketFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupObserves()
         setupPaymentAdapter()
+        setupObserves()
         setupListeners()
     }
 
@@ -47,11 +48,17 @@ class TicketFragment : BaseFragment() {
 
     private fun setupObserves() {
         ticketViewModel.quantity.observe(viewLifecycleOwner) {
-            bind.ticketQuantity.text = it.toString()
+            bind.ticketQuantity.setText(it.toString())
         }
     }
 
     private fun setupListeners() {
+//        TODO future
+//        bind.ticketQuantity.afterTextChanged {
+//            it.toInt()
+//            ticketViewModel.setQuantity()
+//        }
+
         bind.ticketPlus.setOnClickListener {
             ticketViewModel.incrementQuantity()
         }
