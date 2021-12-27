@@ -2,22 +2,25 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/category_product_card_view"
-    android:layout_width="@dimen/_120sdp"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:elevation="8dp"
-    app:cardCornerRadius="@dimen/_15sdp"
-    app:contentPadding="8dp">
+    android:layout_marginHorizontal="5dp"
+    android:elevation="15dp"
+    app:cardCornerRadius="@dimen/_15sdp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/_80sdp"
         android:layout_height="wrap_content"
-        android:background="@drawable/payment_method_card_background">
+        android:background="@drawable/payment_method_card_background"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="5dp">
 
         <ImageView
             android:id="@+id/payment_image"
             android:layout_width="@dimen/_60sdp"
-            android:layout_height="@dimen/_60sdp"
+            android:layout_height="@dimen/_30sdp"
             android:src="@drawable/cash_100"
+            android:tint="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -27,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/abeezee"
-            android:text="@string/cash"
+            android:text="@string/scan_qr"
             android:textColor="@color/white"
             android:textSize="24sp"
             android:textStyle="bold"
