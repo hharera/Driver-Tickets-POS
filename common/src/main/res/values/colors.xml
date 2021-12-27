@@ -8,9 +8,12 @@
     <color name="red_200">#73B71540</color>
     <color name="red_300">#99B71540</color>
     <color name="red_400">#CCB71540</color>
+    <color name="red_600">#8D1812</color>
     <color name="app_blue">#20ADDC</color>
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
     <color name="grey">#CC000000</color>
     <color name="blue">#03264F</color>
+    <color name="ticket_status_color">#D5D9DB</color>
+    <color name="splash_status_color">#021327</color>
 </resources>

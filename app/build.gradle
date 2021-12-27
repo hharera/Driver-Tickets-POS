@@ -67,8 +67,6 @@ dependencies {
     implementation(Libs.viewModels)
     kapt(Libs.lifeCycleCompiler)
 
-    implementation(Room.sqlDelight)
-
     //hilt
     kapt(Libs.hiltAndroidCompiler)
     implementation(Libs.hiltAndroid)

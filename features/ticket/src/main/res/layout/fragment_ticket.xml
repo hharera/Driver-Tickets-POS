@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/ticket_background">
@@ -30,27 +31,31 @@
     <!--    TODO how to make the un-chosen item transparent-->
     <!--    TODO get icomns from the xd file-->
     <!--    TODO add animation -->
-    <androidx.viewpager2.widget.ViewPager2
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/payment_methods"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_160sdp"
-        android:layout_marginTop="@dimen/_15sdp"
-        android:paddingStart="@dimen/_40sdp"
-        android:paddingEnd="@dimen/_40sdp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_30sdp"
+        android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logo" />
+        app:layout_constraintTop_toBottomOf="@+id/logo"
+        tools:listitem="@layout/card_view_payment_type" />
 
     <TextView
         android:id="@+id/ticket_quantity"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
         android:background="@drawable/quantity_background"
+        android:fontFamily="@font/abeezee"
         android:gravity="center"
+        android:maxWidth="@dimen/_80sdp"
         android:text="1"
+        android:textAlignment="center"
         android:textColor="@color/white"
-        android:textSize="80sp"
+        android:textSize="100sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.2"
         app:layout_constraintStart_toStartOf="parent"
@@ -58,8 +63,8 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/ticket_plus"
-        android:layout_width="@dimen/_60sdp"
-        android:layout_height="@dimen/_60sdp"
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="@dimen/_50sdp"
         android:layout_marginStart="@dimen/_25sdp"
         android:src="@drawable/plus_background"
         android:textSize="60sp"
@@ -69,8 +74,8 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/ticket_minus"
-        android:layout_width="@dimen/_60sdp"
-        android:layout_height="@dimen/_60sdp"
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="@dimen/_50sdp"
         android:layout_marginEnd="@dimen/_25sdp"
         android:minHeight="0dp"
         android:src="@drawable/minus_background"
@@ -84,23 +89,38 @@
         android:id="@+id/ticket_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_15sdp"
         android:text="القيمة: 5 جنيهات"
+        android:textColor="@color/grey"
         android:textSize="36sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ticket_quantity" />
 
+    <TextView
+        android:id="@+id/payment_method"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="طريقة الدفع: كاش"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ticket_value" />
+
 
     <com.google.android.material.button.MaterialButton
-        style="@style/TextButton"
-        android:layout_width="match_parent"
+        android:id="@+id/materialButton"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="طباعة"
+        android:background="@drawable/background_print_button"
+        android:paddingHorizontal="20dp"
+        android:text="@string/print"
         android:textColor="@color/white"
-        android:textSize="36sp"
+        android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/payment_method" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -166,7 +166,7 @@
     <string name="pound">ج.م</string>
     <string name="lorem_ipsum">Lorem Ipsum></string>
     <string name="cash">CASH</string>
-    <string name="scan_qr">SCAN QR</string>
+    <string name="scan_qr">QR</string>
     <string name="card">CARD</string>
     <string name="driver_code">Driver code</string>
     <string name="cannot_login">لم نتمكن من تسجيل الدخول</string>
@@ -174,4 +174,5 @@
     <string name="empty_password_error">أدخل كلمة المرور</string>
     <string name="englizya_pay">ENGLIZYA PAY</string>
     <string name="redirect">Redirect</string>
+    <string name="print">طباعة</string>
 </resources>

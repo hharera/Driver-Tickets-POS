@@ -4,11 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.englizya.common.base.BaseFragment
 import com.englizya.ticket.databinding.FragmentTicketBinding
-import dagger.hilt.android.AndroidEntryPoint
 
 
 //TODO rec
@@ -26,10 +24,8 @@ class TicketFragment : BaseFragment() {
         bind = FragmentTicketBinding.inflate(layoutInflater)
         ticketViewModel = ViewModelProvider(this).get(TicketViewModel::class.java)
 
-        paymentMethodsAdapter = PaymentMethodsAdapter {
-            TODO("Not yet implemented")
-        }
 
+        activity?.window?.statusBarColor = resources.getColor(R.color.ticket_status_color)
         return bind.root
     }
 
@@ -37,14 +33,31 @@ class TicketFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupObserves()
+        setupPaymentAdapter()
         setupListeners()
     }
 
+    private fun setupPaymentAdapter() {
+        paymentMethodsAdapter = PaymentMethodsAdapter {
+            bind.paymentMethod.text = "طريقة الدفع: ".plus(getString(it))
+        }
+
+        bind.paymentMethods.adapter = paymentMethodsAdapter
+    }
+
     private fun setupObserves() {
-        TODO("Not yet implemented")
+        ticketViewModel.quantity.observe(viewLifecycleOwner) {
+            bind.ticketQuantity.text = it.toString()
+        }
     }
 
     private fun setupListeners() {
-        TODO("Not yet implemented")
+        bind.ticketPlus.setOnClickListener {
+            ticketViewModel.incrementQuantity()
+        }
+
+        bind.ticketMinus.setOnClickListener {
+            ticketViewModel.decrementQuantity()
+        }
     }
 }
