@@ -43,7 +43,7 @@
         app:layout_constraintTop_toBottomOf="@+id/logo"
         tools:listitem="@layout/card_view_payment_type" />
 
-    <TextView
+    <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/ticket_quantity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -51,6 +51,8 @@
         android:background="@drawable/quantity_background"
         android:fontFamily="@font/abeezee"
         android:gravity="center"
+        android:imeActionId="360"
+        android:inputType="numberDecimal"
         android:maxWidth="@dimen/_140sdp"
         android:minWidth="@dimen/_25sdp"
         android:minHeight="@dimen/_120sdp"
@@ -111,8 +113,7 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/materialButton"
-        android:layout_width="0dp"
-        app:layout_constraintWidth_percent="0.7"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/background_print_button"
         android:paddingHorizontal="20dp"
@@ -121,7 +122,6 @@
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ticket_value" />
+        app:layout_constraintStart_toStartOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
