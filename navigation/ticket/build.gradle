@@ -1,4 +1,4 @@
-apply from: "$rootDir/common-feature-di.gradle"
+apply from: "$rootDir/${CommonBuild.NavigationModule}"
 
 dependencies {
     api(project(Features.login))
