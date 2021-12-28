@@ -13,9 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Englizya_Pay">
 
-        <activity
-            android:exported="true"
-            android:name="com.englyzia.navigation.HomeActivity" />
+        <activity android:name="com.englyzia.navigation.HomeActivity" />
 
         <activity
             android:name="com.englyzia.splash.SplashActivity"

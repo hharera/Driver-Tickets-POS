@@ -1,4 +1,4 @@
-apply from: "$rootDir/${CommonBuild.NavigationModule}"
+apply from: "$rootDir/${CommonBuild.FeatureModule}"
 
 dependencies {
     implementation Libs.playServicesTasks
