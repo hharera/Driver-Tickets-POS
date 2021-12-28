@@ -24,7 +24,4 @@ class NoInternetActivity : BaseActivity() {
         }
     }
 
-    override fun onBackPressed() {
-        super.onBackPressed()
-    }
 }

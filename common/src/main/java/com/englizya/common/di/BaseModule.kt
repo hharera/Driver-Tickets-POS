@@ -2,7 +2,6 @@ package com.englizya.common.di
 
 import android.app.Application
 import com.englizya.common.utils.network.ConnectionLiveData
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
