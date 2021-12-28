@@ -1,6 +1,5 @@
-apply from: "$rootDir/data-module-di.gradle"
-apply from: "$rootDir/hilt-dependencies.gradle"
-apply plugin: ("dagger.hilt.android.plugin")
+apply from: "$rootDir/${CommonBuild.DATA_MODULE}"
+apply from: "$rootDir/${CommonBuild.HiltDependencies}"
 
 android {
     defaultConfig {
