@@ -1,4 +1,4 @@
-package com.englizya.dwaa.utils.location
+package com.englizya.common.utils.location
 
 object LocationConstants {
     val latitude = "latitude"
