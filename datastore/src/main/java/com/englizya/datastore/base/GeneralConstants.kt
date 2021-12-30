@@ -1,4 +1,4 @@
-package com.englyzia.datastore.base
+package com.englizya.datastore.base
 
 object GeneralConstants {
     const val NULL_STRING = "null"
