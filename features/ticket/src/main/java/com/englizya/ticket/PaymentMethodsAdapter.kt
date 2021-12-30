@@ -43,11 +43,11 @@ class PaymentMethodsAdapter(
         RecyclerView.ViewHolder(bind.root) {
 
         fun updateUI(paymentMethod: PaymentMethod) {
-            bind.paymentImage.setImageResource(paymentMethod.icon)
-            bind.paymentText.setText(paymentMethod.title)
+            bind.paymentImage.setImageResource(paymentMethod.iconRes)
+            bind.paymentText.setText(paymentMethod.titleRes)
 
             bind.root.setOnClickListener {
-                onMethodClicked(paymentMethod.title)
+                onMethodClicked(paymentMethod.titleRes)
             }
         }
 
