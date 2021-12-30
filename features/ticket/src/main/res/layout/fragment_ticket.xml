@@ -29,7 +29,7 @@
 
 
     <!--    TODO how to make the un-chosen item transparent-->
-    <!--    TODO get icomns from the xd file-->
+    <!--    TODO get icons from the xd file-->
     <!--    TODO add animation -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/payment_methods"

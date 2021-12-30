@@ -26,7 +26,7 @@ class TicketFragment : BaseFragment() {
         ticketViewModel = ViewModelProvider(this).get(TicketViewModel::class.java)
 
 
-        activity?.window?.statusBarColor = resources.getColor(R.color.ticket_status_color)
+        changeStatusBarColor(R.color.white_600)
         return bind.root
     }
 
