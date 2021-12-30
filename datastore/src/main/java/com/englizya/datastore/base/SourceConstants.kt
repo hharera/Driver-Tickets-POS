@@ -1,4 +1,4 @@
-package com.englyzia.datastore.base
+package com.englizya.datastore.base
 
 internal object SourceConstants {
     const val TICKET_SHARED_PREFERENCES = "Ticket_Shared_Preferences"
