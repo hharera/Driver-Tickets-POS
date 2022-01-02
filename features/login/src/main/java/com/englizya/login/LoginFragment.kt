@@ -1,7 +1,6 @@
 package com.englizya.login
 
 import android.os.Bundle
-import android.provider.Settings.Global.getString
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,7 +32,7 @@ class LoginFragment : BaseFragment() {
             }
         }
 
-        activity?.window?.statusBarColor = resources.getColor(R.color.splash_status_color)
+        changeStatusBarColor(R.color.blue_600)
     }
 
     override fun onCreateView(

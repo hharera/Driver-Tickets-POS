@@ -1,4 +1,4 @@
 object Plugins {
-    private const val sqlDelightVersion = "1.5.3"
-    const val sqlDelight = "com.squareup.sqldelight:gradle-plugin:$sqlDelightVersion"
+    const val NAVIGATION_PLUGIN= "androidx.navigation.safeargs"
+    const val KAPT_PLUGIN= "kotlin-kapt"
 }

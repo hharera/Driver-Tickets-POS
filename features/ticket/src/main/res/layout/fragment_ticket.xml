@@ -112,7 +112,6 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/materialButton"
         android:layout_width="0dp"
-        app:layout_constraintWidth_percent="0.7"
         android:layout_height="wrap_content"
         android:background="@drawable/background_print_button"
         android:paddingHorizontal="20dp"
@@ -122,6 +121,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ticket_value" />
+        app:layout_constraintTop_toBottomOf="@+id/ticket_value"
+        app:layout_constraintWidth_percent="0.7" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

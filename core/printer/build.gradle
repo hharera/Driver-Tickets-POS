@@ -1,0 +1,8 @@
+apply from: "$rootDir/${CommonBuild.LibraryDependencies}"
+
+dependencies {
+
+//    implementation(Printer.ThermalPrinter)
+    implementation(Libs.appcompat)
+    implementation(project(Base.common))
+}

@@ -15,6 +15,24 @@
     </fragment>
 
     <fragment
+        android:id="@+id/navigation_end_shift"
+        android:name="com.englizya.day_report.DayReportFragment"
+        tools:layout="@layout/fragment_day_report">
+
+        <argument android:name="redirect" />
+        <deepLink app:uri="EnglizyaPay://end-shift/{redirect}" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_day_report"
+        android:name="com.englizya.day_report.DayReportFragment"
+        tools:layout="@layout/fragment_day_report">
+
+        <argument android:name="redirect" />
+        <deepLink app:uri="EnglizyaPay://day-report/{redirect}" />
+    </fragment>
+
+    <fragment
         android:id="@+id/navigation_ticket"
         android:name="com.englizya.ticket.TicketFragment"
         tools:layout="@layout/fragment_ticket">

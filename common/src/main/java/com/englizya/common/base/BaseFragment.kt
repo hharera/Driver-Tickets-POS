@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.englizya.common.R
 import com.englizya.common.utils.network.ConnectionLiveData
 import com.englizya.common.ui.LoadingDialog
 import dagger.hilt.android.AndroidEntryPoint
@@ -63,5 +64,9 @@ open class BaseFragment : Fragment() {
         messageRes?.let { res ->
             showToast(res)
         }
+    }
+
+    fun changeStatusBarColor(colorRes : Int) {
+        activity?.window?.statusBarColor = resources.getColor(colorRes)
     }
 }

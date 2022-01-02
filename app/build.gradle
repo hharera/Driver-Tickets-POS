@@ -3,7 +3,6 @@ plugins {
     id 'kotlin-android'
 }
 apply plugin: 'kotlin-kapt'
-apply plugin: "androidx.navigation.safeargs"
 apply plugin: 'dagger.hilt.android.plugin'
 
 android {
@@ -16,7 +15,6 @@ android {
         versionCode Releases.versionCode
         versionName Releases.versionName
 
-        vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "com.englizya.ticket.HiltTestRunner"
     }
     buildFeatures {
@@ -43,6 +41,7 @@ android {
 dependencies {
     implementation project(Base.common)
     implementation project(Features.splash)
+    implementation project(Functions.printer)
 
     //hilt
     implementation(Libs.hiltAndroid)
@@ -70,11 +69,11 @@ dependencies {
     //hilt
     kapt(Libs.hiltAndroidCompiler)
     implementation(Libs.hiltAndroid)
-    implementation Libs.testRunner
+    implementation(TestDi.testRunner)
 
-    androidTestImplementation(Libs.hiltTesting)
+    androidTestImplementation(TestDi.hiltTesting)
     kaptAndroidTest(Libs.hiltAndroidCompiler)
 
-    testImplementation(Libs.hiltTesting)
+    testImplementation(TestDi.hiltTesting)
     kaptTest(Libs.hiltAndroidCompiler)
 }

@@ -39,7 +39,7 @@ android {
 
 dependencies {
     implementation Libs.kotlin
-    testImplementation Libs.junit4
+    testImplementation (TestDi.junit4)
 
     implementation(project(Base.common))
 }

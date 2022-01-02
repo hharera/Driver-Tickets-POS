@@ -12,8 +12,8 @@
     <color name="app_blue">#20ADDC</color>
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
-    <color name="grey">#CC000000</color>
-    <color name="blue">#03264F</color>
-    <color name="ticket_status_color">#D5D9DB</color>
+    <color name="grey">#72000000</color>
+    <color name="blue_600">#03264F</color>
+    <color name="white_600">#D5D9DB</color>
     <color name="splash_status_color">#021327</color>
 </resources>
