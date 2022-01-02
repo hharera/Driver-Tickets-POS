@@ -1,7 +1,0 @@
-apply from:"$rootDir/${CommonBuild.LibraryDependencies}"
-
-dependencies {
-
-    api(Printer.ThermalPrinter)
-
-}

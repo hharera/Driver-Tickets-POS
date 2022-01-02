@@ -2,6 +2,7 @@ dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
+        maven { url 'https://jitpack.io' }
         mavenCentral()
         jcenter() // Warning: this repository is going to shut down soon
     }
@@ -13,6 +14,9 @@ include ':app'
 include ':common'
 include ':navigation:ticket'
 include ':datastore'
+include ':core'
+
+include ':core:printer'
 
 include ':data:repository'
 include ':data:model'
@@ -25,3 +29,5 @@ include ':features:splash'
 
 include ':ui-components'
 include ':ui-components:no-internet'
+include ':features:day-report'
+include ':features:end-shift'

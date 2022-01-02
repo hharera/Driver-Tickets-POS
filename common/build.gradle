@@ -11,13 +11,7 @@ android {
         targetSdkVersion DefaultConfig.targetSdk
         versionCode Releases.versionCode
         versionName Releases.versionName
-    }
 
-    buildTypes {
-        debug {
-            debuggable true
-            buildConfigField("String", "RootPackage", "\"com.christopher_elias.movies\"")
-        }
     }
 
     android {
@@ -48,7 +42,7 @@ dependencies {
     api project(Data.datastore)
 
     implementation Libs.kotlin
-    testImplementation Libs.junit4
+    testImplementation TestDi.junit4
 
     implementation(Libs.viewModels)
     implementation(Libs.activity)
@@ -62,12 +56,17 @@ dependencies {
     implementation(Libs.materialDesign)
     implementation(Libs.gligarPicker)
 
-    testImplementation(Libs.junit4)
-    androidTestImplementation(Libs.junitExt)
+    testImplementation(TestDi.junit4)
+    androidTestImplementation(TestDi.junitExt)
 
     implementation(Libs.playServicesMaps)
     implementation(Libs.firebaseFirestore)
 
-    implementation(Libs.roomRunTime)
+    testImplementation(Libs.roomRunTime)
+    testImplementation(TestDi.testRunner)
+    testImplementation(TestDi.coroutinesTest)
+    testImplementation(TestDi.hiltTesting)
+    testImplementation(TestDi.androidCoreTesting)
+
     api(Libs.jodaTime)
 }

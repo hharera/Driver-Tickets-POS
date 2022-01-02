@@ -1,5 +1,3 @@
-import java.net.URI
-
 buildscript {
     repositories {
         google()
@@ -10,6 +8,7 @@ buildscript {
         classpath(Libs.kotlinPlugin)
         classpath(Libs.navigationSafeArgsPlugin)
         classpath(Libs.hiltPlugin)
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.20")
     }
 }
 

@@ -5,9 +5,16 @@
       <map>
         <entry key="..\:/Users/Harera/AndroidStudioProjects/Ticket/app/src/main/res/layout/activity_main.xml" value="0.35260416666666666" />
         <entry key="..\:/englizya android/Ticket/common/src/main/res/drawable/payment_method_car_background.xml" value="0.22135416666666666" />
+        <entry key="..\:/englizya android/Ticket/features/day-report/src/main/res/drawable/text_report_background.xml" value="0.16145833333333334" />
+        <entry key="..\:/englizya android/Ticket/features/day-report/src/main/res/layout/fragment_day_report.xml" value="0.22" />
+        <entry key="..\:/englizya android/Ticket/features/end-shift/src/main/res/layout/fragment_end_shift.xml" value="0.26811594202898553" />
         <entry key="..\:/englizya android/Ticket/features/ticket/src/main/res/layout/card_view_payment_type.xml" value="0.25" />
         <entry key="..\:/englizya android/Ticket/features/ticket/src/main/res/layout/fragment_ticket.xml" value="0.22" />
         <entry key="..\:/englizya android/Ticket/features/ticket/src/main/res/menu/menu_payment_methods.xml" value="0.36666666666666664" />
+        <entry key="..\:/englizya android/Ticket/navigation/ticket/src/main/res/layout/activity_home.xml" value="0.134375" />
+        <entry key="..\:/englizya android/Ticket/navigation/ticket/src/main/res/layout/navigation_home_content.xml" value="0.134375" />
+        <entry key="..\:/englizya android/Ticket/navigation/ticket/src/main/res/layout/navigation_home_header.xml" value="0.21" />
+        <entry key="..\:/englizya android/Ticket/navigation/ticket/src/main/res/menu/navigation_menu.xml" value="0.1203125" />
       </map>
     </option>
   </component>

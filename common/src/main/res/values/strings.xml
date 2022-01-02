@@ -4,7 +4,7 @@
     <string name="shop"> تسوق </string>
     <string name="categories"> الاقسام </string>
     <string name="account"> حسابي </string>
-    <string name="wellcome_text"> مرحبا! \n متجر افندينا يرحب بكم </string>
+    <string name="welcome_text">الانجليزية \nطريقنا دايما واحد</string>
     <string name="start"> ابدأ </string>
     <string name="password"> كلمة المرور </string>
     <string name="email"> الايميل </string>
@@ -175,4 +175,8 @@
     <string name="englizya_pay">ENGLIZYA PAY</string>
     <string name="redirect">Redirect</string>
     <string name="print">طباعة</string>
+    <string name="day_report">تقرير اليوم</string>
+    <string name="end_shift">انهاء الشيفت</string>
+    <string name="englizya">الأنجليزية</string>
+    <string name="our_way_is_once">طريقنا دايماً واحد</string>
 </resources>

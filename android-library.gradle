@@ -12,13 +12,6 @@ android {
         versionName Releases.versionName
     }
 
-    buildTypes {
-        debug {
-            debuggable true
-            buildConfigField("String", "RootPackage", "\"com.christopher_elias.movies\"")
-        }
-    }
-
     kotlinOptions.jvmTarget = "1.8"
 
     packagingOptions {

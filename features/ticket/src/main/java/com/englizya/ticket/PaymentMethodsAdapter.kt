@@ -9,6 +9,8 @@ class PaymentMethodsAdapter(
     private val onMethodClicked: (Int) -> Unit,
 ) : RecyclerView.Adapter<PaymentMethodsAdapter.ViewHolder>() {
 
+    private var currentMethodPosition = 1
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
             CardViewPaymentTypeBinding.inflate(

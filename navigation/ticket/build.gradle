@@ -1,6 +1,12 @@
-apply from: "$rootDir/${CommonBuild.NavigationModule}"
+apply from: "$rootDir/${CommonBuild.FeatureModule}"
 
 dependencies {
     api(project(Features.login))
     api(project(Features.ticket))
+    api(project(Features.dayReport))
+    api(project(Base.common))
+
+
+    implementation(Libs.navigationFragment)
+    implementation(Libs.navigationUi)
 }

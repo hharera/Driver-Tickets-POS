@@ -5,4 +5,5 @@ object CommonBuild {
     const val NavigationModule = "navigation-module-di.gradle"
     const val FeatureModule = "feature-module-di.gradle"
     const val HiltDependencies = "hilt-module-di.gradle"
+    const val LibraryDependencies = "library-module-di.gradle"
 }

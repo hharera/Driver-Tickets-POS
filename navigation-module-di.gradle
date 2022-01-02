@@ -2,8 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: ("dagger.hilt.android.plugin")
 apply plugin: 'kotlin-kapt'
-apply plugin: 'androidx.navigation.safeargs'
-apply from:"$rootDir/hilt-module-di.gradle"
+apply from:"$rootDir/${CommonBuild.HiltDependencies}"
 android {
     compileSdkVersion DefaultConfig.compileSdk
 

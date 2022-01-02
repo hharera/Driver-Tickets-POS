@@ -1,4 +1,4 @@
-apply from:"$rootDir/android-library.gradle"
+apply from:"$rootDir/${CommonBuild.DATA_MODULE}"
 apply plugin: ("dagger.hilt.android.plugin")
 
 dependencies {
@@ -11,12 +11,12 @@ dependencies {
     //hilt
     kapt(Libs.hiltAndroidCompiler)
     implementation(Libs.hiltAndroid)
-    implementation Libs.testRunner
+    implementation TestDi.testRunner
 
-    androidTestImplementation(Libs.hiltTesting)
+    androidTestImplementation(TestDi.hiltTesting)
     kaptAndroidTest(Libs.hiltAndroidCompiler)
 
-    testImplementation(Libs.hiltTesting)
+    testImplementation(TestDi.hiltTesting)
     kaptTest(Libs.hiltAndroidCompiler)
 
     api project(Data.localRoom)
