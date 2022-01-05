@@ -1,8 +1,8 @@
-apply from: "$rootDir/${CommonBuild.LibraryDependencies}"
+apply from: "$rootDir/${CommonBuild.FeatureModule}"
 
 dependencies {
 
-//    implementation(Printer.ThermalPrinter)
     implementation(Libs.appcompat)
     implementation(project(Base.common))
+    implementation files('libs\\pax_printer.jar')
 }
