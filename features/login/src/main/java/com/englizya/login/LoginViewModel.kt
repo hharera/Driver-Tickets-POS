@@ -4,14 +4,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.englizya.common.base.BaseViewModel
 import com.englizya.common.utils.Validity
-import com.englizya.repository.abstraction.UserRepository
+import com.englizya.datastore.core.DriverDataStore
+import com.englizya.model.request.LoginRequest
+import com.englizya.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val userRepository: UserRepository,
-    //TODO add common module dependencies
+    private val driverDataStore: DriverDataStore,
 ) : BaseViewModel() {
 
     private var _username = MutableLiveData<String>()
@@ -30,7 +32,6 @@ class LoginViewModel @Inject constructor(
     val loginOperationState: LiveData<Boolean> = _loginOperationState
 
     private fun checkFormValidity() {
-//        TODO test check validity
         if (username.value.isNullOrBlank()) {
             _formValidity.postValue(LoginFormState(usernameError = R.string.empty_username_error))
         } else if (Validity.checkUsername(username.value!!).not()) {
@@ -54,19 +55,19 @@ class LoginViewModel @Inject constructor(
         checkFormValidity()
     }
 
-    fun login() {
-//        TODO()
-//        _loading.value = true
-//        usreRepository
-//            .signInWithEmailAndPassword(email = username.value!!, password = password.value!!)
-//            .addOnSuccessListener {
-//                _loading.value = false
-//                _loginOperationState.value = true
-//            }
-//            .addOnFailureListener {
-//                _loading.value = false
-//                _exception.value = it
-//            }
+    suspend fun login() {
+        updateLoading(true)
+        userRepository
+            .login(LoginRequest(username.value!!.toInt(), password.value!!))
+            .onSuccess {
+                updateLoading(false)
+                _loginOperationState.postValue(true)
+            }
+            .onFailure {
+                updateLoading(false)
+                handleException(it)
+                _loginOperationState.postValue(true)
+            }
     }
 
     fun setRedirectRouting(redirect: String) {

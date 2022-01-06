@@ -1,4 +1,4 @@
-package com.englizya.repository.abstraction
+package com.englizya.repository.utils
 
 object DBConstants {
     const val USERS: String = "users"

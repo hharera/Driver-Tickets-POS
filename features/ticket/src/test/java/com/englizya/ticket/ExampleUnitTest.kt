@@ -1,6 +1,6 @@
 package com.englizya.ticket
 
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
 import org.junit.Test
 
 /**

@@ -2,6 +2,9 @@ apply from:"$rootDir/${CommonBuild.DATA_MODULE}"
 apply plugin: ("dagger.hilt.android.plugin")
 
 dependencies {
+    api project(Data.localRoom)
+    api project(Data.remoteApi)
+
     //gms play
     implementation Libs.playServicesAuth
     implementation Libs.playServicesAuthPhone
@@ -18,7 +21,4 @@ dependencies {
 
     testImplementation(TestDi.hiltTesting)
     kaptTest(Libs.hiltAndroidCompiler)
-
-    api project(Data.localRoom)
-    api project(Data.remoteApi)
 }

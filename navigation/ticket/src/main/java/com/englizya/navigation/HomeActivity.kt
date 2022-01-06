@@ -1,16 +1,14 @@
 package com.englizya.navigation
 
 import android.os.Bundle
-import android.os.PersistableBundle
-import android.util.Log
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.navigation.ui.setupWithNavController
 import com.englizya.common.base.BaseActivity
 import com.englizya.common.utils.navigation.Arguments
 import com.englizya.common.utils.navigation.Domain
 import com.englizya.common.utils.navigation.NavigationUtils
 import com.englizya.navigation.databinding.ActivityHomeBinding
-import androidx.navigation.ui.setupWithNavController
 
 //TODO extend from base activity
 class HomeActivity : BaseActivity() {

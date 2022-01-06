@@ -114,7 +114,7 @@ object Libs {
     const val navigationSafeArgsPlugin =
         "androidx.navigation:navigation-safe-args-gradle-plugin:${Versions.JETPACK_NAVIGATION_VERSION}"
 
-
+    const val serializer = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0"
 
     const val jodaTime = "joda-time:joda-time:2.10.13"
 }

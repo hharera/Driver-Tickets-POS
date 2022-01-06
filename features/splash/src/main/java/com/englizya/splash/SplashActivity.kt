@@ -24,10 +24,8 @@ class SplashActivity : BaseActivity() {
 
         window?.statusBarColor = resources.getColor(R.color.splash_status_color)
 
-        //TODO test
         lifecycleScope.launch {
             delay(1000)
-            goTicket()
         }
     }
 

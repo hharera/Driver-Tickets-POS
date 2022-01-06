@@ -35,5 +35,6 @@ class Validity {
         fun checkUsername(username: String): Boolean {
             return username.matches(Regex("^[\\d]{1,30}\$"))
         }
+
     }
 }

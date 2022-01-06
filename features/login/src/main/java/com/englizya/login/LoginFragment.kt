@@ -16,6 +16,7 @@ import com.englizya.common.utils.navigation.NavigationUtils
 import com.englizya.manager.login.LoginViewModel
 import com.englizya.manager.login.R
 import com.englizya.manager.login.databinding.FragmentLoginBinding
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class LoginFragment : BaseFragment() {
@@ -81,13 +82,13 @@ class LoginFragment : BaseFragment() {
 
     private fun checkLoginState(state: Boolean) {
         if (state) {
-            goToHomeActivity()
+            goTicket()
         } else {
             showToast(R.string.cannot_login)
         }
     }
 
-    private fun goToHomeActivity() {
+    private fun goTicket() {
         lifecycleScope.launch {
             findNavController().navigate(NavigationUtils.getUriNavigation(Domain.ENGLIZYA_PAY, Destination.TICKET, null))
         }
@@ -103,7 +104,9 @@ class LoginFragment : BaseFragment() {
         }
 
         bind.login.setOnClickListener {
-            loginViewModel.login()
+            lifecycleScope.launch(Dispatchers.IO) {
+                loginViewModel.login()
+            }
             bind.login.isEnabled = false
         }
     }

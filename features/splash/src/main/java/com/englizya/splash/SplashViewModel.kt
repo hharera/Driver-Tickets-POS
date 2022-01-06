@@ -3,9 +3,9 @@ package com.englizya.splash
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.englizya.common.base.BaseViewModel
-import com.englizya.repository.abstraction.UserRepository
 import com.englizya.datastore.base.GeneralConstants.NULL_STRING
 import com.englizya.datastore.core.DriverDataStore
+import com.englizya.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
