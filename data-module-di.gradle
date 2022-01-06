@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlinx-serialization'
 
 android {
     compileSdkVersion DefaultConfig.compileSdk
@@ -33,4 +34,9 @@ dependencies {
     implementation Libs.kotlin
     testImplementation TestDi.junit4
 
+    api(Ktor.ktorClientAndroid)
+    api(Ktor.ktorClient)
+
+    api(Libs.serializer)
+    api(Ktor.ktorClientGson)
 }

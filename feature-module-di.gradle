@@ -37,6 +37,7 @@ android {
 dependencies {
     api project(Base.common)
     api project(Data.repository)
+    api project(Data.datastore)
 
     implementation(Libs.coroutinesCore)
 

@@ -14,7 +14,6 @@ class TicketFragment : BaseFragment() {
 
     private lateinit var ticketViewModel: TicketViewModel
     private lateinit var bind: FragmentTicketBinding
-//    private lateinit var bind: FragmentTicketBinding
 
     private lateinit var paymentMethodsAdapter: PaymentMethodsAdapter
 

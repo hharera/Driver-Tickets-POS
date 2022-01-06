@@ -10,6 +10,7 @@
 //@Database(
 //    version = 2,
 //    entities = [
+//
 //    ],
 //    exportSchema = true,
 //)
