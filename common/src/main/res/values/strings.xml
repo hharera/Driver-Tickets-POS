@@ -90,7 +90,7 @@
     <string name="code_is_arriving"> إرسال كود إرسال كود </string>
     <string name="dwaa_name"> اسم الدواء </string>
     <string name="expire_date"> تاريخ الانتهاء </string>
-    <string name="category"> القسم </string>
+    <string name="category"> فئة </string>
     <string name="save"> حفظ </string>
     <string name="add"> إضافة </string>
     <string name="type"> النوع </string>

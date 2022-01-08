@@ -15,7 +15,6 @@ open class BaseViewModel : ViewModel() {
     private val _connectivity: MutableLiveData<Boolean> = MutableLiveData(false)
     val connectivity: LiveData<Boolean> = _connectivity
 
-
     fun handleException(exception: Exception?) {
         //TODO check for every exception type print specific message
         exception?.printStackTrace()
