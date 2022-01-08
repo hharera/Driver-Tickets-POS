@@ -11,16 +11,15 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 open class BaseFragment : Fragment() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        connectionLiveData = ConnectionLiveData(requireContext())
-    }
-
     lateinit var connectionLiveData: ConnectionLiveData
 
     private val loadingDialog: LoadingDialog by lazy {
-//        TODO make loading dialog with company icon
         LoadingDialog(requireContext())
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        connectionLiveData = ConnectionLiveData(requireContext())
     }
 
     fun handleLoading(state: Boolean) {

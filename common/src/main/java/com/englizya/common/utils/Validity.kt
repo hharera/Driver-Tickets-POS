@@ -23,6 +23,9 @@ class Validity {
         fun checkPassword(string: String) =
             string.matches(Regex("^[a-z]{5,25}\$"))
 
+        fun checkDriverPassword(string: String) =
+            string.matches(Regex("^[\\d]{4,40}\$"))
+
         fun checkCategoryName(value: String): Boolean =
             value.matches(Regex("^[a-z]{4,50}\$"))
 
