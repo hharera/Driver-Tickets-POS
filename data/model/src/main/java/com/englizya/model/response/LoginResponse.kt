@@ -1,5 +1,6 @@
 package com.englizya.model.response
 
-import java.io.Serializable
+import kotlinx.serialization.Serializable
 
-class LoginResponse(val jwt: String) : Serializable
+@Serializable
+data class LoginResponse(val jwt: String)

@@ -3,7 +3,7 @@ package com.englizya.ticket
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.englizya.ticket.databinding.CardViewPaymentTypeBinding
+import com.englizya.ticket.ticket.databinding.CardViewPaymentTypeBinding
 
 class PaymentMethodsAdapter(
     private val onMethodClicked: (Int) -> Unit,
@@ -49,7 +49,8 @@ class PaymentMethodsAdapter(
             bind.paymentText.setText(paymentMethod.titleRes)
 
             bind.root.setOnClickListener {
-                onMethodClicked(paymentMethod.titleRes)
+//                TODO set max as const
+//                onMethodClicked(paymentMethod.titleRes)
             }
         }
 

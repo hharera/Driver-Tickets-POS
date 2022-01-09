@@ -1,8 +1,8 @@
 package com.englizya.datastore.core
 
 import android.content.Context
-import com.englizya.datastore.base.GeneralConstants.CUSTOMER_SUPPORT
-import com.englizya.datastore.base.SourceConstants
+import com.englizya.datastore.utils.GeneralConstants.CUSTOMER_SUPPORT
+import com.englizya.datastore.utils.SourceConstants
 
 class CompanyDataStore(context: Context) {
 

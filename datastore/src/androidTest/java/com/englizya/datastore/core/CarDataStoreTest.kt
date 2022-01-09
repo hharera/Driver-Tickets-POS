@@ -24,7 +24,7 @@ class CarDataStoreTest {
 
     @Test
     fun testGetCarCode() {
-        carDataStore.setCarCode(123)
+        carDataStore.setCarCode("123")
         carDataStore.getCarCode().let {
             Truth.assertThat(it).isEqualTo(123)
         }
@@ -33,4 +33,28 @@ class CarDataStoreTest {
     fun testGetCarLineCode() {}
 
     fun testGetCarLineDescription() {}
+
+    @Test
+    fun setCarCode() {
+    }
+
+    @Test
+    fun getCarCode() {
+    }
+
+    @Test
+    fun setCarLineCode() {
+    }
+
+    @Test
+    fun getCarLineCode() {
+    }
+
+    @Test
+    fun setCarLineDescription() {
+    }
+
+    @Test
+    fun getCarLineDescription() {
+    }
 }

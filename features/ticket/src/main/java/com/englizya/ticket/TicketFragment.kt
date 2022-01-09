@@ -5,11 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.englizya.common.base.BaseFragment
-import com.englizya.ticket.databinding.FragmentTicketBinding
+import com.englizya.ticket.ticket.R
+import com.englizya.ticket.ticket.databinding.FragmentTicketBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-
-//TODO rec
 class TicketFragment : BaseFragment() {
 
     private lateinit var ticketViewModel: TicketViewModel
@@ -24,7 +26,7 @@ class TicketFragment : BaseFragment() {
         bind = FragmentTicketBinding.inflate(layoutInflater, container, false)
         ticketViewModel = ViewModelProvider(this).get(TicketViewModel::class.java)
 
-
+        ticketViewModel.setPaymentWay(getString(PaymentMethod.Cash.titleRes))
         changeStatusBarColor(R.color.white_600)
         return bind.root
     }
@@ -47,23 +49,31 @@ class TicketFragment : BaseFragment() {
 
     private fun setupObserves() {
         ticketViewModel.quantity.observe(viewLifecycleOwner) {
-            bind.ticketQuantity.setText(it.toString())
+            bind.ticketQuantity.text = it.toString()
+        }
+
+        ticketViewModel.ticketCategory.observe(viewLifecycleOwner) {
+            bind.ticketValue.text = getString(R.string.category).plus(" : ").plus(it)
+        }
+
+        connectionLiveData.observe(viewLifecycleOwner) { state ->
+            ticketViewModel.updateConnectivity(state)
         }
     }
 
     private fun setupListeners() {
-//        TODO future
-//        bind.ticketQuantity.afterTextChanged {
-//            it.toInt()
-//            ticketViewModel.setQuantity()
-//        }
-
         bind.ticketPlus.setOnClickListener {
             ticketViewModel.incrementQuantity()
         }
 
         bind.ticketMinus.setOnClickListener {
             ticketViewModel.decrementQuantity()
+        }
+
+        bind.print.setOnClickListener {
+            lifecycleScope.launch(Dispatchers.IO) {
+                ticketViewModel.orderTickets()
+            }
         }
     }
 }

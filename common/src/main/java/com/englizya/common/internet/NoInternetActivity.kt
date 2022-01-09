@@ -1,9 +1,9 @@
 package com.englizya.common.internet
 
 import android.os.Bundle
-import com.englizya.common.R
 import com.englizya.common.base.BaseActivity
 import com.englizya.common.utils.network.ConnectionLiveData
+import com.englizya.ticket.common.R
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 

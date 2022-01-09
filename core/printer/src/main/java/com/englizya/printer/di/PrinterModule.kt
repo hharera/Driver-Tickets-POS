@@ -2,6 +2,7 @@ package com.englizya.printer.di
 
 import android.app.Application
 import com.englizya.printer.PaxPrinter
+import com.englizya.printer.TicketPrinter
 import com.pax.dal.IDAL
 import com.pax.dal.IPrinter
 import com.pax.neptunelite.api.NeptuneLiteUser
@@ -20,8 +21,8 @@ class PrinterModule {
 
         @Singleton
         @Provides
-        fun providePrinter(idal: IDAL, printer: IPrinter): PaxPrinter =
-            PaxPrinter(idal, printer)
+        fun providePrinter(printer: IPrinter): PaxPrinter =
+            PaxPrinter(printer)
 
         @Singleton
         @Provides
@@ -31,5 +32,9 @@ class PrinterModule {
         @Singleton
         @Provides
         fun provideBasePrinter(idal: IDAL): IPrinter = idal.printer
+
+        @Singleton
+        @Provides
+        fun provideTicketPrinter(paxPrinter: PaxPrinter): TicketPrinter = TicketPrinter()
     }
 }

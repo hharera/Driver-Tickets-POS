@@ -1,36 +1,35 @@
 package com.englizya.datastore.core
 
 import android.content.Context
-import com.englizya.datastore.base.CarConstants.CAR_CODE
-import com.englizya.datastore.base.CarConstants.CAR_LINE_CODE
-import com.englizya.datastore.base.CarConstants.CAR_LINE_DESCRIPTION
-import com.englizya.datastore.base.GeneralConstants.NULL_INT
-import com.englizya.datastore.base.GeneralConstants.NULL_STRING
-import com.englizya.datastore.base.SourceConstants
+import com.englizya.datastore.utils.CarConstants.CAR_CODE
+import com.englizya.datastore.utils.CarConstants.CAR_LINE_CODE
+import com.englizya.datastore.utils.CarConstants.CAR_LINE_DESCRIPTION
+import com.englizya.datastore.utils.GeneralConstants.NULL_STRING
+import com.englizya.datastore.utils.SourceConstants
 
 class CarDataStore(context: Context) {
 
     private val carSharedPreferences =
         context.getSharedPreferences(SourceConstants.CAR_SHARED_PREFERENCES, Context.MODE_PRIVATE)
 
-    fun setCarCode(carCode : Int) {
-        carSharedPreferences.edit().putInt(CAR_CODE, carCode).apply()
+    fun setCarCode(carCode: String) {
+        carSharedPreferences.edit().putString(CAR_CODE, carCode).apply()
     }
 
-    fun setCarLineCode(carLineCode: Int) {
-        carSharedPreferences.edit().putInt(CAR_LINE_CODE, carLineCode).apply()
+    fun getCarCode(): String {
+        return carSharedPreferences.getString(CAR_CODE, NULL_STRING)!!
+    }
+
+    fun setCarLineCode(carLineCode: String) {
+        carSharedPreferences.edit().putString(CAR_LINE_CODE, carLineCode).apply()
+    }
+
+    fun getCarLineCode(): String {
+        return carSharedPreferences.getString(CAR_LINE_CODE, NULL_STRING)!!
     }
 
     fun setCarLineDescription(carLineDescription: String) {
         carSharedPreferences.edit().putString(CAR_LINE_DESCRIPTION, carLineDescription).apply()
-    }
-
-    fun getCarCode(): Int {
-        return carSharedPreferences.getInt(CAR_CODE, NULL_INT)
-    }
-
-    fun getCarLineCode(): Int {
-        return carSharedPreferences.getInt(CAR_LINE_CODE, NULL_INT)
     }
 
     fun getCarLineDescription(): String {

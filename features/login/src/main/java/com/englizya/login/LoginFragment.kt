@@ -13,9 +13,8 @@ import com.englizya.common.utils.navigation.Arguments
 import com.englizya.common.utils.navigation.Destination
 import com.englizya.common.utils.navigation.Domain
 import com.englizya.common.utils.navigation.NavigationUtils
-import com.englizya.manager.login.LoginViewModel
-import com.englizya.manager.login.R
-import com.englizya.manager.login.databinding.FragmentLoginBinding
+import com.englizya.ticket.login.R
+import com.englizya.ticket.login.databinding.FragmentLoginBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

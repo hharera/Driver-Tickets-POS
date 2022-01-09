@@ -8,7 +8,8 @@ import com.englizya.common.base.BaseActivity
 import com.englizya.common.utils.navigation.Arguments
 import com.englizya.common.utils.navigation.Domain
 import com.englizya.common.utils.navigation.NavigationUtils
-import com.englizya.navigation.databinding.ActivityHomeBinding
+import com.englizya.ticket.navigation.R
+import com.englizya.ticket.navigation.databinding.ActivityHomeBinding
 
 //TODO extend from base activity
 class HomeActivity : BaseActivity() {

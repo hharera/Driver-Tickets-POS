@@ -3,6 +3,7 @@ package com.englizya.api.impl
 import com.englizya.api.RemoteUserService
 import com.englizya.api.utils.Domain
 import com.englizya.api.utils.Routing
+import com.englizya.api.utils.Routing.LOGIN
 import com.englizya.model.request.LoginRequest
 import com.englizya.model.response.LoginResponse
 import io.ktor.client.*
@@ -16,8 +17,7 @@ class RemoteUserServiceImpl @Inject constructor(
 
     override suspend fun login(request: LoginRequest): LoginResponse =
         client.post<LoginResponse> {
-            url(Domain.ENGLIZYA_PAY.plus(Routing.LOGIN))
-            contentType(ContentType.Application.Json)
+            url(LOGIN)
             body = request
         }
 }

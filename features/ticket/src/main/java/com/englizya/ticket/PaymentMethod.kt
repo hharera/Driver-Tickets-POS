@@ -1,5 +1,7 @@
 package com.englizya.ticket
 
+import com.englizya.ticket.ticket.R
+
 sealed class PaymentMethod(val iconRes: Int, val titleRes: Int) {
     object Cash : PaymentMethod(iconRes = R.drawable.cash_100, R.string.cash)
     object Card : PaymentMethod(iconRes = R.drawable.card_100, R.string.card)

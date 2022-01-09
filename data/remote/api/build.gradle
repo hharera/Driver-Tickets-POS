@@ -3,6 +3,7 @@ apply plugin: ("dagger.hilt.android.plugin")
 
 dependencies {
     api project(Data.model)
+    api project(Data.datastore)
     //hilt
     kapt(Libs.hiltAndroidCompiler)
     implementation(Libs.hiltAndroid)
