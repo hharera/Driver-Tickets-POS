@@ -8,7 +8,8 @@ import com.englizya.common.base.BaseActivity
 import com.englizya.common.utils.navigation.Arguments
 import com.englizya.common.utils.navigation.Destination
 import com.englizya.navigation.HomeActivity
-import com.englizya.splash.databinding.ActivitySplashBinding
+import com.englizya.ticket.splash.R
+import com.englizya.ticket.splash.databinding.ActivitySplashBinding
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -23,17 +24,17 @@ class SplashActivity : BaseActivity() {
         setContentView(bind.root)
 
         window?.statusBarColor = resources.getColor(R.color.splash_status_color)
-
-        lifecycleScope.launch {
-            delay(1000)
-        }
     }
 
 
     override fun onResume() {
         super.onResume()
 
-        splashViewModel.checkLoginState()
+        lifecycleScope.launch {
+            delay(500)
+            splashViewModel.checkLoginState()
+        }
+
         splashViewModel.loginState.observe(this) { state ->
             checkLoginState(state)
         }
@@ -48,7 +49,9 @@ class SplashActivity : BaseActivity() {
     }
 
     private fun goLogin() {
-
+        val intent = Intent(this@SplashActivity, HomeActivity::class.java).putExtra(Arguments.Destination, Destination.LOGIN)
+        startActivity(intent)
+        finish()
     }
 
     private fun goTicket() {
@@ -58,7 +61,6 @@ class SplashActivity : BaseActivity() {
 //            bind.imageView.startAnimation(anim)
 //            bind.appName.startAnimation(anim)
 //            bind.imageBackground.startAnimation(inAnim)
-            delay(300)
             val intent = Intent(this@SplashActivity, HomeActivity::class.java).putExtra(Arguments.Destination, Destination.TICKET)
             startActivity(intent)
             finish()

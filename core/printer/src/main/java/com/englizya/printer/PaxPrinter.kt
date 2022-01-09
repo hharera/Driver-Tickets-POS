@@ -1,7 +1,7 @@
 package com.englizya.printer
 
 import android.graphics.Bitmap
-import com.pax.dal.IDAL
+import com.englizya.printer.utils.Logger
 import com.pax.dal.IPrinter
 import com.pax.dal.entity.EFontTypeAscii
 import com.pax.dal.entity.EFontTypeExtCode
@@ -9,7 +9,6 @@ import com.pax.dal.exceptions.PrinterDevException
 import javax.inject.Inject
 
 class PaxPrinter @Inject constructor(
-    private val idal: IDAL,
     private val printer: IPrinter,
 ) : Logger() {
 

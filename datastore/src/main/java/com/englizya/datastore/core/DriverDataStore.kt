@@ -1,13 +1,13 @@
 package com.englizya.datastore.core
 
 import android.content.Context
-import com.englizya.datastore.base.DriverConstants
-import com.englizya.datastore.base.DriverConstants.DRIVER_CODE
-import com.englizya.datastore.base.DriverConstants.DRIVER_NAME
-import com.englizya.datastore.base.DriverConstants.DRIVER_USERNAME
-import com.englizya.datastore.base.GeneralConstants.NULL_INT
-import com.englizya.datastore.base.GeneralConstants.NULL_STRING
-import com.englizya.datastore.base.SourceConstants
+import com.englizya.datastore.utils.DriverConstants
+import com.englizya.datastore.utils.DriverConstants.DRIVER_CODE
+import com.englizya.datastore.utils.DriverConstants.DRIVER_NAME
+import com.englizya.datastore.utils.DriverConstants.DRIVER_USERNAME
+import com.englizya.datastore.utils.GeneralConstants.NULL_INT
+import com.englizya.datastore.utils.GeneralConstants.NULL_STRING
+import com.englizya.datastore.utils.SourceConstants
 
 class DriverDataStore(private val context: Context) {
 
@@ -22,6 +22,12 @@ class DriverDataStore(private val context: Context) {
     fun setDriverCode(driverCode: Int) {
         driverSharedPreferences.edit().putInt(DriverConstants.DRIVER_CODE, driverCode).apply()
     }
+
+    fun setToken(token: String) {
+        driverSharedPreferences.edit().putString(DriverConstants.DRIVER_TOKEN, token).apply()
+    }
+
+    fun getToken() : String = driverSharedPreferences.getString(DriverConstants.DRIVER_TOKEN, NULL_STRING)!!
 
     fun setDriverName(driverName: String) {
         driverSharedPreferences.edit().putString(DriverConstants.DRIVER_NAME, driverName).apply()

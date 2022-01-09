@@ -3,7 +3,7 @@ package com.englizya.splash
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.englizya.common.base.BaseViewModel
-import com.englizya.datastore.base.GeneralConstants.NULL_STRING
+import com.englizya.datastore.utils.GeneralConstants.NULL_STRING
 import com.englizya.datastore.core.DriverDataStore
 import com.englizya.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,7 +20,7 @@ class SplashViewModel @Inject constructor(
     val loginState: LiveData<Boolean> = _loginState
 
     fun checkLoginState() {
-        _loginState.postValue(userDataStore.getDriverUsername() != NULL_STRING)
+        _loginState.postValue(userDataStore.getToken() != NULL_STRING)
     }
 
 }

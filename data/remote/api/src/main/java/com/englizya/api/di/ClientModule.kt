@@ -6,8 +6,10 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import io.ktor.client.*
 import io.ktor.client.engine.android.*
+import io.ktor.client.features.*
 import io.ktor.client.features.json.*
 import io.ktor.client.features.json.serializer.*
+import io.ktor.http.*
 import javax.inject.Singleton
 
 
@@ -23,6 +25,10 @@ class ClientModule {
             HttpClient(Android) {
                 install(JsonFeature) {
                     serializer = KotlinxSerializer()
+                }
+
+                this.defaultRequest {
+                    contentType(ContentType.Application.Json)
                 }
             }
     }

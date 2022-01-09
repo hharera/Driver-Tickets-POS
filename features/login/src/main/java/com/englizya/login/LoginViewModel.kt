@@ -1,18 +1,28 @@
-package com.englizya.manager.login
+package com.englizya.login
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.englizya.common.base.BaseViewModel
 import com.englizya.common.utils.Validity
+import com.englizya.datastore.utils.GeneralConstants
+import com.englizya.datastore.core.CarDataStore
 import com.englizya.datastore.core.DriverDataStore
+import com.englizya.datastore.core.ManifestoDataStore
+import com.englizya.manager.login.LoginFormState
+import com.englizya.model.Manifesto
 import com.englizya.model.request.LoginRequest
+import com.englizya.repository.ManifestoRepository
 import com.englizya.repository.UserRepository
+import com.englizya.ticket.login.R
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val userRepository: UserRepository,
+    private val manifestoRepository: ManifestoRepository,
+    private val manifestoDataStore: ManifestoDataStore,
+    private val carDataStore: CarDataStore,
     private val driverDataStore: DriverDataStore,
 ) : BaseViewModel() {
 
@@ -38,7 +48,7 @@ class LoginViewModel @Inject constructor(
             _formValidity.postValue(LoginFormState(usernameError = R.string.invalid_username_error))
         } else if (password.value.isNullOrBlank()) {
             _formValidity.value = LoginFormState(passwordError = R.string.empty_password_error)
-        } else if (Validity.checkPassword(password.value!!).not()) {
+        } else if (Validity.checkDriverPassword(password.value!!).not()) {
             _formValidity.value = LoginFormState(passwordError = R.string.invalid_password_error)
         } else {
             _formValidity.value = LoginFormState(isValid = true)
@@ -61,13 +71,44 @@ class LoginViewModel @Inject constructor(
             .login(LoginRequest(username.value!!.toInt(), password.value!!))
             .onSuccess {
                 updateLoading(false)
+                driverDataStore.setToken(it.jwt)
+                getDriverDetails()
+            }
+            .onFailure {
+                driverDataStore.setToken(GeneralConstants.NULL_STRING)
+                updateLoading(false)
+                _loginOperationState.postValue(false)
+                handleException(it)
+            }
+    }
+
+
+    private suspend fun getDriverDetails() {
+        updateLoading(true)
+        manifestoRepository
+            .getManifesto()
+            .onSuccess {
+                updateLoading(false)
+                updateLocalData(it)
                 _loginOperationState.postValue(true)
             }
             .onFailure {
                 updateLoading(false)
+                _loginOperationState.postValue(false)
+                driverDataStore.setToken(GeneralConstants.NULL_STRING)
                 handleException(it)
-                _loginOperationState.postValue(true)
             }
+    }
+
+    private fun updateLocalData(manifesto: Manifesto) {
+//        TODO complete info
+        manifestoDataStore.setManifestoDate(manifesto.date)
+        manifestoDataStore.setManifestoNo(manifesto.manifestoId)
+        manifestoDataStore.setManifestoYear(manifesto.year)
+
+        driverDataStore.setDriverCode(manifesto.driverCode)
+        carDataStore.setCarCode(manifesto.carCode)
+        carDataStore.setCarLineCode(manifesto.lineCode)
     }
 
     fun setRedirectRouting(redirect: String) {

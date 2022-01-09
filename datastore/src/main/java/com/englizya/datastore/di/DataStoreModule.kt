@@ -1,10 +1,7 @@
 package com.englizya.datastore.di
 
 import android.app.Application
-import com.englizya.datastore.core.CarDataStore
-import com.englizya.datastore.core.CompanyDataStore
-import com.englizya.datastore.core.DriverDataStore
-import com.englizya.datastore.core.TicketDataStore
+import com.englizya.datastore.core.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -37,5 +34,9 @@ class DataStoreModule {
         fun provideCompanyDataStore(context: Application): CompanyDataStore =
             CompanyDataStore(context = context)
 
+        @Provides
+        @Singleton
+        fun provideManifestoDataStore(context: Application): ManifestoDataStore =
+            ManifestoDataStore(context = context)
     }
 }

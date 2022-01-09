@@ -1,10 +1,10 @@
 package com.englizya.api.utils
 
 object Routing {
-    const val INSERT_MESSAGE = "${Domain.ENGLIZYA_PAY}/message"
-    const val GET_PROFILE_POSTS = "${Domain.ENGLIZYA_PAY}/profile/posts"
-    const val GET_CONNECTIONS = "${Domain.ENGLIZYA_PAY}/connections"
-    const val LOGIN = "${Domain.ENGLIZYA_PAY}/login"
+    const val LOGIN = "${Domain.ENGLIZYA_PAY}login"
+    const val GET_MANIFESTO = "${Domain.ENGLIZYA_PAY}manifesto"
+    const val TICKET = "${Domain.ENGLIZYA_PAY}ticket"
+    const val TICKETS = "${Domain.ENGLIZYA_PAY}tickets"
 }
 
 object Parameters {
@@ -28,5 +28,5 @@ object Constants {
 }
 
 object Domain {
-    const val ENGLIZYA_PAY = "http://161.97.71.140:8081/"
+    const val ENGLIZYA_PAY = "http://192.168.1.15:8080/"
 }
