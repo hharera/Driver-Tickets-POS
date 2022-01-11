@@ -1,9 +1,12 @@
-package com.englizya.model
+package com.englizya.model.response
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Manifesto(
+class ManifestoDetails(
+    @SerialName("lineCategory")
+    var ticketCategory: Int,
     var manifestoId: Int,
     var year: Int,
     var lineCode: String,

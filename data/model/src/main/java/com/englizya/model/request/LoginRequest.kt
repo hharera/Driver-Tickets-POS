@@ -4,6 +4,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class LoginRequest(
-    var  driverCode : Int,
-    var  password : String,
+    var driverCode: Int,
+    var password: String,
 )

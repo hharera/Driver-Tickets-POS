@@ -18,6 +18,7 @@ class RemoteUserServiceImpl @Inject constructor(
     override suspend fun login(request: LoginRequest): LoginResponse =
         client.post<LoginResponse> {
             url(LOGIN)
+            contentType(ContentType.Application.Json)
             body = request
         }
 }
