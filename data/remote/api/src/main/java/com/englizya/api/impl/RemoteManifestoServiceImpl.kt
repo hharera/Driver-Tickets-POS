@@ -4,7 +4,7 @@ import com.englizya.api.RemoteManifestoService
 import com.englizya.api.utils.AuthenticationParameters
 import com.englizya.api.utils.Routing
 import com.englizya.datastore.core.DriverDataStore
-import com.englizya.model.Manifesto
+import com.englizya.model.response.ManifestoDetails
 import io.ktor.client.*
 import io.ktor.client.request.*
 import io.ktor.http.*
@@ -15,7 +15,7 @@ class RemoteManifestoServiceImpl @Inject constructor(
     private val driverDataStore: DriverDataStore,
 ) : RemoteManifestoService {
 
-    override suspend fun getManifesto(): Manifesto {
+    override suspend fun getManifesto(): ManifestoDetails {
         return client.get {
             url(Routing.GET_MANIFESTO)
             headers.append(

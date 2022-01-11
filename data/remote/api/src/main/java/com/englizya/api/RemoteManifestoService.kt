@@ -1,8 +1,7 @@
 package com.englizya.api
 
-import com.englizya.model.Manifesto
-import com.englizya.model.response.LoginResponse
+import com.englizya.model.response.ManifestoDetails
 
 interface RemoteManifestoService {
-    suspend fun getManifesto(): Manifesto
+    suspend fun getManifesto(): ManifestoDetails
 }

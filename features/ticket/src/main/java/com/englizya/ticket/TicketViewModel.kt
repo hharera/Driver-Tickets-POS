@@ -1,7 +1,9 @@
 package com.englizya.ticket
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.englizya.common.base.BaseViewModel
 import com.englizya.datastore.core.CarDataStore
 import com.englizya.datastore.core.DriverDataStore
@@ -12,6 +14,8 @@ import com.englizya.printer.TicketPrinter
 import com.englizya.printer.utils.Time.getTicketTimeMillis
 import com.englizya.repository.TicketRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.joda.time.DateTime
 import java.lang.Integer.max
 import java.lang.Integer.min
@@ -36,8 +40,16 @@ class TicketViewModel @Inject constructor(
     private var _ticketCategory = MutableLiveData<Int>()
     val ticketCategory: LiveData<Int> = _ticketCategory
 
+    private val TAG = "TicketViewModel"
+
     init {
         _ticketCategory.postValue(ticketDataStore.getTicketCategory())
+//        TODO test
+        viewModelScope.launch(Dispatchers.IO) {
+            ticketRepository.getLocalTickets().onSuccess {
+                Log.d(TAG, "$it")
+            }
+        }
     }
 
     fun decrementQuantity() {
@@ -73,6 +85,7 @@ class TicketViewModel @Inject constructor(
             .onSuccess {
                 updateLoading(false)
                 ticketPrinter.printTickets(tickets)
+                Log.d(TAG, "orderTickets: $tickets")
             }
             .onFailure {
                 updateLoading(false)
