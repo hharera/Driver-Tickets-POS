@@ -72,7 +72,7 @@ class TicketFragment : BaseFragment() {
 
         bind.print.setOnClickListener {
             lifecycleScope.launch(Dispatchers.IO) {
-                ticketViewModel.orderTickets()
+                ticketViewModel.submitTickets()
             }
         }
     }

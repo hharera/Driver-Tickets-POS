@@ -20,51 +20,49 @@ import javax.inject.Inject
 
 
 class TicketPrinter @Inject constructor(
-//    private val paxPrinter: PaxPrinter
+    private val paxPrinter: PaxPrinter?
 ) {
 
     init {
-//        TODO un comment this line
-//        paxPrinter.apply { init() }
-//        paxPrinter.fontSet(EFontTypeAscii.FONT_16_16, EFontTypeExtCode.FONT_16_16)
-//        paxPrinter.spaceSet(SPACE_SET, SPACE_SET)
-//        paxPrinter.leftIndents(LEFT_INDENT)
-//        paxPrinter.setGray(GRAY_LEVEL)
-//        paxPrinter.setInvert(INVERT_STATE)
-//        paxPrinter.setDoubleWidth(isAscDouble = true, isLocalDouble = true)
-//        paxPrinter.setDoubleHeight(isAscDouble = true, isLocalDouble = true)
+        paxPrinter?.apply { init() }
+        paxPrinter?.fontSet(EFontTypeAscii.FONT_16_16, EFontTypeExtCode.FONT_16_16)
+        paxPrinter?.spaceSet(SPACE_SET, SPACE_SET)
+        paxPrinter?.leftIndents(LEFT_INDENT)
+        paxPrinter?.setGray(GRAY_LEVEL)
+        paxPrinter?.setInvert(INVERT_STATE)
+        paxPrinter?.setDoubleWidth(isAscDouble = true, isLocalDouble = true)
+        paxPrinter?.setDoubleHeight(isAscDouble = true, isLocalDouble = true)
     }
 
-//    fun printTicket(ticket: Ticket) {
-//        val options = BitmapFactory.Options().apply { inScaled = true }
-//        var logo =
-//            BitmapFactory.decodeResource(Resources.getSystem(), R.drawable.ic_ticket_logo, options)
+    private fun printTicket(ticket: Ticket) {
+        val options = BitmapFactory.Options().apply { inScaled = true }
+        val logo =
+            BitmapFactory.decodeResource(Resources.getSystem(), R.drawable.ic_ticket_logo, options)
+        paxPrinter?.printBitmap(logo)
+        paxPrinter?.step(120)
+        paxPrinter?.printStr("$SERIAL${ticket.carCode}_${Time.getTicketTimeMillis()}", null)
+        paxPrinter?.step(30)
+        paxPrinter?.printStr("$DRIVER_CODE${ticket.driverCode}", null)
+        paxPrinter?.step(30)
+        paxPrinter?.printStr("$CAR_CODE${ticket.carCode}", null)
+        paxPrinter?.step(30)
+//        TODO set time in server from est time zone
+        paxPrinter?.printStr("$TICKET_TIME${ticket.time}", null)
+        paxPrinter?.step(30)
+
+        paxPrinter?.printStr("\n\nCOST 5\n\n", null)
+        paxPrinter?.printStr("\nCustomer support tele : $CUSTOMER_SUPPORT\n", null)
+
+//        logo = BitmapFactory.decodeResource(Resources.getSystem(), R.drawable.cat_5, options)
 //        paxPrinter.printBitmap(logo)
-//        paxPrinter.step(120)
-//        paxPrinter.printStr("$SERIAL${ticket.carCode}_${Time.getTicketTimeMillis()}", null)
-//        paxPrinter.step(30)
-//        paxPrinter.printStr("$DRIVER_CODE${ticket.driverCode}", null)
-//        paxPrinter.step(30)
-//        paxPrinter.printStr("$CAR_CODE${ticket.carCode}", null)
-//        paxPrinter.step(30)
-////        TODO set time in server from est time zone
-//        paxPrinter.printStr("$TICKET_TIME${ticket.time}", null)
-//        paxPrinter.step(30)
-//
-//        paxPrinter.printStr("\n\nCOST 5\n\n", null)
-//        paxPrinter.printStr("\nCustomer support tele : $CUSTOMER_SUPPORT\n", null)
-//
-////        logo = BitmapFactory.decodeResource(Resources.getSystem(), R.drawable.cat_5, options)
-////        paxPrinter.printBitmap(logo)
-////        paxPrinter.step(80)
-//
-//        paxPrinter.start()
-//    }
+//        paxPrinter.step(80)
+
+        paxPrinter?.start()
+    }
 
     fun printTickets(tickets: ArrayList<Ticket>) {
         tickets.forEach { ticket ->
-//            printTicket(ticket = ticket)
+            printTicket(ticket = ticket)
         }
     }
-
 }

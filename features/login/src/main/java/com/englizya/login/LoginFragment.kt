@@ -81,16 +81,33 @@ class LoginFragment : BaseFragment() {
 
     private fun checkLoginState(state: Boolean) {
         if (state) {
-            goTicket()
+            redirect()
         } else {
             showToast(R.string.cannot_login)
         }
     }
 
-    private fun goTicket() {
-        lifecycleScope.launch {
-            findNavController().navigate(NavigationUtils.getUriNavigation(Domain.ENGLIZYA_PAY, Destination.TICKET, null))
+    private fun redirect() {
+        val redirectDestination = loginViewModel.redirectRouting.value
+
+        if (redirectDestination == null) {
+            findNavController().navigate(
+                NavigationUtils.getUriNavigation(
+                    Domain.ENGLIZYA_PAY,
+                    Destination.TICKET,
+                    null
+                )
+            )
+            return
         }
+
+        findNavController().navigate(
+            NavigationUtils.getUriNavigation(
+                Domain.ENGLIZYA_PAY,
+                redirectDestination,
+                null
+            )
+        )
     }
 
     private fun setupListeners() {

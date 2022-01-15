@@ -8,8 +8,7 @@ import com.englizya.common.base.BaseActivity
 import com.englizya.common.utils.navigation.Arguments
 import com.englizya.common.utils.navigation.Destination
 import com.englizya.navigation.HomeActivity
-import com.englizya.ticket.splash.R
-import com.englizya.ticket.splash.databinding.ActivitySplashBinding
+import com.englizya.splash.databinding.ActivitySplashBinding
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -25,7 +24,6 @@ class SplashActivity : BaseActivity() {
 
         window?.statusBarColor = resources.getColor(R.color.splash_status_color)
     }
-
 
     override fun onResume() {
         super.onResume()

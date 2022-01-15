@@ -13,6 +13,7 @@ import com.englizya.model.request.Ticket
 import com.englizya.printer.TicketPrinter
 import com.englizya.printer.utils.Time.getTicketTimeMillis
 import com.englizya.repository.TicketRepository
+import com.englizya.ticket.utils.Constant
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -44,7 +45,7 @@ class TicketViewModel @Inject constructor(
 
     init {
         _ticketCategory.postValue(ticketDataStore.getTicketCategory())
-//        TODO test
+
         viewModelScope.launch(Dispatchers.IO) {
             ticketRepository.getLocalTickets().onSuccess {
                 Log.d(TAG, "$it")
@@ -54,25 +55,25 @@ class TicketViewModel @Inject constructor(
 
     fun decrementQuantity() {
         _quantity.postValue(
-            Math.max(_quantity.value!! - 1, 1)
+            (_quantity.value!! - 1).coerceAtLeast(Constant.MIN_TICKETS)
         )
     }
 
     fun incrementQuantity() {
         _quantity.postValue(
-            Math.min(_quantity.value!! + 1, 99)
+            (_quantity.value!! + 1).coerceAtMost(Constant.MAX_TICKETS)
         )
     }
 
     fun setQuantity(quantity: Int) {
-        _quantity.postValue(min(max(1, quantity), 99))
+        _quantity.postValue(min(max(Constant.MIN_TICKETS, quantity), Constant.MAX_TICKETS))
     }
 
-    fun setPaymentWay(way : String) {
+    fun setPaymentWay(way: String) {
         _paymentWay.postValue(way)
     }
 
-    suspend fun orderTickets() {
+    suspend fun submitTickets() {
         getTickets(quantity.value!!).let { tickets ->
             insertTickets(tickets)
         }
@@ -100,8 +101,7 @@ class TicketViewModel @Inject constructor(
         for (i in 1..quantity) {
             tickets.add(
                 Ticket(
-//                    TODO insert Connectivity
-                    ticketId = "${carDataStore.getCarCode()}-${driverDataStore.getDriverCode()}-${(currentMillis + i)}",
+                    ticketId = createTicketId(currentMillis + i * 5),
                     lineCode = carDataStore.getCarLineCode(),
                     driverCode = driverDataStore.getDriverCode(),
                     carCode = carDataStore.getCarCode(),
@@ -118,5 +118,13 @@ class TicketViewModel @Inject constructor(
         }
 
         return tickets
+    }
+
+    private fun createTicketId(currentTime: Long): String {
+        return carDataStore.getCarCode()
+            .plus("-")
+            .plus(driverDataStore.getDriverCode())
+            .plus("-")
+            .plus(currentTime)
     }
 }

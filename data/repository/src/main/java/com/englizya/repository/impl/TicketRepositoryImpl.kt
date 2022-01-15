@@ -33,4 +33,8 @@ class TicketRepositoryImpl @Inject constructor(
     override suspend fun getLocalTickets(): Result<List<Ticket>> = kotlin.runCatching {
         ticketDao.getTickets()
     }
+
+    override suspend fun deleteLocalTickets(): Result<Unit> = kotlin.runCatching {
+        ticketDao.deleteAll()
+    }
 }

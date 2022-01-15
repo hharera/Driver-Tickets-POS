@@ -5,8 +5,8 @@ import com.englizya.datastore.utils.DriverConstants
 import com.englizya.datastore.utils.DriverConstants.DRIVER_CODE
 import com.englizya.datastore.utils.DriverConstants.DRIVER_NAME
 import com.englizya.datastore.utils.DriverConstants.DRIVER_USERNAME
-import com.englizya.datastore.utils.GeneralConstants.NULL_INT
-import com.englizya.datastore.utils.GeneralConstants.NULL_STRING
+import com.englizya.datastore.utils.Value.NULL_INT
+import com.englizya.datastore.utils.Value.NULL_STRING
 import com.englizya.datastore.utils.SourceConstants
 
 class DriverDataStore(private val context: Context) {

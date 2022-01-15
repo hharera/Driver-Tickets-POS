@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.englizya.common.base.BaseFragment
-import com.englizya.ticket.day_report.databinding.FragmentDayReportBinding
+import com.englizya.day_report.databinding.FragmentDayReportBinding
 
 class DayReportFragment : BaseFragment() {
 

@@ -6,6 +6,7 @@ import androidx.navigation.Navigation
 import androidx.navigation.ui.setupWithNavController
 import com.englizya.common.base.BaseActivity
 import com.englizya.common.utils.navigation.Arguments
+import com.englizya.common.utils.navigation.Destination
 import com.englizya.common.utils.navigation.Domain
 import com.englizya.common.utils.navigation.NavigationUtils
 import com.englizya.ticket.navigation.R
@@ -31,7 +32,7 @@ class HomeActivity : BaseActivity() {
 
     private fun getExtras() {
         intent?.extras?.getString(Arguments.Destination)?.let {
-            navController.navigate(NavigationUtils.getUriNavigation(Domain.ENGLIZYA_PAY, it, null))
+            navController.navigate(NavigationUtils.getUriNavigation(Domain.ENGLIZYA_PAY, it, Destination.TICKET))
         }
     }
 
@@ -52,7 +53,7 @@ class HomeActivity : BaseActivity() {
         bind.navView.setNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.navigation_end_shift -> {
-                    navController.navigate(R.id.navigation_end_shift)
+                    navController.navigate(NavigationUtils.getUriNavigation(Domain.ENGLIZYA_PAY, Destination.LOGIN, Destination.END_SHIFT))
                 }
 
                 R.id.navigation_end_shift -> {
