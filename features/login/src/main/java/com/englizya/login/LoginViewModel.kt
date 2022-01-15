@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.englizya.common.base.BaseViewModel
 import com.englizya.common.utils.Validity
-import com.englizya.datastore.utils.GeneralConstants
+import com.englizya.datastore.utils.Value
 import com.englizya.datastore.core.CarDataStore
 import com.englizya.datastore.core.DriverDataStore
 import com.englizya.datastore.core.ManifestoDataStore
@@ -77,7 +77,7 @@ class LoginViewModel @Inject constructor(
                 getDriverDetails()
             }
             .onFailure {
-                driverDataStore.setToken(GeneralConstants.NULL_STRING)
+                driverDataStore.setToken(Value.NULL_STRING)
                 updateLoading(false)
                 _loginOperationState.postValue(false)
                 handleException(it)
@@ -97,7 +97,7 @@ class LoginViewModel @Inject constructor(
             .onFailure {
                 updateLoading(false)
                 _loginOperationState.postValue(false)
-                driverDataStore.setToken(GeneralConstants.NULL_STRING)
+                driverDataStore.setToken(Value.NULL_STRING)
                 handleException(it)
             }
     }

@@ -4,7 +4,7 @@ import android.content.Context
 import com.englizya.datastore.utils.CarConstants.CAR_CODE
 import com.englizya.datastore.utils.CarConstants.CAR_LINE_CODE
 import com.englizya.datastore.utils.CarConstants.CAR_LINE_DESCRIPTION
-import com.englizya.datastore.utils.GeneralConstants.NULL_STRING
+import com.englizya.datastore.utils.Value.NULL_STRING
 import com.englizya.datastore.utils.SourceConstants
 
 class CarDataStore(context: Context) {

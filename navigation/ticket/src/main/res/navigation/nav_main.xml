@@ -16,7 +16,7 @@
 
     <fragment
         android:id="@+id/navigation_end_shift"
-        android:name="com.englizya.day_report.DayReportFragment"
+        android:name="com.englizya.end_shift.EndShiftFragment"
         tools:layout="@layout/fragment_day_report">
 
         <argument android:name="redirect" />

@@ -16,4 +16,7 @@ interface TicketDao {
 
     @Query(value = "SELECT * from Ticket")
     fun getTickets(): List<Ticket>
+
+    @Query(value = "DELETE from Ticket")
+    fun deleteAll()
 }

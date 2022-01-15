@@ -1,8 +1,8 @@
 package com.englizya.datastore.core
 
 import android.content.Context
-import com.englizya.datastore.utils.GeneralConstants.NULL_INT
-import com.englizya.datastore.utils.GeneralConstants.NULL_STRING
+import com.englizya.datastore.utils.Value.NULL_INT
+import com.englizya.datastore.utils.Value.NULL_STRING
 import com.englizya.datastore.utils.ManifestoConstants.MANIFESTO_DATE
 import com.englizya.datastore.utils.ManifestoConstants.MANIFESTO_NO
 import com.englizya.datastore.utils.ManifestoConstants.MANIFESTO_YEAR

@@ -16,7 +16,7 @@
         android:theme="@style/Englizya_Pay"
         android:usesCleartextTraffic="true">
 
-        <activity android:name="com.englizya.navigation.HomeActivity" />
+        <activity android:exported="true" android:name="com.englizya.navigation.HomeActivity" />
 
         <activity
             android:name="com.englizya.splash.SplashActivity"

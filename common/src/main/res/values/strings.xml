@@ -67,6 +67,11 @@
     <string name="similar_offers"> عروض مماثلة: </string>
     <string name="company_name"> WHITESIED DEV </string>
     <string name="privacy_policy"> لقد قرأت نص الخصوصية والأمان وأوافق عليه </string>
+    <string name="qr_tickets">تذاكر qr</string>
+    <string name="nfc_tickets">تذاكر NFC</string>
+    <string name="cash_tickets">تذاكر كاش</string>
+    <string name="total_tickets">اجمالي التذاكر</string>
+    <string name="total_category">فئة التذكرة</string>
     <string name="_1"> 1 </string>
     <string name="_2"> 2 </string>
     <string name="_3"> 3 </string>
@@ -179,4 +184,11 @@
     <string name="end_shift">انهاء الشيفت</string>
     <string name="englizya">الأنجليزية</string>
     <string name="our_way_is_once">طريقنا دايماً واحد</string>
+    <string name="car_code">كود السيارة</string>
+    <string name="line_code">كود الخط</string>
+    <string name="date">التاريخ</string>
+    <string name="shift_start">بداية الشيف</string>
+    <string name="shift_end">نهاية الشيف</string>
+    <string name="work_hours">عدد ساعات العمل</string>
+    <string name="check_your_internet">تأكد من وجود انترنت ثم عاود المحاولة</string>
 </resources>

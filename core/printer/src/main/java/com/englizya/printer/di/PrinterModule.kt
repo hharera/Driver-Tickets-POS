@@ -35,6 +35,6 @@ class PrinterModule {
 
         @Singleton
         @Provides
-        fun provideTicketPrinter(paxPrinter: PaxPrinter): TicketPrinter = TicketPrinter()
+        fun provideTicketPrinter(paxPrinter: PaxPrinter): TicketPrinter = TicketPrinter(paxPrinter)
     }
 }
