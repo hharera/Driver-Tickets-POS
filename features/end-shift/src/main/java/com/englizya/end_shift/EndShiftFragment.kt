@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.englizya.common.base.BaseFragment
+import com.englizya.common.utils.time.TimeUtils
 import com.englizya.model.response.ShiftReportResponse
 import com.englizya.ticket.end_shift.R
 import com.englizya.ticket.end_shift.databinding.FragmentEndShiftBinding
@@ -38,13 +39,14 @@ class EndShiftFragment : BaseFragment() {
 
     private fun setupListeners() {
         binding.print.setOnClickListener {
-//            TODO
+//            TODO print receipt
         }
     }
 
     private fun setupObservers() {
         endShiftViewModel.shiftReport.observe(viewLifecycleOwner) { shiftReport ->
             updateUI(shiftReport)
+            endShiftViewModel.printReport(shiftReport)
         }
 
         connectionLiveData.observe(viewLifecycleOwner) { connected ->
@@ -66,12 +68,13 @@ class EndShiftFragment : BaseFragment() {
             date.text = shiftReport.date
             shiftStart.text = shiftReport.startTime.toString()
             shiftEnd.text = shiftReport.endTime.toString()
+//            workHours.text = TimeUtils.calculateWorkHours(endTime = shiftReport.endTime, startTime = shiftReport.startTime)
             cashTickets.text = shiftReport.cash.toString()
             qrTickets.text = shiftReport.qr.toString()
             nfcTickets.text = shiftReport.card.toString()
             totalTickets.text = shiftReport.totalTickets.toString()
+            ticketPrice.text = shiftReport.ticketCategory.toString()
             total.text = shiftReport.totalIncome.toString()
-            workHours.text = shiftReport.endTime.toString()
         }
     }
 }
