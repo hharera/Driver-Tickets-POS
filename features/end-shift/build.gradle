@@ -4,4 +4,6 @@ dependencies {
     implementation(Libs.materialDesign)
     implementation(Libs.fragments)
     implementation(Libs.navigationFragment)
+
+    api project(Core.PRINTER)
 }

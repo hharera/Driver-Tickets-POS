@@ -13,8 +13,8 @@ data class ShiftReportResponse(
     val cash: Int,
     val qr: Int,
     val card: Int,
-    val startTime: String?,
-    val endTime: String?,
+    val startTime: String,
+    val endTime: String,
     val ticketCategory: Int,
     val totalIncome: Int,
 )

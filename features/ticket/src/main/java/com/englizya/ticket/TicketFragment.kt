@@ -10,7 +10,9 @@ import com.englizya.common.base.BaseFragment
 import com.englizya.ticket.ticket.R
 import com.englizya.ticket.ticket.databinding.FragmentTicketBinding
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class TicketFragment : BaseFragment() {
 
@@ -72,7 +74,17 @@ class TicketFragment : BaseFragment() {
 
         bind.print.setOnClickListener {
             lifecycleScope.launch(Dispatchers.IO) {
+                withContext(Dispatchers.Main) {
+                    bind.print.isEnabled = false
+                }
+
                 ticketViewModel.submitTickets()
+
+                delay(500)
+
+                withContext(Dispatchers.Main) {
+                    bind.print.isEnabled = true
+                }
             }
         }
     }

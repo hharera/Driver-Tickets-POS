@@ -15,7 +15,7 @@ class RemoteTicketServiceImpl @Inject constructor(
     private val driverDataStore: DriverDataStore,
 ) : RemoteTicketService {
 
-    override suspend fun insertTicket(ticket: Ticket): String {
+    override suspend fun insertTicket(ticket: Ticket): Ticket {
         return client.post {
             url(Routing.TICKET)
             contentType(ContentType.Application.Json)
@@ -27,7 +27,7 @@ class RemoteTicketServiceImpl @Inject constructor(
         }
     }
 
-    override suspend fun insertTickets(tickets: List<Ticket>): List<String> {
+    override suspend fun insertTickets(tickets: List<Ticket>): List<Ticket> {
         return client.post {
             url(Routing.TICKETS)
             contentType(ContentType.Application.Json)

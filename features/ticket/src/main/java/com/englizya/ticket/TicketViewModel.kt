@@ -10,8 +10,8 @@ import com.englizya.datastore.core.DriverDataStore
 import com.englizya.datastore.core.ManifestoDataStore
 import com.englizya.datastore.core.TicketDataStore
 import com.englizya.model.request.Ticket
+import com.englizya.common.utils.time.TimeUtils.getTicketTimeMillis
 import com.englizya.printer.TicketPrinter
-import com.englizya.printer.utils.Time.getTicketTimeMillis
 import com.englizya.repository.TicketRepository
 import com.englizya.ticket.utils.Constant
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -74,7 +74,7 @@ class TicketViewModel @Inject constructor(
     }
 
     suspend fun submitTickets() {
-        getTickets(quantity.value!!).let { tickets ->
+        generateTickets(quantity.value!!).let { tickets ->
             insertTickets(tickets)
         }
     }
@@ -85,8 +85,27 @@ class TicketViewModel @Inject constructor(
             .insertTickets(tickets, connectivity.value!!)
             .onSuccess {
                 updateLoading(false)
+                resetQuantity()
                 ticketPrinter.printTickets(tickets)
                 Log.d(TAG, "orderTickets: $tickets")
+            }
+            .onFailure {
+                insertTicketsLocally(tickets)
+                updateLoading(false)
+                handleException(it)
+            }
+    }
+
+    private fun resetQuantity() {
+        _quantity.postValue(0)
+    }
+
+    private suspend fun insertTicketsLocally(tickets: ArrayList<Ticket>) {
+        updateLoading(true)
+        ticketRepository
+            .insertTickets(tickets, false)
+            .onSuccess {
+                updateLoading(false)
             }
             .onFailure {
                 updateLoading(false)
@@ -94,7 +113,7 @@ class TicketViewModel @Inject constructor(
             }
     }
 
-    private fun getTickets(quantity: Int): ArrayList<Ticket> {
+    private fun generateTickets(quantity: Int): ArrayList<Ticket> {
         val currentMillis = getTicketTimeMillis()
         val tickets = ArrayList<Ticket>()
 

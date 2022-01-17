@@ -30,7 +30,7 @@ class RemoteManifestoServiceImpl @Inject constructor(
     override suspend fun getShiftReport(
         endShiftRequest: EndShiftRequest
     ): ShiftReportResponse {
-        return client.get {
+        return client.post {
             url(Routing.END_SHIFT)
             contentType(ContentType.Application.Json)
             body = endShiftRequest
