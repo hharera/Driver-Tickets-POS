@@ -114,9 +114,6 @@ class TicketPrinter @Inject constructor(
         paxPrinter?.printStr("$TICKET_TIME${ticket.time}", null)
         paxPrinter?.step(30)
 
-//        paxPrinter?.printStr("\n\nCOST 5\n\n", null)
-//        paxPrinter?.printStr("\nCustomer support tele : $CUSTOMER_SUPPORT\n", null)
-
         val ticketCategoryBitmap =
             BitmapFactory.decodeResource(Resources.getSystem(), R.drawable.cat_5, options)
         paxPrinter?.printBitmap(ticketCategoryBitmap)

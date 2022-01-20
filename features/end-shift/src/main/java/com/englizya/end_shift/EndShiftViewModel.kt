@@ -19,7 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class EndShiftViewModel @Inject constructor(
     private val ticketRepository: TicketRepository,
-    private val ticketPrinter: TicketPrinter,
+//    private val ticketPrinter: TicketPrinter,
     private val manifestoRepository: ManifestoRepository,
     private val manifestoDataStore: ManifestoDataStore,
     private val driverDataStore: DriverDataStore,
@@ -105,6 +105,6 @@ class EndShiftViewModel @Inject constructor(
     }
 
     fun printReport(shiftReport: ShiftReportResponse) {
-        ticketPrinter.printShiftReport(shiftReport)
+//        ticketPrinter.printShiftReport(shiftReport)
     }
 }
