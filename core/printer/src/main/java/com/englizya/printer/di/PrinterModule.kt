@@ -21,20 +21,11 @@ class PrinterModule {
 
         @Singleton
         @Provides
-        fun providePrinter(printer: IPrinter): PaxPrinter =
-            PaxPrinter(printer)
-
-        @Singleton
-        @Provides
         fun provideIDAL(application: Application): IDAL =
             NeptuneLiteUser.getInstance().getDal(application)
 
         @Singleton
         @Provides
         fun provideBasePrinter(idal: IDAL): IPrinter = idal.printer
-
-        @Singleton
-        @Provides
-        fun provideTicketPrinter(paxPrinter: PaxPrinter): TicketPrinter = TicketPrinter(paxPrinter)
     }
 }
