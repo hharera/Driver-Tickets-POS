@@ -33,5 +33,5 @@ object Constants {
 }
 
 object Domain {
-    const val ENGLIZYA_PAY = "http://3.135.229.154:8080/"
+    const val ENGLIZYA_PAY = "http://161.97.71.140:9111/"
 }
