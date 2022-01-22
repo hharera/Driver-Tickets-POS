@@ -5,5 +5,5 @@ dependencies {
     implementation(Libs.appcompat)
     implementation(project(Base.common))
     implementation(project(Data.model))
-    api files('libs\\pax-sdk.jar')
+    api files('libs/pax-sdk.jar')
 }

@@ -10,7 +10,6 @@ import com.englizya.datastore.utils.Value
 import com.englizya.model.request.EndShiftRequest
 import com.englizya.model.request.Ticket
 import com.englizya.model.response.ShiftReportResponse
-import com.englizya.printer.TicketPrinter
 import com.englizya.repository.ManifestoRepository
 import com.englizya.repository.TicketRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,7 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class EndShiftViewModel @Inject constructor(
     private val ticketRepository: TicketRepository,
-    private val ticketPrinter: TicketPrinter,
+//    private val ticketPrinter: TicketPrinter,
     private val manifestoRepository: ManifestoRepository,
     private val manifestoDataStore: ManifestoDataStore,
     private val driverDataStore: DriverDataStore,
@@ -49,19 +48,25 @@ class EndShiftViewModel @Inject constructor(
             }
     }
 
-    private suspend fun uploadLocalTickets(list: List<Ticket>) {
+    private suspend fun uploadLocalTickets(tickets: List<Ticket>) {
         updateLoading(true)
 
-        ticketRepository
-            .insertTickets(list, true)
-            .onSuccess {
-                updateLoading(false)
-                deleteLocalTickets()
-            }
-            .onFailure {
-                updateLoading(false)
-                handleException(it)
-            }
+        if (tickets.isNotEmpty()) {
+            ticketRepository
+                .insertTickets(tickets, true)
+                .onSuccess {
+                    updateLoading(false)
+                    deleteLocalTickets()
+                }
+                .onFailure {
+                    updateLoading(false)
+                    handleException(it)
+                }
+        } else {
+            updateLoading(false)
+            deleteLocalTickets()
+        }
+
     }
 
     private suspend fun deleteLocalTickets() {
@@ -105,6 +110,6 @@ class EndShiftViewModel @Inject constructor(
     }
 
     fun printReport(shiftReport: ShiftReportResponse) {
-        ticketPrinter.printShiftReport(shiftReport)
+//        ticketPrinter.printShiftReport(shiftReport)
     }
 }
