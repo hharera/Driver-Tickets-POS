@@ -24,7 +24,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TicketViewModel @Inject constructor(
-    private val ticketPrinter: TicketPrinter,
+//    private val ticketPrinter: TicketPrinter,
     private val ticketRepository: TicketRepository,
     private val manifestoDataStore: ManifestoDataStore,
     private val driverDataStore: DriverDataStore,
@@ -86,7 +86,7 @@ class TicketViewModel @Inject constructor(
             .onSuccess {
                 updateLoading(false)
                 resetQuantity()
-                ticketPrinter.printTickets(tickets)
+//                ticketPrinter.printTickets(tickets)
                 Log.d(TAG, "orderTickets: $tickets")
             }
             .onFailure {
@@ -97,7 +97,7 @@ class TicketViewModel @Inject constructor(
     }
 
     private fun resetQuantity() {
-        _quantity.postValue(0)
+        _quantity.postValue(1)
     }
 
     private suspend fun insertTicketsLocally(tickets: ArrayList<Ticket>) {
