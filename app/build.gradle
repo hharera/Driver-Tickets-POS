@@ -15,11 +15,15 @@ android {
         versionCode Releases.versionCode
         versionName Releases.versionName
 
+        ndk.abiFilters 'armeabi', 'arm64-v8a', 'x86'
+
         testInstrumentationRunner "com.englizya.ticket.HiltTestRunner"
     }
+
     buildFeatures {
         viewBinding true
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -27,10 +31,15 @@ android {
         }
     }
 
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    packagingOptions {
+        exclude 'lib/armeabi/*'
+        exclude 'lib/x86/*'
+        exclude 'lib/arm64-v8a/*'
     }
 
     kotlinOptions {
@@ -39,6 +48,8 @@ android {
 }
 
 dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+
     implementation project(Base.common)
     implementation project(Features.splash)
     implementation project(Functions.printer)
@@ -49,15 +60,13 @@ dependencies {
 
     implementation(Libs.playServicesTasks)
 
-//    api project(Data.repository)
-
     implementation(Libs.androidxCore)
     implementation(Libs.appcompat)
     implementation(Libs.activity)
     implementation(Libs.fragments)
 
-    implementation Libs.navigationUi
-    implementation Libs.navigationFragment
+    implementation(Libs.navigationUi)
+    implementation(Libs.navigationFragment)
 
     implementation(Libs.materialDesign)
     implementation(Libs.circleImage)

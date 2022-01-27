@@ -22,7 +22,7 @@ class PrinterModule {
         @Singleton
         @Provides
         fun provideIDAL(application: Application): IDAL =
-            NeptuneLiteUser.getInstance().getDal(application)
+            NeptuneLiteUser.getInstance().getDal(application.applicationContext)
 
         @Singleton
         @Provides
