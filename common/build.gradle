@@ -40,7 +40,6 @@ android {
 
 dependencies {
     api project(Data.datastore)
-    api files('libs/pax-sdk.jar')
 
     implementation Libs.kotlin
     testImplementation TestDi.junit4
