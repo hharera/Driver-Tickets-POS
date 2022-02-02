@@ -34,7 +34,7 @@ class TicketPrinter @Inject constructor(
     private val paxPrinter: PaxPrinter
 ) {
 
-    init {
+    private fun setup() {
         paxPrinter.apply { init() }
         paxPrinter.fontSet(EFontTypeAscii.FONT_16_16, EFontTypeExtCode.FONT_16_16)
         paxPrinter.spaceSet(SPACE_SET, SPACE_SET)
@@ -46,6 +46,8 @@ class TicketPrinter @Inject constructor(
     }
 
     fun printShiftReport(endShiftReportResponse: ShiftReportResponse) {
+        setup()
+
         val options = BitmapFactory.Options().apply { inScaled = true }
         val logo =
             BitmapFactory.decodeResource(Resources.getSystem(), R.drawable.ic_ticket_logo, options)
@@ -95,6 +97,8 @@ class TicketPrinter @Inject constructor(
     }
 
     private fun printTicket(ticket: Ticket) {
+        setup()
+
         val options = BitmapFactory.Options().apply { inScaled = true }
         val logo =
             BitmapFactory.decodeResource(Resources.getSystem(), R.drawable.ic_ticket_logo, options)

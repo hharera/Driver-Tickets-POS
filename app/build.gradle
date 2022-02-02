@@ -15,7 +15,7 @@ android {
         versionCode Releases.versionCode
         versionName Releases.versionName
 
-        ndk.abiFilters 'armeabi', 'arm64-v8a', 'x86'
+//        ndk.abiFilters 'armeabi-v7a', 'x86', 'armeabi', 'arm'
 
         testInstrumentationRunner "com.englizya.ticket.HiltTestRunner"
     }
@@ -36,11 +36,11 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-    packagingOptions {
-        exclude 'lib/armeabi/*'
-        exclude 'lib/x86/*'
-        exclude 'lib/arm64-v8a/*'
-    }
+//    packagingOptions {
+//        exclude 'lib/armeabi-v7a/*'
+//        exclude 'lib/x86/*'
+//        exclude 'lib/armeabi-v7a-v7a/*'
+//    }
 
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
@@ -49,6 +49,7 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation files('libs/pax-sdk.jar')
 
     implementation project(Base.common)
     implementation project(Features.splash)

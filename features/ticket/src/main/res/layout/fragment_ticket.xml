@@ -113,6 +113,7 @@
         android:id="@+id/print"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
         android:background="@drawable/background_print_button"
         android:paddingHorizontal="20dp"
         android:text="@string/print"
@@ -121,7 +122,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ticket_value"
+        app:layout_constraintTop_toBottomOf="@+id/payment_method"
         app:layout_constraintWidth_percent="0.7" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
