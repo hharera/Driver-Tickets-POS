@@ -52,46 +52,46 @@ class TicketPrinter @Inject constructor(
         val logo =
             BitmapFactory.decodeResource(Resources.getSystem(), R.drawable.ic_ticket_logo, options)
         paxPrinter.printBitmap(logo)
-        paxPrinter.step(120)
+        paxPrinter.step(60)
 
         paxPrinter.printStr("$DRIVER_CODE${endShiftReportResponse.driverCode}", null)
-        paxPrinter.step(30)
+        paxPrinter.step(12)
 
         paxPrinter.printStr("$CAR_CODE${endShiftReportResponse.carCode}", null)
-        paxPrinter.step(30)
+        paxPrinter.step(12)
 
         paxPrinter.printStr("$LINE_CODE${endShiftReportResponse.lineCode}", null)
-        paxPrinter.step(30)
+        paxPrinter.step(12)
 
         paxPrinter.printStr("$MANIFESTO_DATE${endShiftReportResponse.date}", null)
-        paxPrinter.step(30)
+        paxPrinter.step(12)
 
         paxPrinter.printStr("$SHIFT_START${endShiftReportResponse.startTime}", null)
-        paxPrinter.step(30)
+        paxPrinter.step(12)
 
         paxPrinter.printStr("$SHIFT_END${endShiftReportResponse.endTime}", null)
-        paxPrinter.step(30)
+        paxPrinter.step(12)
 
 //        paxPrinter.printStr("$WORK_HOURS${TimeUtils.calculateWorkHours(endShiftReportResponse.startTime, endShiftReportResponse.endTime)}", null)
-//        paxPrinter.step(30)
+//        paxPrinter.step(12)
 
         paxPrinter.printStr("$CASH_TICKETS${endShiftReportResponse.cash}", null)
-        paxPrinter.step(30)
+        paxPrinter.step(12)
 
         paxPrinter.printStr("$QR_TICKETS${endShiftReportResponse.qr}", null)
-        paxPrinter.step(30)
+        paxPrinter.step(12)
 
         paxPrinter.printStr("$CARD_TICKETS${endShiftReportResponse.card}", null)
-        paxPrinter.step(30)
+        paxPrinter.step(12)
 
         paxPrinter.printStr("$TOTAL_TICKETS${endShiftReportResponse.totalTickets}", null)
-        paxPrinter.step(30)
+        paxPrinter.step(12)
 
         paxPrinter.printStr("$TICKET_CATEGORY${endShiftReportResponse.ticketCategory}", null)
-        paxPrinter.step(30)
+        paxPrinter.step(12)
 
         paxPrinter.printStr("$TOTAL_INCOME${endShiftReportResponse.totalIncome}", null)
-        paxPrinter.step(30)
+        paxPrinter.step(120)
 
         paxPrinter.start()
     }
@@ -104,24 +104,29 @@ class TicketPrinter @Inject constructor(
             BitmapFactory.decodeResource(Resources.getSystem(), R.drawable.ic_ticket_logo, options)
 
         paxPrinter.printBitmap(logo)
-        paxPrinter.step(120)
+        paxPrinter.step(60)
 
         paxPrinter.printStr("$SERIAL${ticket.carCode}_${TimeUtils.getTicketTimeMillis()}", null)
-        paxPrinter.step(30)
+        paxPrinter.step(12)
 
         paxPrinter.printStr("$DRIVER_CODE${ticket.driverCode}", null)
-        paxPrinter.step(30)
+        paxPrinter.step(12)
 
         paxPrinter.printStr("$CAR_CODE${ticket.carCode}", null)
-        paxPrinter.step(30)
+        paxPrinter.step(12)
 
         paxPrinter.printStr("$TICKET_TIME${ticket.time}", null)
-        paxPrinter.step(30)
+        paxPrinter.step(12)
 
         val ticketCategoryBitmap =
             BitmapFactory.decodeResource(Resources.getSystem(), R.drawable.cat_5, options)
         paxPrinter.printBitmap(ticketCategoryBitmap)
-        paxPrinter.step(50)
+
+        val teleBitmap =
+            BitmapFactory.decodeResource(Resources.getSystem(), R.drawable.tele, options)
+        paxPrinter.printBitmap(teleBitmap)
+
+        paxPrinter.step(120)
 
         paxPrinter.start()
     }
