@@ -58,7 +58,7 @@ class TicketPrinter @Inject constructor(
         page.adjustLineSpace(-9)
 
         val logo =
-            BitmapFactory.decodeResource(Resources.getSystem(), R.drawable.ic_ticket_logo)
+            BitmapFactory.decodeResource(application.baseContext.resources, R.drawable.ic_ticket_logo)
         page.addLine().addUnit(logo, EAlign.CENTER)
         page.addLine().addUnit("\n", 7)
 
