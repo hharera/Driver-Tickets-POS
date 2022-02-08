@@ -1,6 +1,6 @@
 package com.englizya.printer.utils
 
-object Constants {
+object EnglishParameters {
 
     const val LEFT_INDENT = 5.toShort()
     const val GRAY_LEVEL = 4
