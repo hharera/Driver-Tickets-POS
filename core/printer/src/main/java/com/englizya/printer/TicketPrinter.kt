@@ -21,6 +21,7 @@ import com.englizya.printer.utils.ArabicParameters.SHIFT_END
 import com.englizya.printer.utils.ArabicParameters.SHIFT_START
 import com.englizya.printer.utils.ArabicParameters.SPACE_SET
 import com.englizya.printer.utils.ArabicParameters.TICKET_CATEGORY
+import com.englizya.printer.utils.ArabicParameters.TICKET_DATE
 import com.englizya.printer.utils.ArabicParameters.TICKET_TIME
 import com.englizya.printer.utils.ArabicParameters.TOTAL_INCOME
 import com.englizya.printer.utils.ArabicParameters.TOTAL_TICKETS
@@ -169,7 +170,7 @@ class TicketPrinter @Inject constructor(
 
         val logo = getLogoBitmap()
         page.addLine().addUnit(logo, EAlign.CENTER)
-        page.addLine().addUnit("\n", 7)
+        page.addLine().addUnit("\n", 12)
 
         page.addLine()
             .addUnit(
@@ -184,12 +185,18 @@ class TicketPrinter @Inject constructor(
             .addUnit("$DRIVER_CODE${ticket.driverCode}", TEXT_SIZE, EAlign.CENTER, TEXT_STYLE)
         page.addLine().addUnit("\n", 5)
 
-
         page.addLine().addUnit("$CAR_CODE${ticket.carCode}", TEXT_SIZE, EAlign.CENTER, TEXT_STYLE)
         page.addLine().addUnit("\n", 5)
 
-        page.addLine().addUnit("$TICKET_TIME${ticket.time}", TEXT_SIZE, EAlign.CENTER, TEXT_STYLE)
+
+        page.addLine().addUnit("$LINE_CODE${ticket.lineCode}", TEXT_SIZE, EAlign.CENTER, TEXT_STYLE)
         page.addLine().addUnit("\n", 5)
+
+        page.addLine().addUnit("$TICKET_DATE${TimeUtils.getDate(ticket.date)}", TEXT_SIZE, EAlign.CENTER, TEXT_STYLE)
+        page.addLine().addUnit("\n", 5)
+
+        page.addLine().addUnit("$TICKET_TIME${TimeUtils.getTime(ticket.date)}", TEXT_SIZE, EAlign.CENTER, TEXT_STYLE)
+        page.addLine().addUnit("\n", 10)
 
         val ticketCategoryBitmap =
             BitmapFactory.decodeResource(
@@ -204,6 +211,8 @@ class TicketPrinter @Inject constructor(
                 R.drawable.tele
             )
         page.addLine().addUnit(teleBitmap, EAlign.CENTER)
+
+        page.addLine().addUnit("\n", 35)
 
         val ticketBitmap = paxGLPage.pageToBitmap(page, 384)
 

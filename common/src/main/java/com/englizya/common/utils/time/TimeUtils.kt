@@ -2,6 +2,7 @@ package com.englizya.common.utils.time
 
 import org.joda.time.DateTime
 import java.text.SimpleDateFormat
+import java.time.format.DateTimeFormatter
 
 object TimeUtils {
 
@@ -21,5 +22,15 @@ object TimeUtils {
 
     private fun calculateHours(millis: Long): Long {
         return millis / MILLIS_IN_HOURS
+    }
+
+    fun getDate(date: String): String {
+        val dateTime = DateTime.parse(date)
+        return "${dateTime.year}-${dateTime.monthOfYear}-${dateTime.dayOfMonth}"
+    }
+
+    fun getTime(date: String): String {
+        val dateTime = DateTime.parse(date)
+        return "${dateTime.secondOfMinute}:${dateTime.minuteOfHour}:${dateTime.hourOfDay}"
     }
 }

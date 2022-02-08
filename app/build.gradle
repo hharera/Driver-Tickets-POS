@@ -16,10 +16,13 @@ android {
         versionName Releases.versionName
 
 //        ndk.abiFilters 'armeabi-v7a', 'x86', 'armeabi', 'arm'
-
+        ndk.abiFilters 'armeabi'
         testInstrumentationRunner "com.englizya.ticket.HiltTestRunner"
     }
-
+    sourceSets.main {
+        jni.srcDirs = []
+        jniLibs.srcDir "src/main/libs"
+    }
     buildFeatures {
         viewBinding true
     }
@@ -48,8 +51,7 @@ android {
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation files('libs/pax-sdk.jar')
+    implementation fileTree(dir: 'src/main/jniLibs', include: ['*.jar','*.aar'])
 
     implementation project(Base.common)
     implementation project(Features.splash)
