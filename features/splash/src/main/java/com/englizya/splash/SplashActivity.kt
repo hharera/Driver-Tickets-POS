@@ -47,19 +47,20 @@ class SplashActivity : BaseActivity() {
     }
 
     private fun goLogin() {
-        val intent = Intent(this@SplashActivity, HomeActivity::class.java).putExtra(Arguments.Destination, Destination.LOGIN)
+        val intent = Intent(this@SplashActivity, HomeActivity::class.java).putExtra(
+            Arguments.Destination,
+            Destination.LOGIN
+        )
         startActivity(intent)
         finish()
     }
 
     private fun goTicket() {
         lifecycleScope.launch {
-//            val anim = AnimationUtils.loadAnimation(context, R.anim.fragment_splash_out)
-//            val inAnim = AnimationUtils.loadAnimation(context, R.anim.fragment_login_in)
-//            bind.imageView.startAnimation(anim)
-//            bind.appName.startAnimation(anim)
-//            bind.imageBackground.startAnimation(inAnim)
-            val intent = Intent(this@SplashActivity, HomeActivity::class.java).putExtra(Arguments.Destination, Destination.TICKET)
+            val intent = Intent(
+                this@SplashActivity,
+                HomeActivity::class.java
+            ).putExtra(Arguments.Destination, Destination.TICKET)
             startActivity(intent)
             finish()
         }

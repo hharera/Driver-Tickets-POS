@@ -39,14 +39,13 @@ class EndShiftFragment : BaseFragment() {
 
     private fun setupListeners() {
         binding.print.setOnClickListener {
-//            TODO print receipt
+            endShiftViewModel.shiftReport.value?.let { report -> endShiftViewModel.printReport(report) }
         }
     }
 
     private fun setupObservers() {
         endShiftViewModel.shiftReport.observe(viewLifecycleOwner) { shiftReport ->
             updateUI(shiftReport)
-            endShiftViewModel.printReport(shiftReport)
         }
 
         connectionLiveData.observe(viewLifecycleOwner) { connected ->
