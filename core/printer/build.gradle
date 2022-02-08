@@ -1,14 +1,9 @@
 apply from: "$rootDir/${CommonBuild.FeatureModule}"
 
-android {
-    defaultConfig {
-        ndk.abiFilters 'armeabi-v7a', 'x86', 'armeabi', 'arm'
-    }
-}
-
 dependencies {
-    api fileTree(include: ['*.jar'], dir: 'libs')
-    api files('libs/pax-sdk.jar')
+    api fileTree(dir: 'src/main/jniLibs', include: ['*.jar','*.aar'])
+    api files('libs/NeptuneLiteApi_V3.27.00_20211103.jar')
+    api files('libs/gl-page-V1.03.00_20181030.jar')
 
     implementation(Libs.appcompat)
     implementation(project(Base.common))
