@@ -156,7 +156,7 @@ class TicketPrinter @Inject constructor(
             TEXT_STYLE
         )
 
-        page.addLine().addUnit("\n", 30)
+        page.addLine().addUnit("\n", 35)
         val pageBitmap = paxGLPage.pageToBitmap(page, 384)
 
         paxPrinter.printBitmap(pageBitmap)
