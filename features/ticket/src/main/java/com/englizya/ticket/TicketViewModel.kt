@@ -79,10 +79,10 @@ class TicketViewModel @Inject constructor(
         }
     }
 
-    private suspend fun insertTickets(tickets: ArrayList<Ticket>, value: Boolean) {
+    private suspend fun insertTickets(tickets: ArrayList<Ticket>, pushRemote: Boolean) {
         updateLoading(true)
         ticketRepository
-            .insertTickets(tickets, value)
+            .insertTickets(tickets, pushRemote)
             .onSuccess {
                 updateLoading(false)
                 resetQuantity()
@@ -90,7 +90,8 @@ class TicketViewModel @Inject constructor(
                 Log.d(TAG, "orderTickets: $tickets")
             }
             .onFailure {
-                insertTickets(tickets, false)
+                if (pushRemote)
+                    insertTickets(tickets, false)
                 updateLoading(false)
                 handleException(it)
             }
@@ -125,7 +126,6 @@ class TicketViewModel @Inject constructor(
                     driverCode = driverDataStore.getDriverCode(),
                     carCode = carDataStore.getCarCode(),
                     time = DateTime.now().toString(),
-                    date = DateTime.now().toString(),
                     paymentWay = paymentWay.value!!,
                     ticketCategory = ticketDataStore.getTicketCategory(),
                     manifestoId = manifestoDataStore.getManifestoNo(),

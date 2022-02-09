@@ -192,10 +192,10 @@ class TicketPrinter @Inject constructor(
         page.addLine().addUnit("$LINE_CODE${ticket.lineCode}", TEXT_SIZE, EAlign.CENTER, TEXT_STYLE)
         page.addLine().addUnit("\n", 5)
 
-        page.addLine().addUnit("$TICKET_DATE${TimeUtils.getDate(ticket.date)}", TEXT_SIZE, EAlign.CENTER, TEXT_STYLE)
+        page.addLine().addUnit("$TICKET_DATE${TimeUtils.getDate(ticket.time)}", TEXT_SIZE, EAlign.CENTER, TEXT_STYLE)
         page.addLine().addUnit("\n", 5)
 
-        page.addLine().addUnit("$TICKET_TIME${TimeUtils.getTime(ticket.date)}", TEXT_SIZE, EAlign.CENTER, TEXT_STYLE)
+        page.addLine().addUnit("$TICKET_TIME${TimeUtils.getTime(ticket.time)}", TEXT_SIZE, EAlign.CENTER, TEXT_STYLE)
         page.addLine().addUnit("\n", 10)
 
         val ticketCategoryBitmap =

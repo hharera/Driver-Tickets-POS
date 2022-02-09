@@ -13,7 +13,6 @@ data class Ticket(
     var driverCode: Int,
     var carCode: String,
     var time: String,
-    var date: String,
     var paymentWay: String,
     var ticketCategory: Int,
     var manifestoId: Int,
