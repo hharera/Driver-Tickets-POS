@@ -1,7 +1,6 @@
 package com.englizya.printer
 
 import android.app.Application
-import android.content.res.Resources
 import android.graphics.BitmapFactory
 import com.englizya.common.utils.time.TimeUtils
 import com.englizya.model.request.Ticket
@@ -25,11 +24,11 @@ import com.englizya.printer.utils.ArabicParameters.TICKET_DATE
 import com.englizya.printer.utils.ArabicParameters.TICKET_TIME
 import com.englizya.printer.utils.ArabicParameters.TOTAL_INCOME
 import com.englizya.printer.utils.ArabicParameters.TOTAL_TICKETS
+import com.englizya.printer.utils.ArabicParameters.WORK_HOURS
 import com.englizya.printer.utils.TicketParameter.TEXT_SIZE
 import com.englizya.printer.utils.TicketParameter.TEXT_STYLE
 import com.pax.dal.entity.EFontTypeAscii
 import com.pax.dal.entity.EFontTypeExtCode
-import com.pax.gl.page.IPage
 import com.pax.gl.page.IPage.EAlign
 import com.pax.gl.page.PaxGLPage
 import java.util.*
@@ -110,8 +109,13 @@ class TicketPrinter @Inject constructor(
         )
         page.addLine().addUnit("\n", 5)
 
-//        page.addLine().addUnit("$WORK_HOURS${TimeUtils.calculateWorkHours(endShiftReportResponse.startTime, endShiftReportResponse.endTime)}", , TEXT_SIZE, EAlign.CENTER, TEXT_STYLE)
-//        paxPrinter.step(12)
+        page.addLine().addUnit(
+            "$WORK_HOURS ${TimeUtils.calculateWorkHours(endShiftReportResponse)}",
+            TEXT_SIZE,
+            EAlign.CENTER,
+            TEXT_STYLE
+        )
+        page.addLine().addUnit("\n", 5)
 
         page.addLine().addUnit(
             "$CASH_TICKETS${endShiftReportResponse.cash}",
