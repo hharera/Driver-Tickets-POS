@@ -12,6 +12,7 @@ import com.englizya.model.response.ShiftReportResponse
 import com.englizya.ticket.end_shift.R
 import com.englizya.ticket.end_shift.databinding.FragmentEndShiftBinding
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class EndShiftFragment : BaseFragment() {
@@ -39,7 +40,15 @@ class EndShiftFragment : BaseFragment() {
 
     private fun setupListeners() {
         binding.print.setOnClickListener {
+            binding.print.isEnabled = false
+
             endShiftViewModel.shiftReport.value?.let { report -> endShiftViewModel.printReport(report) }
+
+            lifecycleScope.launch(Dispatchers.IO) {
+                delay(500)
+            }
+
+            binding.print.isEnabled = true
         }
     }
 

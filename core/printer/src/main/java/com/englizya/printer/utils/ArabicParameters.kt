@@ -15,7 +15,7 @@ object ArabicParameters {
     const val CASH_TICKETS = "تذاكر كاش : "
     const val QR_TICKETS = "تذاكر كيو ار : "
     const val CARD_TICKETS = "تذاكر كارت : "
-    const val TOTAL_TICKETS = "عدد التذاكر : "
+    const val TOTAL_TICKETS = "اجمالي عدد التذاكر : "
     const val TICKET_CATEGORY = "فئة : "
     const val TOTAL_INCOME = "الايراد : "
     const val CAR_CODE = "كود السيارة : "
