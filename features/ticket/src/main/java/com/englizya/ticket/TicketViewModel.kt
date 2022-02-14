@@ -11,6 +11,7 @@ import com.englizya.datastore.core.ManifestoDataStore
 import com.englizya.datastore.core.TicketDataStore
 import com.englizya.model.request.Ticket
 import com.englizya.common.utils.time.TimeUtils.getTicketTimeMillis
+import com.englizya.printer.PaxPrinter
 import com.englizya.printer.TicketPrinter
 import com.englizya.repository.TicketRepository
 import com.englizya.ticket.utils.Constant
@@ -30,6 +31,7 @@ class TicketViewModel @Inject constructor(
     private val driverDataStore: DriverDataStore,
     private val carDataStore: CarDataStore,
     private val ticketDataStore: TicketDataStore,
+    private val paxPrinter: PaxPrinter,
 ) : BaseViewModel() {
 
     private var _quantity = MutableLiveData<Int>(1)
@@ -86,7 +88,7 @@ class TicketViewModel @Inject constructor(
             .onSuccess {
                 updateLoading(false)
                 resetQuantity()
-                ticketPrinter.printTickets(tickets)
+                printTickets(tickets)
                 Log.d(TAG, "orderTickets: $tickets")
             }
             .onFailure {
@@ -95,6 +97,12 @@ class TicketViewModel @Inject constructor(
                 updateLoading(false)
                 handleException(it)
             }
+    }
+
+    private fun printTickets(tickets: java.util.ArrayList<Ticket>) {
+        viewModelScope.launch(Dispatchers.IO) {
+            ticketPrinter.printTickets(tickets)
+        }
     }
 
     private fun resetQuantity() {
