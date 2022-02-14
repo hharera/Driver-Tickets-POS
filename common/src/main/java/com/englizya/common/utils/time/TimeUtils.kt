@@ -27,7 +27,7 @@ object TimeUtils {
 
     fun getTime(date: String): String {
         val dateTime = DateTime.parse(date)
-        return "${dateTime.secondOfMinute}:${dateTime.minuteOfHour}:${dateTime.hourOfDay}"
+        return "${dateTime.hourOfDay}:${dateTime.secondOfMinute}:${dateTime.minuteOfHour}"
     }
 
     fun calculateWorkHours(shiftReportResponse: ShiftReportResponse): String {
