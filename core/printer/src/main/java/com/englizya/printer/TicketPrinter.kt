@@ -31,6 +31,9 @@ import com.pax.dal.entity.EFontTypeAscii
 import com.pax.dal.entity.EFontTypeExtCode
 import com.pax.gl.page.IPage.EAlign
 import com.pax.gl.page.PaxGLPage
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
 
@@ -57,7 +60,10 @@ class TicketPrinter @Inject constructor(
         page.adjustLineSpace(-9)
 
         val logo =
-            BitmapFactory.decodeResource(application.baseContext.resources, R.drawable.ic_ticket_logo)
+            BitmapFactory.decodeResource(
+                application.baseContext.resources,
+                R.drawable.ic_ticket_logo
+            )
         page.addLine().addUnit(logo, EAlign.CENTER)
         page.addLine().addUnit("\n", 7)
 
@@ -126,7 +132,12 @@ class TicketPrinter @Inject constructor(
         page.addLine().addUnit("\n", 5)
 
         page.addLine()
-            .addUnit("$QR_TICKETS${endShiftReportResponse.qr}", TEXT_SIZE, EAlign.CENTER, TEXT_STYLE)
+            .addUnit(
+                "$QR_TICKETS${endShiftReportResponse.qr}",
+                TEXT_SIZE,
+                EAlign.CENTER,
+                TEXT_STYLE
+            )
         page.addLine().addUnit("\n", 5)
 
         page.addLine().addUnit(
@@ -164,7 +175,6 @@ class TicketPrinter @Inject constructor(
         val pageBitmap = paxGLPage.pageToBitmap(page, 384)
 
         paxPrinter.printBitmap(pageBitmap)
-        paxPrinter.start()
     }
 
     private fun printTicket(ticket: Ticket) {
@@ -196,10 +206,20 @@ class TicketPrinter @Inject constructor(
         page.addLine().addUnit("$LINE_CODE${ticket.lineCode}", TEXT_SIZE, EAlign.CENTER, TEXT_STYLE)
         page.addLine().addUnit("\n", 5)
 
-        page.addLine().addUnit("$TICKET_DATE${TimeUtils.getDate(ticket.time)}", TEXT_SIZE, EAlign.CENTER, TEXT_STYLE)
+        page.addLine().addUnit(
+            "$TICKET_DATE${TimeUtils.getDate(ticket.time)}",
+            TEXT_SIZE,
+            EAlign.CENTER,
+            TEXT_STYLE
+        )
         page.addLine().addUnit("\n", 5)
 
-        page.addLine().addUnit("$TICKET_TIME${TimeUtils.getTime(ticket.time)}", TEXT_SIZE, EAlign.CENTER, TEXT_STYLE)
+        page.addLine().addUnit(
+            "$TICKET_TIME${TimeUtils.getTime(ticket.time)}",
+            TEXT_SIZE,
+            EAlign.CENTER,
+            TEXT_STYLE
+        )
         page.addLine().addUnit("\n", 10)
 
         val ticketCategoryBitmap =
@@ -231,8 +251,13 @@ class TicketPrinter @Inject constructor(
         )
 
     fun printTickets(tickets: ArrayList<Ticket>) {
-        tickets.forEach { ticket ->
-            printTicket(ticket = ticket)
+        GlobalScope.launch(Dispatchers.IO) {
+            val printedTickets: Set<Ticket> = tickets.toSet()
+            printedTickets.forEach { ticket ->
+                printTicket(ticket = ticket)
+            }
+
+            paxPrinter.start()
         }
     }
 }
