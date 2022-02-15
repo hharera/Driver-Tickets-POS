@@ -45,7 +45,6 @@ class TicketPrinter @Inject constructor(
 ) {
 
     init {
-        paxPrinter.apply { init() }
         paxPrinter.fontSet(EFontTypeAscii.FONT_16_16, EFontTypeExtCode.FONT_16_16)
         paxPrinter.spaceSet(SPACE_SET, SPACE_SET)
         paxPrinter.leftIndents(LEFT_INDENT)
@@ -174,7 +173,9 @@ class TicketPrinter @Inject constructor(
         page.addLine().addUnit("\n", 35)
         val pageBitmap = paxGLPage.pageToBitmap(page, 384)
 
+        paxPrinter.init()
         paxPrinter.printBitmap(pageBitmap)
+        paxPrinter.start()
     }
 
     private fun printTicket(ticket: Ticket) {
@@ -240,6 +241,7 @@ class TicketPrinter @Inject constructor(
 
         val ticketBitmap = paxGLPage.pageToBitmap(page, 384)
 
+        paxPrinter.init()
         paxPrinter.printBitmap(ticketBitmap)
         paxPrinter.start()
     }
@@ -251,13 +253,8 @@ class TicketPrinter @Inject constructor(
         )
 
     fun printTickets(tickets: ArrayList<Ticket>) {
-        GlobalScope.launch(Dispatchers.IO) {
-            val printedTickets: Set<Ticket> = tickets.toSet()
-            printedTickets.forEach { ticket ->
-                printTicket(ticket = ticket)
-            }
-
-            paxPrinter.start()
+        tickets.forEach { ticket ->
+            printTicket(ticket = ticket)
         }
     }
 }
