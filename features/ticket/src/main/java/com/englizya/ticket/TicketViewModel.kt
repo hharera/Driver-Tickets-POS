@@ -13,6 +13,7 @@ import com.englizya.model.request.Ticket
 import com.englizya.common.utils.time.TimeUtils.getTicketTimeMillis
 import com.englizya.printer.PaxPrinter
 import com.englizya.printer.TicketPrinter
+import com.englizya.printer.utils.PrinterState.OUT_OF_PAPER
 import com.englizya.repository.TicketRepository
 import com.englizya.ticket.utils.Constant
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -31,11 +32,16 @@ class TicketViewModel @Inject constructor(
     private val driverDataStore: DriverDataStore,
     private val carDataStore: CarDataStore,
     private val ticketDataStore: TicketDataStore,
-    private val paxPrinter: PaxPrinter,
 ) : BaseViewModel() {
 
     private var _quantity = MutableLiveData<Int>(1)
     val quantity: LiveData<Int> = _quantity
+
+    private var _ticketsInMemory = MutableLiveData<List<Ticket>>(arrayListOf())
+    val ticketsInMemory: LiveData<List<Ticket>> = _ticketsInMemory
+
+    private var _lastTicket = MutableLiveData<Ticket>()
+    val lastTicket: LiveData<Ticket> = _lastTicket
 
     private var _paymentWay = MutableLiveData<String>()
     val paymentWay: LiveData<String> = _paymentWay
@@ -44,6 +50,9 @@ class TicketViewModel @Inject constructor(
     val ticketCategory: LiveData<Int> = _ticketCategory
 
     private val TAG = "TicketViewModel"
+
+    private val _isPaperOut = MutableLiveData<Boolean>(false)
+    val isPaperOut: LiveData<Boolean> = _isPaperOut
 
     init {
         _ticketCategory.postValue(ticketDataStore.getTicketCategory())
@@ -99,10 +108,53 @@ class TicketViewModel @Inject constructor(
             }
     }
 
-    private fun printTickets(tickets: java.util.ArrayList<Ticket>) {
+    private fun printTickets(tickets: ArrayList<Ticket>) {
         viewModelScope.launch(Dispatchers.IO) {
-            ticketPrinter.printTickets(tickets)
+            _lastTicket.postValue(tickets.last())
+            tickets.forEach { ticket ->
+                ticketPrinter.printTicket(ticket).let { printState ->
+                    checkPrintState(printState, ticket)
+                }
+            }
         }
+    }
+
+    fun printTicketsInMemory() {
+        ticketsInMemory.value!!.forEach { ticket ->
+            ticketPrinter.printTicket(ticket).let { printState ->
+                checkPrintTicketsInMemoryState(printState, ticket)
+            }
+        }
+    }
+
+    private fun checkPrintTicketsInMemoryState(printState: String, ticket: Ticket) {
+        if (printState.contains("Success")) {
+            _ticketsInMemory.postValue(ticketsInMemory.value!!.drop(1))
+        }
+    }
+
+    private suspend fun checkPrintState(printState: String, ticket: Ticket) {
+        if (printState == OUT_OF_PAPER) {
+            _isPaperOut.postValue(true)
+            _ticketsInMemory.postValue(
+                ticketsInMemory.value!!.plus(ticket)
+            )
+        }
+    }
+
+    private suspend fun saveUnPrintedTicket(ticket: Ticket) {
+        ticketRepository
+            .insertUnPrintedTicket(ticket)
+            .onSuccess {
+                getUnPrintedTickets()
+            }
+    }
+
+    private fun getUnPrintedTickets() {
+        ticketRepository
+            .getAllUnPrintedTickets()
+            .onSuccess {
+            }
     }
 
     private fun resetQuantity() {

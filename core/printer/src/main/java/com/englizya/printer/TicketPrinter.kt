@@ -2,6 +2,9 @@ package com.englizya.printer
 
 import android.app.Application
 import android.graphics.BitmapFactory
+import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.englizya.common.utils.time.TimeUtils
 import com.englizya.model.request.Ticket
 import com.englizya.model.response.ShiftReportResponse
@@ -25,6 +28,7 @@ import com.englizya.printer.utils.ArabicParameters.TICKET_TIME
 import com.englizya.printer.utils.ArabicParameters.TOTAL_INCOME
 import com.englizya.printer.utils.ArabicParameters.TOTAL_TICKETS
 import com.englizya.printer.utils.ArabicParameters.WORK_HOURS
+import com.englizya.printer.utils.PrinterState
 import com.englizya.printer.utils.TicketParameter.TEXT_SIZE
 import com.englizya.printer.utils.TicketParameter.TEXT_STYLE
 import com.pax.dal.entity.EFontTypeAscii
@@ -43,8 +47,12 @@ class TicketPrinter @Inject constructor(
     private val paxGLPage: PaxGLPage,
     private val application: Application,
 ) {
+    private val TAG = "TicketPrinter"
 
-    init {
+
+
+    private fun initPrinter() {
+        paxPrinter.init()
         paxPrinter.fontSet(EFontTypeAscii.FONT_16_16, EFontTypeExtCode.FONT_16_16)
         paxPrinter.spaceSet(SPACE_SET, SPACE_SET)
         paxPrinter.leftIndents(LEFT_INDENT)
@@ -54,7 +62,7 @@ class TicketPrinter @Inject constructor(
         paxPrinter.setDoubleHeight(isAscDouble = true, isLocalDouble = true)
     }
 
-    fun printShiftReport(endShiftReportResponse: ShiftReportResponse) {
+    fun printShiftReport(endShiftReportResponse: ShiftReportResponse): String {
         val page = paxGLPage.createPage()
         page.adjustLineSpace(-9)
 
@@ -99,7 +107,7 @@ class TicketPrinter @Inject constructor(
         page.addLine().addUnit("\n", 5)
 
         page.addLine().addUnit(
-            "$SHIFT_START${endShiftReportResponse.startTime}",
+            SHIFT_START,
             TEXT_SIZE,
             EAlign.CENTER,
             TEXT_STYLE
@@ -107,7 +115,7 @@ class TicketPrinter @Inject constructor(
         page.addLine().addUnit("\n", 5)
 
         page.addLine().addUnit(
-            "$SHIFT_END${endShiftReportResponse.endTime}",
+            endShiftReportResponse.startTime,
             TEXT_SIZE,
             EAlign.CENTER,
             TEXT_STYLE
@@ -115,7 +123,23 @@ class TicketPrinter @Inject constructor(
         page.addLine().addUnit("\n", 5)
 
         page.addLine().addUnit(
-            "$WORK_HOURS ${TimeUtils.calculateWorkHours(endShiftReportResponse)}",
+            SHIFT_END,
+            TEXT_SIZE,
+            EAlign.CENTER,
+            TEXT_STYLE
+        )
+        page.addLine().addUnit("\n", 5)
+
+        page.addLine().addUnit(
+            endShiftReportResponse.endTime,
+            TEXT_SIZE,
+            EAlign.CENTER,
+            TEXT_STYLE
+        )
+        page.addLine().addUnit("\n", 5)
+
+        page.addLine().addUnit(
+            "$WORK_HOURS: ${TimeUtils.calculateWorkHours(endShiftReportResponse)}",
             TEXT_SIZE,
             EAlign.CENTER,
             TEXT_STYLE
@@ -173,12 +197,14 @@ class TicketPrinter @Inject constructor(
         page.addLine().addUnit("\n", 35)
         val pageBitmap = paxGLPage.pageToBitmap(page, 384)
 
-        paxPrinter.init()
+        initPrinter()
         paxPrinter.printBitmap(pageBitmap)
-        paxPrinter.start()
+        return paxPrinter.start().also {
+            Log.d(TAG, "printShiftReport: $it")
+        }
     }
 
-    private fun printTicket(ticket: Ticket) {
+    fun printTicket(ticket: Ticket): String {
         val page = paxGLPage.createPage()
         page.adjustLineSpace(-9)
 
@@ -241,9 +267,11 @@ class TicketPrinter @Inject constructor(
 
         val ticketBitmap = paxGLPage.pageToBitmap(page, 384)
 
-        paxPrinter.init()
+        initPrinter()
         paxPrinter.printBitmap(ticketBitmap)
-        paxPrinter.start()
+        return paxPrinter.start().also {
+            Log.d(TAG, "printShiftReport: $it")
+        }
     }
 
     private fun getLogoBitmap() =
@@ -252,8 +280,8 @@ class TicketPrinter @Inject constructor(
             R.drawable.ic_ticket_logo
         )
 
-    fun printTickets(tickets: ArrayList<Ticket>) {
-        tickets.forEach { ticket ->
+    fun printTickets(tickets: ArrayList<Ticket>): List<String> {
+        return tickets.map { ticket ->
             printTicket(ticket = ticket)
         }
     }

@@ -9,6 +9,9 @@ import org.joda.time.DateTime
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.*
 import kotlin.math.log
 
 /**
@@ -17,7 +20,8 @@ import kotlin.math.log
  * See [testing documentation](http://d.android.com/tools/testing).
  */
 class ExampleUnitTest {
-    private val DATE_FORMAT = "yyyy-MM-dd HH:mm:ss"
+    private  val START_SHIFT_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss"
+    private  val END_SHIFT_DATE_FORMAT = "dd.MM.yyyy HH:mm:ss"
     private val TAG = "ExampleUnitTest"
     private val MILLIS_IN_SECOND = 1000
     private val MILLIS_IN_MINUTE = 60000
@@ -30,10 +34,10 @@ class ExampleUnitTest {
 
     @Test
     fun `testing calculate work hours with date format`() {
-        val endTime = SimpleDateFormat(DATE_FORMAT).parse("2022-02-12 14:32:00")
-        val startTime = SimpleDateFormat(DATE_FORMAT).parse("2022-02-12 3:14:00")
+        val startTime = SimpleDateFormat(START_SHIFT_DATE_FORMAT).parse("2022-02-15 09:51:23")
+        val endTime = SimpleDateFormat(END_SHIFT_DATE_FORMAT).parse("15.02.2022 04:18:16")
 
-        val millis = endTime.time - startTime.time
+        val millis = (endTime.time - startTime.time)
         val workTime = calculateWorkTime(millis)
         println(
             "${workTime.hours}"
