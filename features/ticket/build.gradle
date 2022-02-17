@@ -4,4 +4,5 @@ dependencies {
     implementation Libs.playServicesTasks
     implementation Libs.circleImage
     api project(Core.PRINTER)
+    api project(UiComponents.OUT_OF_PAPER_ALERT)
 }

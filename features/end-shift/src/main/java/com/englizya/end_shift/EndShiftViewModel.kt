@@ -11,6 +11,7 @@ import com.englizya.model.request.EndShiftRequest
 import com.englizya.model.request.Ticket
 import com.englizya.model.response.ShiftReportResponse
 import com.englizya.printer.TicketPrinter
+import com.englizya.printer.utils.PrinterState.OUT_OF_PAPER
 import com.englizya.repository.ManifestoRepository
 import com.englizya.repository.TicketRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,6 +29,9 @@ class EndShiftViewModel @Inject constructor(
     private val TAG = "EndShiftViewModel"
     private val _shiftReport = MutableLiveData<ShiftReportResponse>()
     val shiftReport: LiveData<ShiftReportResponse> = _shiftReport
+
+    private val _isPaperOut = MutableLiveData<Boolean>(false)
+    val isPaperOut: LiveData<Boolean> = _isPaperOut
 
     suspend fun endShift() {
         getLocalTickets()
@@ -111,6 +115,14 @@ class EndShiftViewModel @Inject constructor(
     }
 
     fun printReport(shiftReport: ShiftReportResponse) {
-        ticketPrinter.printShiftReport(shiftReport)
+        ticketPrinter.printShiftReport(shiftReport).let {
+            checkPrintResult(it)
+        }
+    }
+
+    private fun checkPrintResult(printState: String) {
+        if (printState == OUT_OF_PAPER) {
+            _isPaperOut.postValue(true)
+        }
     }
 }

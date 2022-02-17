@@ -1,8 +1,10 @@
 package com.englizya.navigation
 
 import android.os.Bundle
+import androidx.core.view.GravityCompat
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import com.englizya.common.base.BaseActivity
 import com.englizya.common.utils.navigation.Arguments
@@ -26,6 +28,7 @@ class HomeActivity : BaseActivity() {
 
         navController = Navigation.findNavController(this, R.id.nav_host)
         bind.navView.setupWithNavController(navController)
+        NavigationUI.setupWithNavController(bind.navView, navController)
 
         getExtras()
     }
@@ -45,19 +48,20 @@ class HomeActivity : BaseActivity() {
 
     private fun setupListeners() {
         listenToNavigation()
-
     }
 
     private fun listenToNavigation() {
         bind.navView.bringToFront()
-        bind.navView.setNavigationItemSelectedListener {
+        bind.navView.setNavigationItemSelectedListener  {
             when (it.itemId) {
                 R.id.navigation_end_shift -> {
                     navController.navigate(NavigationUtils.getUriNavigation(Domain.ENGLIZYA_PAY, Destination.LOGIN, Destination.END_SHIFT))
+                    bind.root.closeDrawer(GravityCompat.END, true)
                 }
 
                 R.id.navigation_end_shift -> {
                     navController.navigate(R.id.navigation_day_report)
+                    bind.root.closeDrawer(GravityCompat.END, true)
                 }
             }
             return@setNavigationItemSelectedListener true

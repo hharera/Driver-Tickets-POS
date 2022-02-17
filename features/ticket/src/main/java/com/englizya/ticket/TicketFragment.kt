@@ -9,6 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import com.englizya.common.base.BaseFragment
 import com.englizya.ticket.ticket.R
 import com.englizya.ticket.ticket.databinding.FragmentTicketBinding
+import com.example.paper_out_alert.PaperOutDialog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -58,9 +59,33 @@ class TicketFragment : BaseFragment() {
             bind.ticketValue.text = getString(R.string.category).plus(" : ").plus(it)
         }
 
+        ticketViewModel.isPaperOut.observe(viewLifecycleOwner) { isPaperOut ->
+            checkPaperOutState(isPaperOut)
+        }
+
+        ticketViewModel.ticketsInMemory.observe(viewLifecycleOwner) { tickets ->
+            bind.savedTickets.text = "${tickets.size}"
+        }
+
+        ticketViewModel.lastTicket.observe(viewLifecycleOwner) { ticket ->
+            bind.lastTicketId.text = ticket.ticketId
+        }
+
         connectionLiveData.observe(viewLifecycleOwner) { state ->
             ticketViewModel.updateConnectivity(state)
         }
+    }
+
+    private fun checkPaperOutState(paperOut: Boolean) {
+        if (paperOut) {
+            showPaperOutDialog()
+        }
+    }
+
+    private fun showPaperOutDialog() {
+        PaperOutDialog {
+            ticketViewModel.printTicketsInMemory()
+        }.show(childFragmentManager, "")
     }
 
     private fun setupListeners() {
@@ -70,6 +95,10 @@ class TicketFragment : BaseFragment() {
 
         bind.ticketMinus.setOnClickListener {
             ticketViewModel.decrementQuantity()
+        }
+
+        bind.savedTicketsTitle.setOnClickListener {
+            ticketViewModel.printTicketsInMemory()
         }
 
         bind.print.setOnClickListener {

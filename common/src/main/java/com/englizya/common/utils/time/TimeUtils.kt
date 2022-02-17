@@ -3,13 +3,13 @@ package com.englizya.common.utils.time
 import com.englizya.model.WorkTime
 import com.englizya.model.response.ShiftReportResponse
 import org.joda.time.DateTime
-import org.joda.time.format.DateTimeFormatter
 import java.text.SimpleDateFormat
 
 object TimeUtils {
 
     private val TIME_START = DateTime(2022, 1, 1, 0, 0)
-    private const val DATE_FORMAT = "yyyy-MM-dd HH:mm:ss"
+    private const val START_SHIFT_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss"
+    private const val END_SHIFT_DATE_FORMAT = "dd.MM.yyyy HH:mm:ss"
     private const val MILLIS_IN_SECOND = 1000
     private const val MILLIS_IN_MINUTE = 60000
     private const val MILLIS_IN_HOUR = 3600000
@@ -31,16 +31,15 @@ object TimeUtils {
     }
 
     fun calculateWorkHours(shiftReportResponse: ShiftReportResponse): String {
-        val startTime = SimpleDateFormat(DATE_FORMAT).parse(shiftReportResponse.startTime)
-        val endTime = SimpleDateFormat(DATE_FORMAT).parse(shiftReportResponse.endTime)
+        val startTime = SimpleDateFormat(START_SHIFT_DATE_FORMAT).parse(shiftReportResponse.startTime)
+        val endTime = SimpleDateFormat(END_SHIFT_DATE_FORMAT).parse(shiftReportResponse.endTime)
 
         val millis = endTime.time - startTime.time
         val workTime = calculateWorkTime(millis)
-        return "${workTime.hours}"
-            .plus(" ساعات ")
-            .plus(" ، ")
+        return " ${workTime.hours} "
+            .plus("س")
             .plus(" ${workTime.minutes} ")
-            .plus(" دقائق ")
+            .plus("د")
     }
 
     private fun calculateWorkTime(millis: Long): WorkTime {

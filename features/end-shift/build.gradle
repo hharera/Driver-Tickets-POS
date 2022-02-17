@@ -6,4 +6,5 @@ dependencies {
     implementation(Libs.navigationFragment)
 
     api project(Core.PRINTER)
+    api project(UiComponents.OUT_OF_PAPER_ALERT)
 }
