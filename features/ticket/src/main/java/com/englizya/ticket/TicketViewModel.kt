@@ -37,8 +37,8 @@ class TicketViewModel @Inject constructor(
     private var _quantity = MutableLiveData<Int>(1)
     val quantity: LiveData<Int> = _quantity
 
-    private var _ticketsInMemory = MutableLiveData<List<Ticket>>(arrayListOf())
-    val ticketsInMemory: LiveData<List<Ticket>> = _ticketsInMemory
+    private var _ticketsInMemory = MutableLiveData<Set<Ticket>>(HashSet())
+    val ticketsInMemory: LiveData<Set<Ticket>> = _ticketsInMemory
 
     private var _lastTicket = MutableLiveData<Ticket>()
     val lastTicket: LiveData<Ticket> = _lastTicket
@@ -128,17 +128,17 @@ class TicketViewModel @Inject constructor(
     }
 
     private fun checkPrintTicketsInMemoryState(printState: String, ticket: Ticket) {
+        Log.d(TAG, "checkPrintTicketsInMemoryState: $printState")
         if (printState.contains("Success")) {
-            _ticketsInMemory.postValue(ticketsInMemory.value!!.drop(1))
+            _ticketsInMemory.postValue(ticketsInMemory.value!!.minus(ticket))
         }
     }
 
     private suspend fun checkPrintState(printState: String, ticket: Ticket) {
+        Log.d(TAG, "checkPrintState: $printState")
         if (printState == OUT_OF_PAPER) {
             _isPaperOut.postValue(true)
-            _ticketsInMemory.postValue(
-                ticketsInMemory.value!!.plus(ticket)
-            )
+            _ticketsInMemory.postValue(ticketsInMemory.value!!.plus(ticket))
         }
     }
 
