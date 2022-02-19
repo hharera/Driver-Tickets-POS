@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.englizya.common.base.BaseFragment
+import com.englizya.model.request.Ticket
 import com.englizya.ticket.ticket.R
 import com.englizya.ticket.ticket.databinding.FragmentTicketBinding
 import com.example.paper_out_alert.PaperOutDialog
@@ -17,10 +18,13 @@ import kotlinx.coroutines.withContext
 
 class TicketFragment : BaseFragment() {
 
+    private val TAG = "TicketFragment"
+
     private lateinit var ticketViewModel: TicketViewModel
     private lateinit var bind: FragmentTicketBinding
 
     private lateinit var paymentMethodsAdapter: PaymentMethodsAdapter
+    private val paperOutDialog: PaperOutDialog by lazy { PaperOutDialog { ticketViewModel.printTicketsInMemory() } }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -65,6 +69,7 @@ class TicketFragment : BaseFragment() {
 
         ticketViewModel.ticketsInMemory.observe(viewLifecycleOwner) { tickets ->
             bind.savedTickets.text = "${tickets.size}"
+            checkSavedTicketsSize(tickets)
         }
 
         ticketViewModel.lastTicket.observe(viewLifecycleOwner) { ticket ->
@@ -76,6 +81,13 @@ class TicketFragment : BaseFragment() {
         }
     }
 
+    private fun checkSavedTicketsSize(tickets: Set<Ticket>) {
+        if (tickets.isEmpty())
+            paperOutDialog.dismiss()
+        else
+            showPaperOutDialog()
+    }
+
     private fun checkPaperOutState(paperOut: Boolean) {
         if (paperOut) {
             showPaperOutDialog()
@@ -83,9 +95,7 @@ class TicketFragment : BaseFragment() {
     }
 
     private fun showPaperOutDialog() {
-        PaperOutDialog {
-            ticketViewModel.printTicketsInMemory()
-        }.show(childFragmentManager, "")
+        paperOutDialog.show(childFragmentManager, TAG)
     }
 
     private fun setupListeners() {
