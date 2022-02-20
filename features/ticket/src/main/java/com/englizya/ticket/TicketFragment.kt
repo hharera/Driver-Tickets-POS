@@ -82,8 +82,11 @@ class TicketFragment : BaseFragment() {
     }
 
     private fun checkSavedTicketsSize(tickets: Set<Ticket>) {
-        if (tickets.isEmpty())
-            paperOutDialog.dismiss()
+        if (tickets.isEmpty()) {
+            runCatching {
+                paperOutDialog.dismiss()
+            }
+        }
         else
             showPaperOutDialog()
     }
