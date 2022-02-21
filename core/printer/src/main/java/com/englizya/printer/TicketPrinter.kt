@@ -215,7 +215,7 @@ class TicketPrinter @Inject constructor(
 
         page.addLine()
             .addUnit(
-                "$SERIAL${ticket.carCode}_${TimeUtils.getTicketTimeMillis()}",
+                "$SERIAL${ticket.ticketId.split("-").get(2)}",
                 TEXT_SIZE,
                 EAlign.CENTER,
                 TEXT_STYLE

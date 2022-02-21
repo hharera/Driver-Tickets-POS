@@ -138,6 +138,7 @@ class TicketViewModel @Inject constructor(
         Log.d(TAG, "checkPrintState: $printState")
         if (printState == OUT_OF_PAPER) {
             _isPaperOut.postValue(true)
+            Log.d(TAG, "checkPrintState: $ticket")
             _ticketsInMemory.postValue(ticketsInMemory.value!!.plus(ticket))
         }
     }
