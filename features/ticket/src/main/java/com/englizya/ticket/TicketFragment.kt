@@ -93,7 +93,7 @@ class TicketFragment : BaseFragment() {
 
     private fun checkPaperOutState(paperOut: Boolean) {
         if (paperOut) {
-            showPaperOutDialog()
+//            showPaperOutDialog()
         }
     }
 
