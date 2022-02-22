@@ -1,9 +1,12 @@
 package com.englizya.login
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.englizya.api.utils.Routing
 import com.englizya.common.base.BaseViewModel
 import com.englizya.common.utils.Validity
+import com.englizya.common.utils.navigation.Destination.END_SHIFT
 import com.englizya.datastore.utils.Value
 import com.englizya.datastore.core.CarDataStore
 import com.englizya.datastore.core.DriverDataStore
@@ -27,6 +30,8 @@ class LoginViewModel @Inject constructor(
     private val driverDataStore: DriverDataStore,
     private val ticketDataStore: TicketDataStore,
 ) : BaseViewModel() {
+
+    private val TAG = "LoginViewModel"
 
     private var _username = MutableLiveData<String>()
     val username: LiveData<String> = _username
@@ -67,10 +72,10 @@ class LoginViewModel @Inject constructor(
         checkFormValidity()
     }
 
-    suspend fun login() {
+    suspend fun login(username: Int, password: String) {
         updateLoading(true)
         userRepository
-            .login(LoginRequest(username.value!!.toInt(), password.value!!))
+            .login(LoginRequest(username, password))
             .onSuccess {
                 updateLoading(false)
                 driverDataStore.setToken(it.jwt)
@@ -82,6 +87,20 @@ class LoginViewModel @Inject constructor(
                 _loginOperationState.postValue(false)
                 handleException(it)
             }
+    }
+
+    suspend fun login() {
+        if (redirectRouting.value != null && redirectRouting.value == END_SHIFT) {
+            Log.d(TAG, "login: ${username.value}")
+            checkUsernameAndPassword(username = Integer.parseInt(username.value!!))
+        } else {
+            login(username = Integer.parseInt(username.value!!), password = password.value!!)
+        }
+    }
+
+    private fun checkUsernameAndPassword(username: Int) {
+        if (username == driverDataStore.getDriverCode())
+            _loginOperationState.postValue(true)
     }
 
 

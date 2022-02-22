@@ -58,11 +58,6 @@ class HomeActivity : BaseActivity() {
                     navController.navigate(NavigationUtils.getUriNavigation(Domain.ENGLIZYA_PAY, Destination.LOGIN, Destination.END_SHIFT))
                     bind.root.closeDrawer(GravityCompat.END, true)
                 }
-
-                R.id.navigation_end_shift -> {
-                    navController.navigate(R.id.navigation_day_report)
-                    bind.root.closeDrawer(GravityCompat.END, true)
-                }
             }
             return@setNavigationItemSelectedListener true
         }
