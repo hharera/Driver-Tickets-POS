@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item
-        android:id="@id/navigation_day_report"
-        android:icon="@drawable/ic_report"
-        android:iconTint="@color/grey"
-        android:title="@string/day_report" />
+<!--    <item-->
+<!--        android:id="@id/navigation_day_report"-->
+<!--        android:icon="@drawable/ic_report"-->
+<!--        android:iconTint="@color/grey"-->
+<!--        android:title="@string/day_report" />-->
 
     <item
         android:id="@id/navigation_end_shift"
