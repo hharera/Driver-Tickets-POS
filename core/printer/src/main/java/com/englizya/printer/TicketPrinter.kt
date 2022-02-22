@@ -201,7 +201,7 @@ class TicketPrinter @Inject constructor(
 
     fun printTicket(ticket: Ticket): String {
         val page = paxGLPage.createPage()
-        page.adjustLineSpace(-9)
+//        page.adjustLineSpace(-9)
 
 
         val logo = getLogoBitmap()
@@ -210,47 +210,34 @@ class TicketPrinter @Inject constructor(
 
         page.addLine()
             .addUnit(
-                "$SERIAL${ticket.ticketId.split("-").get(2)}",
+                ticket.ticketId,
                 TEXT_SIZE,
                 EAlign.CENTER,
                 TEXT_STYLE
             )
-        page.addLine().addUnit("\n", 5)
-
-        page.addLine()
-            .addUnit("$DRIVER_CODE${ticket.driverCode}", TEXT_SIZE, EAlign.CENTER, TEXT_STYLE)
-        page.addLine().addUnit("\n", 5)
-
-        page.addLine().addUnit("$CAR_CODE${ticket.carCode}", TEXT_SIZE, EAlign.CENTER, TEXT_STYLE)
-        page.addLine().addUnit("\n", 5)
-
-
-        page.addLine().addUnit("$LINE_CODE${ticket.lineCode}", TEXT_SIZE, EAlign.CENTER, TEXT_STYLE)
-        page.addLine().addUnit("\n", 5)
-
-        page.addLine().addUnit(
-            "$TICKET_DATE${TimeUtils.getDate(ticket.time)}",
-            TEXT_SIZE,
-            EAlign.CENTER,
-            TEXT_STYLE
-        )
-        page.addLine().addUnit("\n", 5)
-
-        page.addLine().addUnit(
-            "$TICKET_TIME${TimeUtils.getTime(ticket.time)}",
-            TEXT_SIZE,
-            EAlign.CENTER,
-            TEXT_STYLE
-        )
-
-        page.addLine().addUnit("\n", 5)
+        page.addLine().addUnit("\n", 8)
 
         val barCodeBitmap =
             BarcodeEncoder().encodeBitmap(ticket.ticketId, BarcodeFormat.QR_CODE, 150, 150)
 
-        page.addLine().addUnit(barCodeBitmap, EAlign.CENTER)
+        page.addLine()
+            .addUnit(
+                "$DRIVER_CODE${ticket.driverCode}"
+                    .plus("\n")
+                    .plus("$CAR_CODE${ticket.carCode}")
+                    .plus("\n")
+                    .plus("$LINE_CODE${ticket.lineCode}")
+                    .plus("\n")
+                    .plus(TimeUtils.getDate(ticket.time))
+                    .plus("\n")
+                    .plus(TimeUtils.getTime(ticket.time)),
+                TEXT_SIZE,
+                EAlign.CENTER,
+                TEXT_STYLE
+            )
+            .addUnit(barCodeBitmap, EAlign.LEFT)
 
-//        page.addLine().addUnit("\n", 10)
+        page.addLine().addUnit("\n", 7)
 
         val ticketCategoryBitmap =
             BitmapFactory.decodeResource(
