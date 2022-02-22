@@ -3,8 +3,6 @@ package com.englizya.printer
 import android.app.Application
 import android.graphics.BitmapFactory
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.englizya.common.utils.time.TimeUtils
 import com.englizya.model.request.Ticket
 import com.englizya.model.response.ShiftReportResponse
@@ -28,16 +26,14 @@ import com.englizya.printer.utils.ArabicParameters.TICKET_TIME
 import com.englizya.printer.utils.ArabicParameters.TOTAL_INCOME
 import com.englizya.printer.utils.ArabicParameters.TOTAL_TICKETS
 import com.englizya.printer.utils.ArabicParameters.WORK_HOURS
-import com.englizya.printer.utils.PrinterState
 import com.englizya.printer.utils.TicketParameter.TEXT_SIZE
 import com.englizya.printer.utils.TicketParameter.TEXT_STYLE
+import com.google.zxing.BarcodeFormat
+import com.journeyapps.barcodescanner.BarcodeEncoder
 import com.pax.dal.entity.EFontTypeAscii
 import com.pax.dal.entity.EFontTypeExtCode
 import com.pax.gl.page.IPage.EAlign
 import com.pax.gl.page.PaxGLPage
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
 
@@ -48,7 +44,6 @@ class TicketPrinter @Inject constructor(
     private val application: Application,
 ) {
     private val TAG = "TicketPrinter"
-
 
 
     private fun initPrinter() {
@@ -64,7 +59,7 @@ class TicketPrinter @Inject constructor(
 
     fun printShiftReport(endShiftReportResponse: ShiftReportResponse): String {
         val page = paxGLPage.createPage()
-        page.adjustLineSpace(-9)
+        page.addLine().addUnit("", 1)
 
         val logo =
             BitmapFactory.decodeResource(
@@ -247,7 +242,15 @@ class TicketPrinter @Inject constructor(
             EAlign.CENTER,
             TEXT_STYLE
         )
-        page.addLine().addUnit("\n", 10)
+
+        page.addLine().addUnit("\n", 5)
+
+        val barCodeBitmap =
+            BarcodeEncoder().encodeBitmap(ticket.ticketId, BarcodeFormat.QR_CODE, 150, 150)
+
+        page.addLine().addUnit(barCodeBitmap, EAlign.CENTER)
+
+//        page.addLine().addUnit("\n", 10)
 
         val ticketCategoryBitmap =
             BitmapFactory.decodeResource(
