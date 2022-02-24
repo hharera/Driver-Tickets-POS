@@ -8,4 +8,6 @@ dependencies {
     implementation(Libs.appcompat)
     implementation(project(Base.common))
     implementation(project(Data.model))
+    api(BarCode.zxingEmbedded)
+    api(BarCode.zxingCore)
 }
