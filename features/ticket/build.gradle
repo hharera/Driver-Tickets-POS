@@ -5,4 +5,6 @@ dependencies {
     implementation Libs.circleImage
     api project(Core.PRINTER)
     api project(UiComponents.OUT_OF_PAPER_ALERT)
+    api Libs.playServicesLoation
+    implementation 'com.google.android.gms:play-services-location:19.0.1'
 }

@@ -191,4 +191,7 @@
     <string name="shift_end">نهاية الشيف</string>
     <string name="work_hours">عدد ساعات العمل</string>
     <string name="check_your_internet">تأكد من وجود انترنت ثم عاود المحاولة</string>
+    <string name="location_permission_denied">لم نتمكن من الوصول الي الموقع</string>
+    <string name="permission_required_toast">سماحية الوصول الي الموقع مطلوبه</string>
+    <string name="permission_rationale_location">الرجاء السماح بالوصول الي موقعك الجغرافي</string>
 </resources>
