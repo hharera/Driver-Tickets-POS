@@ -2,6 +2,7 @@ package com.englizya.printer
 
 import android.app.Application
 import android.graphics.BitmapFactory
+import android.location.LocationManager
 import android.util.Log
 import com.englizya.common.utils.time.TimeUtils
 import com.englizya.model.request.Ticket
