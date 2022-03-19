@@ -10,4 +10,6 @@ dependencies {
     implementation(project(Data.model))
     api(BarCode.zxingEmbedded)
     api(BarCode.zxingCore)
+    api(Libs.playServicesMaps)
+    api 'com.yandex.android:mapkit:3.5.0'
 }

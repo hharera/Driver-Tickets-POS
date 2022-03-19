@@ -1,6 +1,8 @@
 package com.englizya.navigation
 
 import android.os.Bundle
+import android.os.Looper
+import android.util.Log
 import androidx.core.view.GravityCompat
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -13,6 +15,10 @@ import com.englizya.common.utils.navigation.Domain
 import com.englizya.common.utils.navigation.NavigationUtils
 import com.englizya.ticket.navigation.R
 import com.englizya.ticket.navigation.databinding.ActivityHomeBinding
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
+import com.google.android.gms.location.LocationServices
 
 //TODO extend from base activity
 class HomeActivity : BaseActivity() {
@@ -20,6 +26,7 @@ class HomeActivity : BaseActivity() {
     private lateinit var bind: ActivityHomeBinding
     private lateinit var navController: NavController
     private val TAG = "HomeActivity"
+    private lateinit var locationCallback: LocationCallback
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,11 +38,37 @@ class HomeActivity : BaseActivity() {
         NavigationUI.setupWithNavController(bind.navView, navController)
 
         getExtras()
+        getLocation()
+    }
+
+    private fun getLocation() {
+        val fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult) {
+                locationResult ?: return
+                for (location in locationResult.locations) {
+                    Log.d(TAG, "onLocationResult: $location")
+                }
+            }
+        }
+
+        fusedLocationClient.requestLocationUpdates(
+            LocationRequest(),
+            locationCallback,
+            Looper.getMainLooper())
+
     }
 
     private fun getExtras() {
         intent?.extras?.getString(Arguments.Destination)?.let {
-            navController.navigate(NavigationUtils.getUriNavigation(Domain.ENGLIZYA_PAY, it, Destination.TICKET))
+            navController.navigate(
+                NavigationUtils.getUriNavigation(
+                    Domain.ENGLIZYA_PAY,
+                    it,
+                    Destination.TICKET
+                )
+            )
         }
     }
 

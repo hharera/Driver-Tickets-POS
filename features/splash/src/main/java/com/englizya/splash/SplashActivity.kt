@@ -42,7 +42,8 @@ class SplashActivity : BaseActivity() {
         if (state) {
             goTicket()
         } else {
-            goLogin()
+//            goLogin()
+            goTicket()
         }
     }
 
