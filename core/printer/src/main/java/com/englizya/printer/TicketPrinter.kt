@@ -31,36 +31,18 @@ import com.englizya.printer.utils.ArabicParameters.WORK_HOURS
 import com.englizya.printer.utils.PrinterState
 import com.englizya.printer.utils.TicketParameter.TEXT_SIZE
 import com.englizya.printer.utils.TicketParameter.TEXT_STYLE
-import com.pax.dal.entity.EFontTypeAscii
-import com.pax.dal.entity.EFontTypeExtCode
 import com.pax.gl.page.IPage.EAlign
 import com.pax.gl.page.PaxGLPage
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
 
 
 class TicketPrinter @Inject constructor(
-    private val paxPrinter: PaxPrinter,
     private val paxGLPage: PaxGLPage,
     private val application: Application,
+    private val sunmiPrinter: SunmiPrinter,
 ) {
     private val TAG = "TicketPrinter"
-
-
-
-    private fun initPrinter() {
-        paxPrinter.init()
-        paxPrinter.fontSet(EFontTypeAscii.FONT_16_16, EFontTypeExtCode.FONT_16_16)
-        paxPrinter.spaceSet(SPACE_SET, SPACE_SET)
-        paxPrinter.leftIndents(LEFT_INDENT)
-        paxPrinter.setGray(GRAY_LEVEL)
-        paxPrinter.setInvert(INVERT_STATE)
-        paxPrinter.setDoubleWidth(isAscDouble = true, isLocalDouble = true)
-        paxPrinter.setDoubleHeight(isAscDouble = true, isLocalDouble = true)
-    }
 
     fun printShiftReport(endShiftReportResponse: ShiftReportResponse): String {
         val page = paxGLPage.createPage()
@@ -197,11 +179,9 @@ class TicketPrinter @Inject constructor(
         page.addLine().addUnit("\n", 35)
         val pageBitmap = paxGLPage.pageToBitmap(page, 384)
 
-        initPrinter()
-        paxPrinter.printBitmap(pageBitmap)
-        return paxPrinter.start().also {
-            Log.d(TAG, "printShiftReport: $it")
-        }
+        sunmiPrinter.print(pageBitmap)
+//        TODO : return state
+        return ""
     }
 
     fun printTicket(ticket: Ticket): String {
@@ -267,11 +247,9 @@ class TicketPrinter @Inject constructor(
 
         val ticketBitmap = paxGLPage.pageToBitmap(page, 384)
 
-        initPrinter()
-        paxPrinter.printBitmap(ticketBitmap)
-        return paxPrinter.start().also {
-            Log.d(TAG, "printShiftReport: $it")
-        }
+        sunmiPrinter.print(ticketBitmap)
+//        TODO : return state
+        return ""
     }
 
     private fun getLogoBitmap() =

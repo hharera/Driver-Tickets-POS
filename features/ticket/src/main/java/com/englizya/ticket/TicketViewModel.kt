@@ -11,7 +11,6 @@ import com.englizya.datastore.core.ManifestoDataStore
 import com.englizya.datastore.core.TicketDataStore
 import com.englizya.model.request.Ticket
 import com.englizya.common.utils.time.TimeUtils.getTicketTimeMillis
-import com.englizya.printer.PaxPrinter
 import com.englizya.printer.TicketPrinter
 import com.englizya.printer.utils.PrinterState.OUT_OF_PAPER
 import com.englizya.repository.TicketRepository
