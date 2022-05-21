@@ -1,9 +1,6 @@
 package com.englizya.ticket
 
-import android.Manifest
 import android.Manifest.permission
-import android.content.pm.PackageManager
-import android.content.pm.PackageManager.PERMISSION_DENIED
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.content.PermissionChecker
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.englizya.common.base.BaseFragment
@@ -51,7 +47,7 @@ class TicketFragment : BaseFragment() {
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
 
-        ticketViewModel.setPaymentWay(getString(PaymentMethod.Cash.titleRes))
+        ticketViewModel.setPaymentMethod(PaymentMethod.Cash)
         changeStatusBarColor(R.color.white_600)
         return bind.root
     }
@@ -67,7 +63,7 @@ class TicketFragment : BaseFragment() {
 
     private fun setupPaymentAdapter() {
         paymentMethodsAdapter = PaymentMethodsAdapter {
-            bind.paymentMethod.text = "طريقة الدفع: ".plus(getString(it))
+            ticketViewModel.setPaymentMethod(it)
         }
 
         bind.paymentMethods.adapter = paymentMethodsAdapter
@@ -98,6 +94,21 @@ class TicketFragment : BaseFragment() {
         connectionLiveData.observe(viewLifecycleOwner) { state ->
             ticketViewModel.updateConnectivity(state)
         }
+
+        ticketViewModel.paymentMethod.observe(viewLifecycleOwner) { method ->
+            updatePaymentMethods(method)
+        }
+    }
+
+    private fun updatePaymentMethods(method: PaymentMethod) {
+        bind.paymentMethod.text = "طريقة الدفع: ".plus(getString(method.titleRes))
+
+        paymentMethodsAdapter = PaymentMethodsAdapter(
+            selectedPaymentMethod = method
+        ) {
+            ticketViewModel.setPaymentMethod(it)
+        }
+        bind.paymentMethods.adapter = paymentMethodsAdapter
     }
 
     private fun checkSavedTicketsSize(tickets: Set<Ticket>) {

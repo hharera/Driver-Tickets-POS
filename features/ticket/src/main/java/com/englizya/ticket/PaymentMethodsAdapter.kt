@@ -5,14 +5,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.englizya.ticket.ticket.databinding.CardViewPaymentTypeBinding
-import com.englizya.ticket.utils.Constant.DEFAULT_PAYMENT_CHOSEN
 
 class PaymentMethodsAdapter(
-    private val itemChosenPosition: Int = DEFAULT_PAYMENT_CHOSEN,
-    private val onMethodClicked: (Int) -> Unit,
+    private val selectedPaymentMethod: PaymentMethod = PaymentMethod.Cash,
+    private val onMethodClicked: (PaymentMethod) -> Unit,
 ) : RecyclerView.Adapter<PaymentMethodsAdapter.ViewHolder>() {
-
-    private var currentMethodPosition = 1
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -49,14 +46,13 @@ class PaymentMethodsAdapter(
 
         fun updateUI(paymentMethod: PaymentMethod, position: Int) {
             bind.root.setOnClickListener {
-                //                TODO set max as const
-                //                onMethodClicked(paymentMethod.titleRes)
+                onMethodClicked(paymentMethod)
             }
 
-            if (position == itemChosenPosition) {
-                bind.paymentImage.setImageResource(paymentMethod.iconRes)
-                bind.paymentText.setText(paymentMethod.titleRes)
-            } else {
+            bind.paymentImage.setImageResource(paymentMethod.iconRes)
+            bind.paymentText.setText(paymentMethod.titleRes)
+
+            if (paymentMethod.javaClass == selectedPaymentMethod.javaClass) {
                 bind.paymentImage.apply {
                     setImageResource(paymentMethod.iconRes)
                     setColorFilter(Color.GRAY)

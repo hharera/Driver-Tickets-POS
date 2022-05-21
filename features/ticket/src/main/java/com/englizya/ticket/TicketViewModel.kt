@@ -5,13 +5,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.englizya.common.base.BaseViewModel
+import com.englizya.common.utils.time.TimeUtils.getTicketTimeMillis
 import com.englizya.datastore.core.CarDataStore
 import com.englizya.datastore.core.DriverDataStore
 import com.englizya.datastore.core.ManifestoDataStore
 import com.englizya.datastore.core.TicketDataStore
 import com.englizya.model.request.Ticket
-import com.englizya.common.utils.time.TimeUtils.getTicketTimeMillis
-import com.englizya.printer.PaxPrinter
 import com.englizya.printer.TicketPrinter
 import com.englizya.printer.utils.PrinterState.OUT_OF_PAPER
 import com.englizya.repository.TicketRepository
@@ -43,8 +42,8 @@ class TicketViewModel @Inject constructor(
     private var _lastTicket = MutableLiveData<Ticket>()
     val lastTicket: LiveData<Ticket> = _lastTicket
 
-    private var _paymentWay = MutableLiveData<String>()
-    val paymentWay: LiveData<String> = _paymentWay
+    private var _paymentMethod = MutableLiveData<PaymentMethod>(PaymentMethod.Cash)
+    val paymentMethod: LiveData<PaymentMethod> = _paymentMethod
 
     private var _ticketCategory = MutableLiveData<Int>()
     val ticketCategory: LiveData<Int> = _ticketCategory
@@ -80,8 +79,8 @@ class TicketViewModel @Inject constructor(
         _quantity.postValue(min(max(Constant.MIN_TICKETS, quantity), Constant.MAX_TICKETS))
     }
 
-    fun setPaymentWay(way: String) {
-        _paymentWay.postValue(way)
+    fun setPaymentMethod(method: PaymentMethod) {
+        _paymentMethod.value = method
     }
 
     suspend fun submitTickets() {
@@ -187,7 +186,7 @@ class TicketViewModel @Inject constructor(
                     driverCode = driverDataStore.getDriverCode(),
                     carCode = carDataStore.getCarCode(),
                     time = DateTime.now().toString(),
-                    paymentWay = paymentWay.value!!,
+                    paymentWay = getPaymentMethod(),
                     ticketCategory = ticketDataStore.getTicketCategory(),
                     manifestoId = manifestoDataStore.getManifestoNo(),
                     manifestoYear = manifestoDataStore.getManifestoYear(),
@@ -198,6 +197,14 @@ class TicketViewModel @Inject constructor(
         }
 
         return tickets
+    }
+
+    private fun getPaymentMethod(): String {
+        return when (paymentMethod.value!!) {
+            PaymentMethod.Cash -> "CASH"
+            PaymentMethod.Card -> "CARD"
+            PaymentMethod.QR -> "QR"
+        }
     }
 
     private fun createTicketId(currentTime: Long): String {
