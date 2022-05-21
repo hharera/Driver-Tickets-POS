@@ -24,15 +24,6 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="OutlinedInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
-        <item name="boxStrokeWidth">1dp</item>
-        <item name="boxStrokeWidthFocused">1dp</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="hintTextColor">@color/white</item>
-        <item name="startIconTint">@color/white</item>
-        <item name="boxStrokeColor">@drawable/box_outline_input_color</item>
-    </style>
-
     <style name="Theme.AppCompat.Light.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
