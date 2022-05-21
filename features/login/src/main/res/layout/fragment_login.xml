@@ -39,7 +39,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="23dp"
-            android:hint="@string/driver_code"
+            android:hint="@string/employee_code"
             android:saveEnabled="false"
             android:layout_marginTop="10dp"
             android:textAlignment="textStart"
@@ -47,6 +47,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:startIconDrawable="@drawable/ic_id_24">
+
+            <requestFocus />
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/username"

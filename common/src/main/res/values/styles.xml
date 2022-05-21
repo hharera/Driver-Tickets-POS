@@ -29,6 +29,7 @@
         <item name="boxStrokeWidthFocused">1dp</item>
         <item name="android:textColor">@color/white</item>
         <item name="hintTextColor">@color/white</item>
+        <item name="android:textColorHint">@drawable/input_hint_color</item>
         <item name="startIconTint">@color/white</item>
         <item name="boxStrokeColor">@drawable/box_outline_input_color</item>
     </style>
