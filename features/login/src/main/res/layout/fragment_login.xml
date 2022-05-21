@@ -35,15 +35,14 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/emailET"
-            style="@style/OutlinedBox"
+            style="@style/OutlinedInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_10sdp"
+            android:layout_marginHorizontal="23dp"
             android:hint="@string/driver_code"
             android:saveEnabled="false"
-            android:selectAllOnFocus="true"
+            android:layout_marginTop="10dp"
             android:textAlignment="textStart"
-            app:boxStrokeColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -61,14 +60,13 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/passwordET"
-            style="@style/OutlinedBox"
+            style="@style/OutlinedInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_10sdp"
+            android:layout_marginHorizontal="23dp"
+            android:layout_marginTop="10dp"
             android:hint="@string/password"
-            android:inputType="numberPassword"
-            android:saveEnabled="false"
-            app:boxStrokeColor="@color/white"
+            android:inputType="textPassword"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -88,17 +86,18 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/login"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/_10sdp"
-        android:background="@color/red_600"
-        android:enabled="true"
+        android:layout_marginHorizontal="23dp"
+        android:layout_marginBottom="28dp"
+        android:background="@drawable/background_button_login"
+        android:enabled="false"
         android:text="@string/login"
         android:textColor="@color/white"
         android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ll1"
-        app:layout_constraintWidth_percent="0.6" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
