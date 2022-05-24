@@ -1,0 +1,7 @@
+apply from: "$rootDir/${CommonBuild.FeatureModule}"
+
+dependencies {
+    implementation(BarCode.zxingEmbedded)
+    implementation 'com.github.nisrulz:qreader:2.1.1'
+    implementation "com.google.android.gms:play-services-vision:20.1.3"
+}

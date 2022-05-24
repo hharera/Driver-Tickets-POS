@@ -105,6 +105,7 @@ class LoginViewModel @Inject constructor(
     private fun updateLocalData(manifesto: ManifestoDetails) {
 //        TODO complete info
         manifestoDataStore.setManifestoDate(manifesto.date)
+        manifestoDataStore.setIsManifestoShort(manifesto.isShortManifesto)
         manifestoDataStore.setManifestoNo(manifesto.manifestoId)
         manifestoDataStore.setManifestoYear(manifesto.year)
 

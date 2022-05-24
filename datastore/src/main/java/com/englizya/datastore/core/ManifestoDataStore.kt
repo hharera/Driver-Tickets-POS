@@ -1,6 +1,7 @@
 package com.englizya.datastore.core
 
 import android.content.Context
+import com.englizya.datastore.utils.ManifestoConstants.IS_SHORT_MANIFESTO
 import com.englizya.datastore.utils.Value.NULL_INT
 import com.englizya.datastore.utils.Value.NULL_STRING
 import com.englizya.datastore.utils.ManifestoConstants.MANIFESTO_DATE
@@ -33,4 +34,10 @@ class ManifestoDataStore(context: Context) {
     }
 
     fun getManifestoDate(): String = manifestoPreferences.getString(MANIFESTO_DATE, NULL_STRING)!!
+
+    fun setIsManifestoShort(isManifestoShort: Int) {
+        manifestoPreferences.edit().putInt(IS_SHORT_MANIFESTO, isManifestoShort).apply()
+    }
+
+    fun getIsManifestoShort(): String = manifestoPreferences.getString(IS_SHORT_MANIFESTO, NULL_STRING)!!
 }

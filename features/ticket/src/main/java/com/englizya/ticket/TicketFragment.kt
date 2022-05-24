@@ -1,6 +1,7 @@
 package com.englizya.ticket
 
 import android.Manifest.permission
+import android.content.Intent
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -55,13 +56,12 @@ class TicketFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupPaymentAdapter()
         setupObserves()
         setupListeners()
         checkLocationPermission()
     }
 
-    private fun setupPaymentAdapter() {
+    private fun setupPaymentAdapter(method: PaymentMethod) {
         paymentMethodsAdapter = PaymentMethodsAdapter {
             ticketViewModel.setPaymentMethod(it)
         }
@@ -102,13 +102,17 @@ class TicketFragment : BaseFragment() {
 
     private fun updatePaymentMethods(method: PaymentMethod) {
         bind.paymentMethod.text = "طريقة الدفع: ".plus(getString(method.titleRes))
+        setupPaymentAdapter(method)
 
-        paymentMethodsAdapter = PaymentMethodsAdapter(
-            selectedPaymentMethod = method
-        ) {
-            ticketViewModel.setPaymentMethod(it)
+        if (method == PaymentMethod.QR) {
+            navigateToScanWalletQr()
         }
-        bind.paymentMethods.adapter = paymentMethodsAdapter
+    }
+
+    private fun navigateToScanWalletQr() {
+        Class.forName("com.englizya.wallet_pay.WalletPayActivity").let {
+            startActivity(Intent(context, it))
+        }
     }
 
     private fun checkSavedTicketsSize(tickets: Set<Ticket>) {
@@ -160,8 +164,17 @@ class TicketFragment : BaseFragment() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        ticketViewModel.setPaymentMethod(PaymentMethod.Cash)
+    }
+
     private fun checkLocationPermission() {
-        if (ContextCompat.checkSelfPermission(requireContext(), permission.ACCESS_FINE_LOCATION) != PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(
+                requireContext(),
+                permission.ACCESS_FINE_LOCATION
+            ) != PERMISSION_GRANTED
+        ) {
             requestPermission(
                 requireActivity() as AppCompatActivity,
                 LOCATION_PERMISSION_REQUEST_CODE,
