@@ -13,6 +13,8 @@ class ManifestoDetails(
     var lineCode: String,
     var carCode: String,
     var driverCode: Int,
+    var isShortManifesto: Int,
+    var tripId: Int? = null,
     var date: String,
     var timeOut: String? = null,
     var timeIn: String? = null,
