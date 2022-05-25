@@ -21,8 +21,18 @@ android {
         viewBinding true
     }
 
+    signingConfigs {
+        release {
+            storeFile file("$rootDir/englizya-pay.jks")
+            storePassword "englizya"
+            keyAlias "key0"
+            keyPassword "englizya"
+        }
+    }
     buildTypes {
         release {
+            signingConfig signingConfigs.release
+            debuggable false
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }

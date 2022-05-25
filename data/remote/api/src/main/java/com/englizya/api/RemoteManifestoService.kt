@@ -6,5 +6,6 @@ import com.englizya.model.response.ShiftReportResponse
 
 interface RemoteManifestoService {
     suspend fun getManifesto(): ManifestoDetails
+    suspend fun getManifesto(token: String): ManifestoDetails
     suspend fun getShiftReport(endShiftRequest: EndShiftRequest): ShiftReportResponse
 }

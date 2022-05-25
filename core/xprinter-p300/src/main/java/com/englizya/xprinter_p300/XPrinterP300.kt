@@ -5,7 +5,7 @@ import com.dantsu.escposprinter.EscPosPrinter
 import com.dantsu.escposprinter.connection.bluetooth.BluetoothPrintersConnections
 import com.dantsu.escposprinter.textparser.PrinterTextParserImg
 import com.englizya.common.utils.time.TimeUtils
-import com.englizya.model.Ticket
+import com.englizya.model.request.Ticket
 import com.englizya.xprinter_p300.ArabicParameters.CAR_CODE
 import com.englizya.xprinter_p300.ArabicParameters.DRIVER_CODE
 import com.englizya.xprinter_p300.ArabicParameters.LINE_CODE
@@ -67,7 +67,7 @@ object XPrinterP300 {
     }
 
     fun print(
-        ticket: com.englizya.model.request.Ticket,
+        ticket: Ticket,
         logo: Bitmap,
         category: Bitmap,
         tele: Bitmap,
@@ -103,8 +103,9 @@ object XPrinterP300 {
 
         escPosPrinter.printFormattedTextAndCut(
             "[C]<img>$logoHex</img>\n" +
-                    "[L]\n" +
                     "[C]<img>$pageHex</img>\n" +
+                    "[C]${TimeUtils.getDate(ticket.time)}\n" +
+                    "[C]${TimeUtils.getTime(ticket.time)}\n" +
                     "[C]<img>$catHex</img>\n" +
                     "[C]<img>$teleHex</img>\n"
         )
