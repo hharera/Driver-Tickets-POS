@@ -42,6 +42,7 @@ class ScanWalletFragment : BaseFragment() {
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         binding = FragmentScanWalletBinding.inflate(layoutInflater)
+        changeStatusBarColor(R.color.grey_350)
         return binding.root
     }
 

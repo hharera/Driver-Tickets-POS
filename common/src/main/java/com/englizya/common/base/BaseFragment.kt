@@ -67,4 +67,5 @@ open class BaseFragment : Fragment() {
     fun changeStatusBarColor(colorRes : Int) {
         activity?.window?.statusBarColor = resources.getColor(colorRes)
     }
+
 }
