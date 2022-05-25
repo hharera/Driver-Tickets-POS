@@ -5,49 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/ticket_background">
-    <!--    TODO set Background to the screen-->
-
-    <!--    TODO get logo from the xd file-->
-
-    <TextView
-        android:id="@+id/saved_tickets_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="@string/saved_tickets"
-        android:textColor="@color/black"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-    <TextView
-        android:id="@+id/last_ticket_id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:textColor="@color/black"
-        android:textSize="12sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/saved_tickets"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:textColor="@color/red_600"
-        app:layout_constraintBottom_toBottomOf="@+id/saved_tickets_title"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/saved_tickets_title"
-        app:layout_constraintTop_toTopOf="@+id/saved_tickets_title" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.08" />
+        app:layout_constraintGuide_percent="0.02" />
 
     <ImageView
         android:id="@+id/logo"
@@ -70,29 +34,39 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_30sdp"
         android:orientation="horizontal"
+        android:padding="8dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logo"
         tools:listitem="@layout/card_view_payment_type" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/categories"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/payment_methods"
+        tools:listitem="@layout/card_view_category" />
+
+
     <TextView
         android:id="@+id/ticket_quantity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
+        android:padding="@dimen/_10sdp"
+        android:text="1"
         android:background="@drawable/quantity_background"
         android:fontFamily="@font/abeezee"
-        android:gravity="center"
-        android:maxWidth="@dimen/_100sdp"
-        android:minWidth="@dimen/_25sdp"
-        android:minHeight="@dimen/_120sdp"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textSize="80sp"
+        android:textSize="40sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/payment_methods" />
+        app:layout_constraintTop_toBottomOf="@+id/categories" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/ticket_plus"
@@ -122,32 +96,19 @@
         android:id="@+id/ticket_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginBottom="@dimen/_5sdp"
         android:text="القيمة: 5 جنيهات"
         android:textColor="@color/black"
-        android:textSize="36sp"
+        android:textSize="@dimen/_24sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ticket_quantity" />
-
-    <TextView
-        android:id="@+id/payment_method"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="طريقة الدفع: كاش"
-        android:textColor="@color/grey"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ticket_value" />
 
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/print"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:layout_marginTop="15dp"
         android:background="@drawable/background_print_button"
         android:paddingHorizontal="20dp"
         android:text="@string/print"
@@ -155,7 +116,7 @@
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/payment_method"
+        app:layout_constraintTop_toBottomOf="@+id/ticket_value"
         app:layout_constraintWidth_percent="0.7" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

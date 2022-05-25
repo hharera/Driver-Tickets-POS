@@ -4,9 +4,4 @@
     android:tint="#5F818E">
 
     <corners android:radius="20dp" />
-
-    <padding android:top="30dp" />
-    <padding android:right="30dp" />
-    <padding android:bottom="30dp" />
-    <padding android:left="30dp" />
 </shape>

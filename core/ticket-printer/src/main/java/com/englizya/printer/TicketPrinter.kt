@@ -190,13 +190,17 @@ class TicketPrinter @Inject constructor(
 
         page.addLine()
             .addUnit(
-                ticket.ticketId.plus("\n"),
+                ticket.ticketId,
                 TEXT_SIZE,
                 EAlign.CENTER,
                 TEXT_STYLE
             )
 
         page.addLine()
+            .addUnit(
+                getTicketQr(ticket.ticketId),
+                EAlign.LEFT,
+            )
             .addUnit(
                 "$DRIVER_CODE${ticket.driverCode}"
                     .plus("\n")
@@ -204,23 +208,10 @@ class TicketPrinter @Inject constructor(
                     .plus("\n")
                     .plus("$LINE_CODE${ticket.lineCode}"),
                 TEXT_SIZE,
-                EAlign.LEFT,
-                TEXT_STYLE
-            )
-            .addUnit(
-                getTicketQr(ticket.ticketId),
                 EAlign.RIGHT,
+                TEXT_STYLE
             )
 
-        page.addLine()
-            .addUnit(
-                TimeUtils.getDate(ticket.time)
-                    .plus("\n")
-                    .plus(TimeUtils.getTime(ticket.time)),
-                TEXT_SIZE,
-                EAlign.CENTER,
-                TEXT_STYLE
-            )
 
         XPrinterP300.print(
             ticket,

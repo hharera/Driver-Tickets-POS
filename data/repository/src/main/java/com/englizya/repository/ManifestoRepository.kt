@@ -7,4 +7,5 @@ import com.englizya.model.response.ShiftReportResponse
 interface ManifestoRepository {
     suspend fun getManifesto(): Result<ManifestoDetails>
     suspend fun getShiftReport(endShiftRequest: EndShiftRequest) : Result<ShiftReportResponse>
+    suspend fun getManifesto(token: String): Result<ManifestoDetails>
 }

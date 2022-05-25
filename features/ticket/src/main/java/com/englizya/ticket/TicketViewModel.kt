@@ -11,8 +11,10 @@ import com.englizya.datastore.core.DriverDataStore
 import com.englizya.datastore.core.ManifestoDataStore
 import com.englizya.datastore.core.TicketDataStore
 import com.englizya.model.request.Ticket
+import com.englizya.model.response.ManifestoDetails
 import com.englizya.printer.TicketPrinter
 import com.englizya.printer.utils.PrinterState.OUT_OF_PAPER
+import com.englizya.repository.ManifestoRepository
 import com.englizya.repository.TicketRepository
 import com.englizya.ticket.utils.Constant
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -27,6 +29,7 @@ import javax.inject.Inject
 class TicketViewModel @Inject constructor(
     private val ticketPrinter: TicketPrinter,
     private val ticketRepository: TicketRepository,
+    private val manifestoRepository: ManifestoRepository,
     private val manifestoDataStore: ManifestoDataStore,
     private val driverDataStore: DriverDataStore,
     private val carDataStore: CarDataStore,
@@ -35,6 +38,9 @@ class TicketViewModel @Inject constructor(
 
     private var _quantity = MutableLiveData<Int>(1)
     val quantity: LiveData<Int> = _quantity
+
+    private var _selectedCategory = MutableLiveData<Int>()
+    val selectedCategory: LiveData<Int> = _selectedCategory
 
     private var _ticketsInMemory = MutableLiveData<Set<Ticket>>(HashSet())
     val ticketsInMemory: LiveData<Set<Ticket>> = _ticketsInMemory
@@ -48,6 +54,9 @@ class TicketViewModel @Inject constructor(
     private var _ticketCategory = MutableLiveData<Int>()
     val ticketCategory: LiveData<Int> = _ticketCategory
 
+    private var _manifesto = MutableLiveData<ManifestoDetails>()
+    val manifesto: LiveData<ManifestoDetails> = _manifesto
+
     private val TAG = "TicketViewModel"
 
     private val _isPaperOut = MutableLiveData<Boolean>(false)
@@ -55,12 +64,27 @@ class TicketViewModel @Inject constructor(
 
     init {
         _ticketCategory.postValue(ticketDataStore.getTicketCategory())
-
+        fetchDriverManifesto()
         viewModelScope.launch(Dispatchers.IO) {
             ticketRepository.getLocalTickets().onSuccess {
                 Log.d(TAG, "$it")
             }
         }
+    }
+
+    private fun fetchDriverManifesto() = viewModelScope.launch(Dispatchers.IO) {
+        updateLoading(true)
+
+        manifestoRepository
+            .getManifesto(driverDataStore.getToken())
+            .onSuccess {
+                updateLoading(false)
+                _manifesto.postValue(it)
+            }
+            .onFailure {
+                updateLoading(false)
+                handleException(it)
+            }
     }
 
     fun decrementQuantity() {
@@ -213,5 +237,9 @@ class TicketViewModel @Inject constructor(
             .plus(driverDataStore.getDriverCode())
             .plus("-")
             .plus(currentTime)
+    }
+
+    fun setSelectedCategory(category: Int) {
+        _selectedCategory.value = category
     }
 }

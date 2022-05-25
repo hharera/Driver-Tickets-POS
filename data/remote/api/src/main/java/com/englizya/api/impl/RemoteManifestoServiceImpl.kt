@@ -27,6 +27,16 @@ class RemoteManifestoServiceImpl @Inject constructor(
         }
     }
 
+    override suspend fun getManifesto(token: String): ManifestoDetails {
+        return client.get {
+            url(Routing.GET_MANIFESTO)
+            headers.append(
+                name = HttpHeaders.Authorization,
+                value = "${AuthenticationParameters.BEARER} $token"
+            )
+        }
+    }
+
     override suspend fun getShiftReport(
         endShiftRequest: EndShiftRequest
     ): ShiftReportResponse {

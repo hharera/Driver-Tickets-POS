@@ -15,6 +15,7 @@ import com.englizya.common.base.BaseFragment
 import com.englizya.common.utils.permission.PermissionUtils.isPermissionGranted
 import com.englizya.common.utils.permission.PermissionUtils.requestPermission
 import com.englizya.model.request.Ticket
+import com.englizya.model.response.ManifestoDetails
 import com.englizya.ticket.ticket.R
 import com.englizya.ticket.ticket.databinding.FragmentTicketBinding
 import com.example.paper_out_alert.PaperOutDialog
@@ -35,6 +36,7 @@ class TicketFragment : BaseFragment() {
     private lateinit var bind: FragmentTicketBinding
 
     private lateinit var paymentMethodsAdapter: PaymentMethodsAdapter
+    private lateinit var categoriesAdapter: CategoriesAdapter
     private val paperOutDialog: PaperOutDialog by lazy { PaperOutDialog { ticketViewModel.printTicketsInMemory() } }
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -69,9 +71,17 @@ class TicketFragment : BaseFragment() {
         bind.paymentMethods.adapter = paymentMethodsAdapter
     }
 
+    private fun setupCategoriesAdapter(categoryList: List<Int>) {
+        categoriesAdapter = CategoriesAdapter(categoryList.first(), categoryList) {
+            ticketViewModel.setSelectedCategory(it)
+        }
+
+        bind.categories.adapter = categoriesAdapter
+    }
+
     private fun setupObserves() {
         ticketViewModel.quantity.observe(viewLifecycleOwner) {
-            bind.ticketQuantity.text = it.toString()
+            bind.ticketQuantity.setText("$it")
         }
 
         ticketViewModel.ticketCategory.observe(viewLifecycleOwner) {
@@ -83,12 +93,12 @@ class TicketFragment : BaseFragment() {
         }
 
         ticketViewModel.ticketsInMemory.observe(viewLifecycleOwner) { tickets ->
-            bind.savedTickets.text = "${tickets.size}"
+//            bind.savedTickets.text = "${tickets.size}"
             checkSavedTicketsSize(tickets)
         }
 
         ticketViewModel.lastTicket.observe(viewLifecycleOwner) { ticket ->
-            bind.lastTicketId.text = ticket.ticketId
+//            bind.lastTicketId.text = ticket.ticketId
         }
 
         connectionLiveData.observe(viewLifecycleOwner) { state ->
@@ -98,10 +108,25 @@ class TicketFragment : BaseFragment() {
         ticketViewModel.paymentMethod.observe(viewLifecycleOwner) { method ->
             updatePaymentMethods(method)
         }
+
+        ticketViewModel.selectedCategory.observe(viewLifecycleOwner) {
+            updateCategories(it)
+        }
+
+        ticketViewModel.manifesto.observe(viewLifecycleOwner) {
+            updateUI(it)
+        }
+    }
+
+    private fun updateUI(it: ManifestoDetails) {
+        setupCategoriesAdapter(listOf(it.ticketCategory))
+    }
+
+    private fun updateCategories(it: Int) {
+        categoriesAdapter.setSelectedCategory(it)
     }
 
     private fun updatePaymentMethods(method: PaymentMethod) {
-        bind.paymentMethod.text = "طريقة الدفع: ".plus(getString(method.titleRes))
         setupPaymentAdapter(method)
 
         if (method == PaymentMethod.QR) {
@@ -143,9 +168,9 @@ class TicketFragment : BaseFragment() {
             ticketViewModel.decrementQuantity()
         }
 
-        bind.savedTicketsTitle.setOnClickListener {
-            ticketViewModel.printTicketsInMemory()
-        }
+//        bind.savedTicketsTitle.setOnClickListener {
+//            ticketViewModel.printTicketsInMemory()
+//        }
 
         bind.print.setOnClickListener {
             lifecycleScope.launch(Dispatchers.IO) {

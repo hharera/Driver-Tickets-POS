@@ -15,6 +15,10 @@ class ManifestoRepositoryImpl @Inject constructor(
         manifestoService.getManifesto()
     }
 
+    override suspend fun getManifesto(token: String): Result<ManifestoDetails> = kotlin.runCatching {
+        manifestoService.getManifesto(token)
+    }
+
     override suspend fun getShiftReport(endShiftRequest: EndShiftRequest): Result<ShiftReportResponse> = kotlin.runCatching {
         manifestoService.getShiftReport(endShiftRequest)
     }
