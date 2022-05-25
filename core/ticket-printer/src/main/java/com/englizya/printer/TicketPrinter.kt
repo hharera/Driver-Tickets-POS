@@ -1,6 +1,7 @@
 package com.englizya.printer
 
 import android.app.Application
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import com.englizya.common.utils.time.TimeUtils
 import com.englizya.model.request.Ticket
@@ -175,24 +176,25 @@ class TicketPrinter @Inject constructor(
     }
 
     fun printTicket(ticket: Ticket): String {
-        val page = paxGLPage.createPage()
-
-
         val logo = getLogoBitmap()
-        page.addLine().addUnit(logo, EAlign.CENTER)
-        page.addLine().addUnit("\n", 24)
+        val category = BitmapFactory.decodeResource(
+            application.applicationContext.resources,
+            R.drawable.cat_5
+        )
+        val tele = BitmapFactory.decodeResource(
+            application.applicationContext.resources,
+            R.drawable.tele
+        )
+
+        val page = paxGLPage.createPage()
 
         page.addLine()
             .addUnit(
-                ticket.ticketId,
+                ticket.ticketId.plus("\n"),
                 TEXT_SIZE,
                 EAlign.CENTER,
                 TEXT_STYLE
             )
-        page.addLine().addUnit("\n", 16)
-
-        val barCodeBitmap =
-            BarcodeEncoder().encodeBitmap(ticket.ticketId, BarcodeFormat.QR_CODE, 1800, 1800)
 
         page.addLine()
             .addUnit(
@@ -200,39 +202,39 @@ class TicketPrinter @Inject constructor(
                     .plus("\n")
                     .plus("$CAR_CODE${ticket.carCode}")
                     .plus("\n")
-                    .plus("$LINE_CODE${ticket.lineCode}")
-                    .plus("\n")
-                    .plus(TimeUtils.getDate(ticket.time))
+                    .plus("$LINE_CODE${ticket.lineCode}"),
+                TEXT_SIZE,
+                EAlign.LEFT,
+                TEXT_STYLE
+            )
+            .addUnit(
+                getTicketQr(ticket.ticketId),
+                EAlign.RIGHT,
+            )
+
+        page.addLine()
+            .addUnit(
+                TimeUtils.getDate(ticket.time)
                     .plus("\n")
                     .plus(TimeUtils.getTime(ticket.time)),
                 TEXT_SIZE,
                 EAlign.CENTER,
                 TEXT_STYLE
             )
-            .addUnit(barCodeBitmap, EAlign.LEFT)
 
-        page.addLine().addUnit("\n", 28)
+        XPrinterP300.print(
+            ticket,
+            logo,
+            category,
+            tele,
+            page.toBitmap(5000)
+        )
 
-        val ticketCategoryBitmap =
-            BitmapFactory.decodeResource(
-                application.applicationContext.resources,
-                R.drawable.cat_5
-            )
-        page.addLine().addUnit(ticketCategoryBitmap, EAlign.CENTER)
-
-        val teleBitmap =
-            BitmapFactory.decodeResource(
-                application.applicationContext.resources,
-                R.drawable.tele
-            )
-        page.addLine().addUnit(teleBitmap, EAlign.CENTER)
-
-        page.addLine().addUnit("\n", 96)
-
-        val ticketBitmap = paxGLPage.pageToBitmap(page, 5000)
-
-        XPrinterP300.print(ticketBitmap)
         return "OK"
+    }
+
+    private fun getTicketQr(ticketId: String): Bitmap {
+        return BarcodeEncoder().encodeBitmap(ticketId, BarcodeFormat.QR_CODE, 1500, 1500)
     }
 
     private fun getLogoBitmap() =
