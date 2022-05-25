@@ -4,7 +4,11 @@ import android.graphics.Bitmap
 import com.dantsu.escposprinter.EscPosPrinter
 import com.dantsu.escposprinter.connection.bluetooth.BluetoothPrintersConnections
 import com.dantsu.escposprinter.textparser.PrinterTextParserImg
+import com.englizya.common.utils.time.TimeUtils
 import com.englizya.model.Ticket
+import com.englizya.xprinter_p300.ArabicParameters.CAR_CODE
+import com.englizya.xprinter_p300.ArabicParameters.DRIVER_CODE
+import com.englizya.xprinter_p300.ArabicParameters.LINE_CODE
 
 
 object XPrinterP300 {
@@ -60,5 +64,49 @@ object XPrinterP300 {
                 ) + "</img>\n"
             )
         }
+    }
+
+    fun print(
+        ticket: com.englizya.model.request.Ticket,
+        logo: Bitmap,
+        category: Bitmap,
+        tele: Bitmap,
+        page: Bitmap,
+    ) {
+        val escPosPrinter =
+            EscPosPrinter(
+                BluetoothPrintersConnections.selectFirstPaired(),
+                203,
+                50f,
+                32
+            )
+
+        val logoHex = PrinterTextParserImg.bitmapToHexadecimalString(
+            escPosPrinter,
+            logo
+        )
+
+        val catHex = PrinterTextParserImg.bitmapToHexadecimalString(
+            escPosPrinter,
+            category
+        )
+
+        val teleHex = PrinterTextParserImg.bitmapToHexadecimalString(
+            escPosPrinter,
+            tele
+        )
+
+        val pageHex = PrinterTextParserImg.bitmapToHexadecimalString(
+            escPosPrinter,
+            page
+        )
+
+        escPosPrinter.printFormattedTextAndCut(
+            "[C]<img>$logoHex</img>\n" +
+                    "[L]\n" +
+                    "[C]<img>$pageHex</img>\n" +
+                    "[C]<img>$catHex</img>\n" +
+                    "[C]<img>$teleHex</img>\n"
+        )
     }
 }
