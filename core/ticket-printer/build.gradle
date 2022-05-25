@@ -2,11 +2,11 @@ apply from: "$rootDir/${CommonBuild.FeatureModule}"
 
 dependencies {
     api fileTree(dir: 'src/main/jniLibs', include: ['*.jar','*.aar'])
-    api files('libs/NeptuneLiteApi_V3.27.00_20211103.jar')
     api files('libs/gl-page-V1.03.00_20181030.jar')
 
     implementation(Libs.appcompat)
     implementation(project(Base.common))
+    implementation(project(Core.X_PRINTER))
     implementation(project(Data.model))
     api(BarCode.zxingEmbedded)
     api(BarCode.zxingCore)

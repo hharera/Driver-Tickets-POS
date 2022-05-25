@@ -1,12 +1,7 @@
 package com.englizya.printer.di
 
 import android.app.Application
-import com.englizya.printer.PaxPrinter
-import com.englizya.printer.TicketPrinter
-import com.pax.dal.IDAL
-import com.pax.dal.IPrinter
 import com.pax.gl.page.PaxGLPage
-import com.pax.neptunelite.api.NeptuneLiteUser
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,16 +17,7 @@ class PrinterModule {
 
         @Singleton
         @Provides
-        fun provideIDAL(application: Application): IDAL =
-            NeptuneLiteUser.getInstance().getDal(application.applicationContext)
-
-        @Singleton
-        @Provides
         fun providePaxGl(application: Application): PaxGLPage =
             PaxGLPage.getInstance(application.applicationContext)
-
-        @Singleton
-        @Provides
-        fun provideBasePrinter(idal: IDAL): IPrinter = idal.printer
     }
 }
