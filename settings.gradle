@@ -16,7 +16,7 @@ include ':navigation:ticket'
 include ':datastore'
 include ':core'
 
-include ':core:printer'
+include ':core:ticket-printer'
 
 include ':data:repository'
 include ':data:model'
@@ -34,3 +34,4 @@ include ':features:end-shift'
 include ':ui-components:paper-out-alert'
 include ':features:scan-wallet'
 include ':navigation:wallet-pay'
+include ':core:xprinter-p300'
