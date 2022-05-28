@@ -1,8 +1,6 @@
 package com.englizya.api.di
 
-import com.englizya.api.RemoteManifestoService
-import com.englizya.api.RemoteTicketService
-import com.englizya.api.RemoteUserService
+import com.englizya.api.*
 import com.englizya.api.impl.RemoteManifestoServiceImpl
 import com.englizya.api.impl.RemoteTicketServiceImpl
 import com.englizya.api.impl.RemoteUserServiceImpl
@@ -28,4 +26,12 @@ abstract class RemoteModule {
     @Singleton
     @Binds
     abstract fun provideRemoteTicketService(remoteTicketServiceImpl: RemoteTicketServiceImpl): RemoteTicketService
+
+    @Singleton
+    @Binds
+    abstract fun provideWalletService(walletService : WalletServiceImpl): WalletService
+
+    @Singleton
+    @Binds
+    abstract fun provideTripService(walletService : TripServiceImpl): TripService
 }

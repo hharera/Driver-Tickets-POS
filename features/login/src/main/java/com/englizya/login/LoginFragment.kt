@@ -61,7 +61,7 @@ class LoginFragment : BaseFragment() {
         }
 
         loginViewModel.error.observe(this) {
-            handleFailure(exception = it)
+            handleFailure(it)
         }
 
         loginViewModel.loginOperationState.observe(this) { state ->

@@ -6,6 +6,7 @@ import com.englizya.datastore.utils.Value.NULL_INT
 import com.englizya.datastore.utils.Value.NULL_STRING
 import com.englizya.datastore.utils.ManifestoConstants.MANIFESTO_DATE
 import com.englizya.datastore.utils.ManifestoConstants.MANIFESTO_NO
+import com.englizya.datastore.utils.ManifestoConstants.MANIFESTO_TYPE
 import com.englizya.datastore.utils.ManifestoConstants.MANIFESTO_YEAR
 import com.englizya.datastore.utils.SourceConstants
 
@@ -28,6 +29,12 @@ class ManifestoDataStore(context: Context) {
     }
 
     fun getManifestoYear(): Int = manifestoPreferences.getInt(MANIFESTO_YEAR, NULL_INT)
+
+    fun setManifestoType(isShortManifesto: Int) {
+        manifestoPreferences.edit().putInt(MANIFESTO_TYPE, isShortManifesto).apply()
+    }
+
+    fun getManifestoType(): Int = manifestoPreferences.getInt(MANIFESTO_TYPE, NULL_INT)
 
     fun setManifestoDate(date: String) {
         manifestoPreferences.edit().putString(MANIFESTO_DATE, date).apply()

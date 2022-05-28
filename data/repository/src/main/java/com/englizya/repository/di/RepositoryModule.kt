@@ -1,8 +1,6 @@
 package com.englizya.repository.di
 
-import com.englizya.repository.ManifestoRepository
-import com.englizya.repository.TicketRepository
-import com.englizya.repository.UserRepository
+import com.englizya.repository.*
 import com.englizya.repository.impl.ManifestoRepositoryImpl
 import com.englizya.repository.impl.TicketRepositoryImpl
 import com.englizya.repository.impl.UserRepositoryImpl
@@ -23,4 +21,7 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindTicketRepository(ticketRepositoryImpl: TicketRepositoryImpl) : TicketRepository
+
+    @Binds
+    abstract fun bindWalletRepository(walletRepository: WalletRepositoryImpl) : WalletRepository
 }

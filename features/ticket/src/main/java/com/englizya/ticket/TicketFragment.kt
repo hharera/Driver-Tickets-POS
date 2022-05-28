@@ -29,8 +29,10 @@ import android.Manifest.permission.ACCESS_FINE_LOCATION as ACCESS_FINE_LOCATION1
 
 class TicketFragment : BaseFragment() {
 
-    private val TAG = "TicketFragment"
-    private val LOCATION_PERMISSION_REQUEST_CODE = 1006
+    companion object {
+        private const val TAG = "TicketFragment"
+        private const val LOCATION_PERMISSION_REQUEST_CODE = 1006
+    }
 
     private lateinit var ticketViewModel: TicketViewModel
     private lateinit var bind: FragmentTicketBinding
@@ -84,7 +86,7 @@ class TicketFragment : BaseFragment() {
             bind.ticketQuantity.setText("$it")
         }
 
-        ticketViewModel.ticketCategory.observe(viewLifecycleOwner) {
+        ticketViewModel.ticketCategories.observe(viewLifecycleOwner) {
             bind.ticketValue.text = getString(R.string.category).plus(" : ").plus(it)
         }
 
