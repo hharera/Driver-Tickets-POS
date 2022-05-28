@@ -1,11 +1,13 @@
 package com.englizya.api.utils
 
 object Routing {
-    const val END_SHIFT = "${Domain.ENGLIZYA_PAY}end-shift"
-    const val LOGIN = "${Domain.ENGLIZYA_PAY}login"
-    const val GET_MANIFESTO = "${Domain.ENGLIZYA_PAY}manifesto"
-    const val TICKET = "${Domain.ENGLIZYA_PAY}ticket"
-    const val TICKETS = "${Domain.ENGLIZYA_PAY}tickets"
+    const val GET_TRIP = "${Domain.ENGLIZYA_BUS}/api/trip"
+    const val GET_WALLET_DETAILS = "${Domain.ENGLIZYA_BUS}/api/driver/get-wallet-details"
+    const val END_SHIFT = "${Domain.ENGLIZYA_STAFF}/end-shift"
+    const val LOGIN = "${Domain.ENGLIZYA_STAFF}/login"
+    const val GET_MANIFESTO = "${Domain.ENGLIZYA_STAFF}/manifesto"
+    const val TICKET = "${Domain.ENGLIZYA_STAFF}/ticket"
+    const val TICKETS = "${Domain.ENGLIZYA_STAFF}/tickets"
 }
 
 object Request {
@@ -13,26 +15,17 @@ object Request {
 }
 
 object Parameters {
-    const val ACCESS_TOKEN: String = "access_token"
-    const val PID = "pid"
-}
-
-object LoginMethods {
-    const val EMAIL = "email"
-    const val FACEBOOK = "facebook"
-    const val Google = "google"
+    const val UID = "uid"
 }
 
 object AuthenticationParameters {
-    const val USERNAME = "username"
     const val BEARER = "Bearer"
 }
 
-object Constants {
-    const val TOKEN = "token"
-}
-
 object Domain {
-    const val ENGLIZYA_PAY = "http://161.97.71.140:9105/"
-//    const val ENGLIZYA_PAY = "http://192.168.1.190:9105/"
+    const val ENGLIZYA_STAFF = "http://161.97.71.140:9105"
+//    const val ENGLIZYA_PAY = "http://192.168.1.190:9105"
+
+    const val ENGLIZYA_BUS = "http://161.97.71.140:9100"
+//    const val ENGLIZYA_BUS = "http://192.168.1.190:9100"
 }

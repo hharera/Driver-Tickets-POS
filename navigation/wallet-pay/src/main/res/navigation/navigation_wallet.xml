@@ -12,4 +12,33 @@
 
         <deepLink app:uri="EnglizyaPay://scan-wallet" />
     </fragment>
+
+    <fragment
+        android:id="@+id/navigation_wallet_otp"
+        android:name="com.englizya.scan_qr.ScanWalletFragment"
+        tools:layout="@layout/fragment_send_otp">
+
+        <argument android:name="redirect" />
+        <deepLink app:uri="EnglizyaPay://wallet-otp/{redirect}" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/navigation_select_ticket"
+        android:name="com.englizya.select_ticket.SelectTicketFragment"
+        tools:layout="@layout/fragment_select_ticket">
+
+        <argument android:name="redirect" />
+        <deepLink app:uri="EnglizyaPay://select-otp/{redirect}" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/navigation_booking"
+        android:name="com.englizya.booking.BookingFragment"
+        tools:layout="@layout/fragment_booking">
+
+        <argument android:name="redirect" />
+        <deepLink app:uri="EnglizyaPay://booking/{redirect}" />
+    </fragment>
 </navigation>

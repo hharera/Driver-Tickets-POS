@@ -51,8 +51,8 @@ class TicketViewModel @Inject constructor(
     private var _paymentMethod = MutableLiveData<PaymentMethod>(PaymentMethod.Cash)
     val paymentMethod: LiveData<PaymentMethod> = _paymentMethod
 
-    private var _ticketCategory = MutableLiveData<Int>()
-    val ticketCategory: LiveData<Int> = _ticketCategory
+    private var _ticketCategories = MutableLiveData<Set<String>>()
+    val ticketCategories: LiveData<Set<String>> = _ticketCategories
 
     private var _manifesto = MutableLiveData<ManifestoDetails>()
     val manifesto: LiveData<ManifestoDetails> = _manifesto
@@ -63,8 +63,8 @@ class TicketViewModel @Inject constructor(
     val isPaperOut: LiveData<Boolean> = _isPaperOut
 
     init {
-        _ticketCategory.postValue(ticketDataStore.getTicketCategory())
         fetchDriverManifesto()
+        _ticketCategories.postValue(ticketDataStore.getTicketCategories())
         viewModelScope.launch(Dispatchers.IO) {
             ticketRepository.getLocalTickets().onSuccess {
                 Log.d(TAG, "$it")
@@ -211,7 +211,7 @@ class TicketViewModel @Inject constructor(
                     carCode = carDataStore.getCarCode(),
                     time = DateTime.now().toString(),
                     paymentWay = getPaymentMethod(),
-                    ticketCategory = ticketDataStore.getTicketCategory(),
+                    ticketCategory = ticketDataStore.getTicketCategories(),
                     manifestoId = manifestoDataStore.getManifestoNo(),
                     manifestoYear = manifestoDataStore.getManifestoYear(),
                     ticketLatitude = null,

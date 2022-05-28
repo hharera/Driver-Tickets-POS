@@ -1,0 +1,10 @@
+apply from: "$rootDir/${CommonBuild.FeatureModule}"
+
+android {
+    namespace 'com.englizya.wallet_otp'
+}
+
+dependencies {
+    api(project(Core.WALLET_PAYMENT))
+    api(Encryption.Jaspyt)
+}

@@ -2,4 +2,7 @@ apply from: "$rootDir/${CommonBuild.NavigationModule}"
 
 dependencies {
     api(project(Features.SCAN_WALLET))
+    api(project(Features.SELECT_TICKET))
+    api(project(Features.BOOKING))
+    api(project(Features.WALLET_OTP))
 }

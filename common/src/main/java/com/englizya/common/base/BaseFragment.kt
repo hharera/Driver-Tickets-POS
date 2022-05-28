@@ -4,9 +4,13 @@ import android.os.Bundle
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.englizya.common.R
 import com.englizya.common.ui.LoadingDialog
 import com.englizya.common.utils.network.ConnectionLiveData
 import dagger.hilt.android.AndroidEntryPoint
+import io.ktor.client.features.*
+import io.ktor.client.statement.*
+import io.ktor.http.*
 
 @AndroidEntryPoint
 open class BaseFragment : Fragment() {
@@ -52,15 +56,25 @@ open class BaseFragment : Fragment() {
 
     fun handleFailure(exception: Exception?, messageRes: Int? = null) {
         exception?.printStackTrace()
-        messageRes?.let { res ->
-            showToast(res)
-        }
     }
 
-    fun handleFailure(throwable: Throwable?, messageRes: Int? = null) {
+    fun handleFailure(throwable: Throwable?) {
         throwable?.printStackTrace()
-        messageRes?.let { res ->
-            showToast(res)
+        checkExceptionType(throwable)
+    }
+
+    private fun checkExceptionType(throwable: Throwable?) {
+        when (throwable) {
+            is Exception -> handleFailure(throwable)
+            is ClientRequestException  -> {
+                when(throwable.response.status) {
+                    HttpStatusCode.BadRequest -> showToast(throwable.message)
+                }
+                when(throwable.response.status) {
+                    HttpStatusCode.Forbidden -> showToast(R.string.relogin)
+                }
+            }
+            is HttpRequestTimeoutException -> showToast(R.string.check_your_internet)
         }
     }
 

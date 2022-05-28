@@ -3,6 +3,7 @@ package com.englizya.scan_qr
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.SurfaceHolder
 import android.view.View
@@ -10,10 +11,16 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.util.isNotEmpty
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.englizya.common.base.BaseFragment
+import com.englizya.common.utils.navigation.Destination
+import com.englizya.common.utils.navigation.Domain
+import com.englizya.common.utils.navigation.NavigationUtils
 import com.englizya.common.utils.permission.PermissionUtils
+import com.englizya.model.response.WalletDetails
 import com.englizya.scan_qr.databinding.FragmentScanWalletBinding
+import com.englizya.wallet.WalletPaymentViewModel
 import com.google.android.gms.vision.CameraSource
 import com.google.android.gms.vision.Detector
 import com.google.android.gms.vision.barcode.Barcode
@@ -28,9 +35,10 @@ class ScanWalletFragment : BaseFragment() {
 
     companion object {
         const val CAMERA_PERMISSION_REQUEST_CODE = 3005
+        private const val TAG = "ScanWalletFragment"
     }
 
-    private val scanWalletViewModel: ScanWalletViewModel by viewModels()
+    private val scanWalletViewModel: WalletPaymentViewModel by activityViewModels()
     private lateinit var binding: FragmentScanWalletBinding
     private lateinit var cameraSource: CameraSource
     private lateinit var barcodeDetector: BarcodeDetector
@@ -39,7 +47,7 @@ class ScanWalletFragment : BaseFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         super.onCreateView(inflater, container, savedInstanceState)
         binding = FragmentScanWalletBinding.inflate(layoutInflater)
         changeStatusBarColor(R.color.grey_350)
@@ -106,6 +114,7 @@ class ScanWalletFragment : BaseFragment() {
         }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String>,
@@ -117,8 +126,28 @@ class ScanWalletFragment : BaseFragment() {
     private fun setupObservers() {
         scanWalletViewModel.qrContent.observe(viewLifecycleOwner) {
             cameraSource.stop()
+            Log.d(TAG, "setupObservers: $it")
             updateQR(it)
+            scanWalletViewModel.loadWalletDetails()
         }
+
+        scanWalletViewModel.walletDetails.observe(viewLifecycleOwner) {
+            updateUI(it)
+        }
+
+        scanWalletViewModel.error.observe(viewLifecycleOwner) {
+            handleFailure(it)
+        }
+    }
+
+    private fun updateUI(walletDetails: WalletDetails) {
+        binding.walletDetailsFrame.visibility = View.VISIBLE.also {
+            binding.name.text = walletDetails.name
+            binding.phone.text = walletDetails.phoneNumber
+            binding.balance.text = walletDetails.balance.toString()
+        }
+        binding.shimmerViewContainer.stopShimmer()
+        binding.shimmerViewContainer.visibility = View.INVISIBLE
     }
 
     private fun updateQR(data: String) {
@@ -131,6 +160,37 @@ class ScanWalletFragment : BaseFragment() {
         binding.scan.setOnClickListener {
             cameraSource.start(binding.scannerView.holder)
         }
+
+        binding.pay.setOnClickListener {
+            progressNavigation(scanWalletViewModel.getManifestoType())
+        }
+    }
+
+    private fun progressNavigation(manifestoType: Int) {
+        when (manifestoType) {
+            0 -> {
+                navigateToBooking()
+            }
+
+            1 -> {
+                navigateToSelectTicket()
+            }
+        }
+    }
+
+    private fun navigateToBooking() {
+        findNavController()
+            .navigate(
+                NavigationUtils.getUriNavigation(
+                    Domain.ENGLIZYA_PAY,
+                    Destination.BOOKING,
+                    null
+                )
+            )
+    }
+
+    private fun navigateToSelectTicket() {
+
     }
 
     override fun onPause() {
