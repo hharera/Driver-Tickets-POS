@@ -190,7 +190,14 @@ class ScanWalletFragment : BaseFragment() {
     }
 
     private fun navigateToSelectTicket() {
-
+        findNavController()
+            .navigate(
+                NavigationUtils.getUriNavigation(
+                    Domain.ENGLIZYA_PAY,
+                    Destination.SELECT_TICKET,
+                    null
+                )
+            )
     }
 
     override fun onPause() {

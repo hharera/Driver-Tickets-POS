@@ -10,7 +10,6 @@ import com.englizya.common.base.BaseFragment
 import com.englizya.common.utils.navigation.Destination
 import com.englizya.common.utils.navigation.Domain
 import com.englizya.common.utils.navigation.NavigationUtils
-import com.englizya.model.response.ManifestoDetails
 import com.englizya.select_ticket.databinding.FragmentSelectTicketBinding
 import com.englizya.wallet.WalletPaymentViewModel
 
@@ -23,7 +22,7 @@ class SelectTicketFragment : BaseFragment() {
 
     private val walletPaymentViewModel: WalletPaymentViewModel by activityViewModels()
     private lateinit var binding: FragmentSelectTicketBinding
-    private lateinit var categoriesAdapter: CategoriesAdapter
+    private var categoriesAdapter: CategoriesAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,13 +52,16 @@ class SelectTicketFragment : BaseFragment() {
     }
 
     private fun setupObserves() {
-        walletPaymentViewModel.quantity.observe(viewLifecycleOwner) {
-            binding.ticketQuantity.text = "$it"
-            binding.total.text = "${it * walletPaymentViewModel.selectedCategory.value!!}"
+        walletPaymentViewModel.quantity.observe(viewLifecycleOwner) { quntity ->
+            binding.ticketQuantity.text = "$quntity"
+
+            walletPaymentViewModel.selectedCategory.value?.let { ticketPrice ->
+                binding.total.text = "اجمالي: ${quntity * ticketPrice}"
+            }
         }
 
         walletPaymentViewModel.ticketCategory.observe(viewLifecycleOwner) {
-            categoriesAdapter.setSelectedCategory(it)
+            categoriesAdapter?.setSelectedCategory(it)
         }
 
         connectionLiveData.observe(viewLifecycleOwner) { state ->
@@ -70,17 +72,25 @@ class SelectTicketFragment : BaseFragment() {
             updateCategories(it)
         }
 
-        walletPaymentViewModel.manifesto.observe(viewLifecycleOwner) {
+        walletPaymentViewModel.ticketCategories.observe(viewLifecycleOwner) {
             updateUI(it)
+        }
+
+        walletPaymentViewModel.total.observe(viewLifecycleOwner) {
+            updateTotal(it)
         }
     }
 
-    private fun updateUI(it: ManifestoDetails) {
-        setupCategoriesAdapter(listOf(it.ticketCategory))
+    private fun updateTotal(it: Int) {
+        binding.total.text = "اجمالي: $it"
+    }
+
+    private fun updateUI(it: Set<String>) {
+        setupCategoriesAdapter((it.map { it.toInt() }).toList())
     }
 
     private fun updateCategories(it: Int) {
-        categoriesAdapter.setSelectedCategory(it)
+        categoriesAdapter?.setSelectedCategory(it)
     }
 
     private fun setupListeners() {

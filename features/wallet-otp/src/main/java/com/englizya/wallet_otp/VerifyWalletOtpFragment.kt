@@ -7,15 +7,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.englizya.common.base.BaseFragment
-import com.englizya.common.utils.navigation.Domain
-import com.englizya.common.utils.navigation.NavigationUtils
 import com.englizya.wallet.WalletPaymentViewModel
-import com.englizya.wallet_otp.databinding.FragmentSendOtpBinding
+import com.englizya.wallet_otp.databinding.FragmentVeifyOtpBinding
 
 class VerifyWalletOtpFragment : BaseFragment() {
 
-    private val verifyWalletOtpViewModel: WalletPaymentViewModel by activityViewModels()
-    private lateinit var bind: FragmentSendOtpBinding
+    private val walletPaymentViewModel: WalletPaymentViewModel by activityViewModels()
+    private lateinit var binding: FragmentVeifyOtpBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -23,8 +21,8 @@ class VerifyWalletOtpFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         super.onCreateView(inflater, container, savedInstanceState)
-        bind = FragmentSendOtpBinding.inflate(layoutInflater)
-        return bind.root
+        binding = FragmentVeifyOtpBinding.inflate(layoutInflater)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -33,88 +31,85 @@ class VerifyWalletOtpFragment : BaseFragment() {
         setupObservers()
         setupListeners()
         setupNumberListeners()
+        binding.confirmationMessage.text = getString(R.string.enter_confirmation_details, walletPaymentViewModel.total.value)
     }
 
     private fun setupNumberListeners() {
-        bind.zero.setOnClickListener {
-            verifyWalletOtpViewModel.putCharacter("0")
+        binding.zero.setOnClickListener {
+            walletPaymentViewModel.putCharacter("0")
         }
-        bind.one.setOnClickListener {
-            verifyWalletOtpViewModel.putCharacter("1")
+        binding.one.setOnClickListener {
+            walletPaymentViewModel.putCharacter("1")
         }
-        bind.two.setOnClickListener {
-            verifyWalletOtpViewModel.putCharacter("2")
+        binding.two.setOnClickListener {
+            walletPaymentViewModel.putCharacter("2")
         }
-        bind.three.setOnClickListener {
-            verifyWalletOtpViewModel.putCharacter("3")
+        binding.three.setOnClickListener {
+            walletPaymentViewModel.putCharacter("3")
         }
-        bind.four.setOnClickListener {
-            verifyWalletOtpViewModel.putCharacter("4")
+        binding.four.setOnClickListener {
+            walletPaymentViewModel.putCharacter("4")
         }
-        bind.five.setOnClickListener {
-            verifyWalletOtpViewModel.putCharacter("5")
+        binding.five.setOnClickListener {
+            walletPaymentViewModel.putCharacter("5")
         }
-        bind.six.setOnClickListener {
-            verifyWalletOtpViewModel.putCharacter("6")
+        binding.six.setOnClickListener {
+            walletPaymentViewModel.putCharacter("6")
         }
-        bind.seven.setOnClickListener {
-            verifyWalletOtpViewModel.putCharacter("7")
+        binding.seven.setOnClickListener {
+            walletPaymentViewModel.putCharacter("7")
         }
-        bind.eight.setOnClickListener {
-            verifyWalletOtpViewModel.putCharacter("8")
+        binding.eight.setOnClickListener {
+            walletPaymentViewModel.putCharacter("8")
         }
-        bind.nine.setOnClickListener {
-            verifyWalletOtpViewModel.putCharacter("9")
+        binding.nine.setOnClickListener {
+            walletPaymentViewModel.putCharacter("9")
         }
-        bind.delete.setOnClickListener {
-            verifyWalletOtpViewModel.removeCharacter()
+        binding.delete.setOnClickListener {
+            walletPaymentViewModel.removeCharacter()
         }
     }
 
     private fun setupListeners() {
-        bind.back.setOnClickListener {
-            findNavController().popBackStack()
-        }
-
-        bind.pay.setOnClickListener {
-            verifyWalletOtpViewModel.signup()
+        binding.pay.setOnClickListener {
+            walletPaymentViewModel.whenPayClicked()
+            binding.pay.isEnabled = false
         }
     }
 
     private fun setupObservers() {
-        verifyWalletOtpViewModel.verificationState.observe(viewLifecycleOwner) { verificationState ->
+        walletPaymentViewModel.verificationState.observe(viewLifecycleOwner) { verificationState ->
             if (verificationState) {
                 progressToNextScreen()
             }
         }
 
-        verifyWalletOtpViewModel.uid.observe(viewLifecycleOwner) {
+        walletPaymentViewModel.uid.observe(viewLifecycleOwner) {
 
         }
 
-        verifyWalletOtpViewModel.code.observe(viewLifecycleOwner) {
+        walletPaymentViewModel.code.observe(viewLifecycleOwner) {
             updateCodeUI(it)
         }
 
-        verifyWalletOtpViewModel.codeValidity.observe(viewLifecycleOwner) {
-            bind.pay.isEnabled = it
+        walletPaymentViewModel.codeValidity.observe(viewLifecycleOwner) {
+            binding.pay.isEnabled = it
         }
     }
 
     private fun updateCodeUI(code: String) {
-        for (index in 1..4) {
+        for (index in 0..3) {
             val char = code.getOrNull(index)
             val str = char?.toString() ?: ""
             when (index) {
-                1 -> bind.code1.text = str
-                2 -> bind.code2.text = str
-                3 -> bind.code3.text = str
-                4 -> bind.code4.text = str
+                0 -> binding.code1.text = str
+                1 -> binding.code2.text = str
+                2 -> binding.code3.text = str
+                3 -> binding.code4.text = str
             }
         }
     }
 
     private fun progressToNextScreen() {
-//        TODO :
     }
 }

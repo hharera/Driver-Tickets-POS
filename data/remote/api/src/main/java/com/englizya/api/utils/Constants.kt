@@ -1,6 +1,7 @@
 package com.englizya.api.utils
 
 object Routing {
+    const val REQUEST_TICKETS_WITH_WALLET = "${Domain.ENGLIZYA_BUS}/api/driver/request-short-tickets-with-wallet"
     const val GET_TRIP = "${Domain.ENGLIZYA_BUS}/api/trip"
     const val GET_WALLET_DETAILS = "${Domain.ENGLIZYA_BUS}/api/driver/get-wallet-details"
     const val END_SHIFT = "${Domain.ENGLIZYA_STAFF}/end-shift"
@@ -15,6 +16,8 @@ object Request {
 }
 
 object Parameters {
+    const val CATEGORY = "category"
+    const val QUANTITY = "quantity"
     const val UID = "uid"
 }
 
@@ -24,7 +27,7 @@ object AuthenticationParameters {
 
 object Domain {
     const val ENGLIZYA_STAFF = "http://161.97.71.140:9105"
-//    const val ENGLIZYA_PAY = "http://192.168.1.190:9105"
+//    const val ENGLIZYA_STAFF = "http://192.168.1.190:9105"
 
     const val ENGLIZYA_BUS = "http://161.97.71.140:9100"
 //    const val ENGLIZYA_BUS = "http://192.168.1.190:9100"

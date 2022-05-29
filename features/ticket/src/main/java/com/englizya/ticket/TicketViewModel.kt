@@ -63,13 +63,19 @@ class TicketViewModel @Inject constructor(
     val isPaperOut: LiveData<Boolean> = _isPaperOut
 
     init {
-        fetchDriverManifesto()
-        _ticketCategories.postValue(ticketDataStore.getTicketCategories())
-        viewModelScope.launch(Dispatchers.IO) {
-            ticketRepository.getLocalTickets().onSuccess {
-                Log.d(TAG, "$it")
-            }
+        _ticketCategories.value = ticketDataStore.getTicketCategories().also {
+            _selectedCategory.value =  (ticketDataStore.getTicketCategories()?.firstOrNull()?.toInt())
         }
+
+        fetchDriverManifesto()
+        getLocalTickets()
+    }
+
+    private fun getLocalTickets() = viewModelScope.launch(Dispatchers.IO) {
+        ticketRepository
+            .getLocalTickets()
+            .onSuccess {
+            }
     }
 
     private fun fetchDriverManifesto() = viewModelScope.launch(Dispatchers.IO) {
@@ -185,19 +191,6 @@ class TicketViewModel @Inject constructor(
         _quantity.postValue(1)
     }
 
-    private suspend fun insertTicketsLocally(tickets: ArrayList<Ticket>) {
-        updateLoading(true)
-        ticketRepository
-            .insertTickets(tickets, false)
-            .onSuccess {
-                updateLoading(false)
-            }
-            .onFailure {
-                updateLoading(false)
-                handleException(it)
-            }
-    }
-
     private fun generateTickets(quantity: Int): ArrayList<Ticket> {
         val currentMillis = getTicketTimeMillis()
         val tickets = ArrayList<Ticket>()
@@ -211,7 +204,7 @@ class TicketViewModel @Inject constructor(
                     carCode = carDataStore.getCarCode(),
                     time = DateTime.now().toString(),
                     paymentWay = getPaymentMethod(),
-                    ticketCategory = ticketDataStore.getTicketCategories(),
+                    ticketCategory = selectedCategory.value!!,
                     manifestoId = manifestoDataStore.getManifestoNo(),
                     manifestoYear = manifestoDataStore.getManifestoYear(),
                     ticketLatitude = null,

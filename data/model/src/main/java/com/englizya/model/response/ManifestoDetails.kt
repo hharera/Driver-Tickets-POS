@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 class ManifestoDetails(
     @SerialName("lineCategory")
-    var ticketCategory: Int,
+    var ticketCategory: List<Int>,
     var incomeValue: Int?,
     var manifestoId: Int,
     var year: Int,

@@ -12,4 +12,10 @@ interface TicketRepository {
     suspend fun getLocalTickets(): Result<List<Ticket>>
     suspend fun deleteLocalTickets(): Result<Unit>
     fun getAllUnPrintedTickets(): Result<List<UnPrintedTicket>>
+    suspend fun requestTickets(
+        token: String,
+        uid: String,
+        quantity: Int,
+        selectedCategory: Int
+    ): Result<List<Ticket>>
 }
