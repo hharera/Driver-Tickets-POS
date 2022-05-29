@@ -15,7 +15,6 @@ import com.englizya.common.base.BaseFragment
 import com.englizya.common.utils.permission.PermissionUtils.isPermissionGranted
 import com.englizya.common.utils.permission.PermissionUtils.requestPermission
 import com.englizya.model.request.Ticket
-import com.englizya.model.response.ManifestoDetails
 import com.englizya.ticket.ticket.R
 import com.englizya.ticket.ticket.databinding.FragmentTicketBinding
 import com.example.paper_out_alert.PaperOutDialog
@@ -35,10 +34,10 @@ class TicketFragment : BaseFragment() {
     }
 
     private lateinit var ticketViewModel: TicketViewModel
-    private lateinit var bind: FragmentTicketBinding
+    private lateinit var binding: FragmentTicketBinding
 
     private lateinit var paymentMethodsAdapter: PaymentMethodsAdapter
-    private lateinit var categoriesAdapter: CategoriesAdapter
+    private var categoriesAdapter: CategoriesAdapter? = null
     private val paperOutDialog: PaperOutDialog by lazy { PaperOutDialog { ticketViewModel.printTicketsInMemory() } }
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -47,14 +46,14 @@ class TicketFragment : BaseFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?, savedInstanceState: Bundle?,
     ): View {
-        bind = FragmentTicketBinding.inflate(layoutInflater, container, false)
+        binding = FragmentTicketBinding.inflate(layoutInflater, container, false)
         ticketViewModel = ViewModelProvider(this).get(TicketViewModel::class.java)
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
 
         ticketViewModel.setPaymentMethod(PaymentMethod.Cash)
         changeStatusBarColor(R.color.white_600)
-        return bind.root
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -70,7 +69,7 @@ class TicketFragment : BaseFragment() {
             ticketViewModel.setPaymentMethod(it)
         }
 
-        bind.paymentMethods.adapter = paymentMethodsAdapter
+        binding.paymentMethods.adapter = paymentMethodsAdapter
     }
 
     private fun setupCategoriesAdapter(categoryList: List<Int>) {
@@ -78,16 +77,13 @@ class TicketFragment : BaseFragment() {
             ticketViewModel.setSelectedCategory(it)
         }
 
-        bind.categories.adapter = categoriesAdapter
+        binding.categories.adapter = categoriesAdapter
     }
 
     private fun setupObserves() {
-        ticketViewModel.quantity.observe(viewLifecycleOwner) {
-            bind.ticketQuantity.setText("$it")
-        }
-
-        ticketViewModel.ticketCategories.observe(viewLifecycleOwner) {
-            bind.ticketValue.text = getString(R.string.category).plus(" : ").plus(it)
+        ticketViewModel.quantity.observe(viewLifecycleOwner) { quantity ->
+            updateTotal(quantity)
+            updateQuantity(quantity)
         }
 
         ticketViewModel.isPaperOut.observe(viewLifecycleOwner) { isPaperOut ->
@@ -95,8 +91,11 @@ class TicketFragment : BaseFragment() {
         }
 
         ticketViewModel.ticketsInMemory.observe(viewLifecycleOwner) { tickets ->
-//            bind.savedTickets.text = "${tickets.size}"
             checkSavedTicketsSize(tickets)
+        }
+
+        ticketViewModel.ticketCategories.observe(viewLifecycleOwner) {
+            updateUI(it)
         }
 
         ticketViewModel.lastTicket.observe(viewLifecycleOwner) { ticket ->
@@ -115,17 +114,28 @@ class TicketFragment : BaseFragment() {
             updateCategories(it)
         }
 
-        ticketViewModel.manifesto.observe(viewLifecycleOwner) {
-            updateUI(it)
+
+        ticketViewModel.connectivity.observe(viewLifecycleOwner) {
+            ticketViewModel.updateConnectivity(it)
         }
     }
 
-    private fun updateUI(it: ManifestoDetails) {
-        setupCategoriesAdapter(listOf(it.ticketCategory))
+    private fun updateQuantity(quantity: Int) {
+        binding.ticketQuantity.text = "$quantity"
+    }
+
+    private fun updateTotal(quantity: Int) {
+        ticketViewModel.selectedCategory.value?.let { price ->
+            binding.total.text = "اجمالي: ${price * quantity}"
+        }
+    }
+
+    private fun updateUI(it: Set<String>) {
+        setupCategoriesAdapter(it.map { it.toInt() }.toList())
     }
 
     private fun updateCategories(it: Int) {
-        categoriesAdapter.setSelectedCategory(it)
+        categoriesAdapter?.setSelectedCategory(it)
     }
 
     private fun updatePaymentMethods(method: PaymentMethod) {
@@ -162,11 +172,11 @@ class TicketFragment : BaseFragment() {
     }
 
     private fun setupListeners() {
-        bind.ticketPlus.setOnClickListener {
+        binding.ticketPlus.setOnClickListener {
             ticketViewModel.incrementQuantity()
         }
 
-        bind.ticketMinus.setOnClickListener {
+        binding.ticketMinus.setOnClickListener {
             ticketViewModel.decrementQuantity()
         }
 
@@ -174,10 +184,10 @@ class TicketFragment : BaseFragment() {
 //            ticketViewModel.printTicketsInMemory()
 //        }
 
-        bind.print.setOnClickListener {
+        binding.print.setOnClickListener {
             lifecycleScope.launch(Dispatchers.IO) {
                 withContext(Dispatchers.Main) {
-                    bind.print.isEnabled = false
+                    binding.print.isEnabled = false
                 }
 
                 ticketViewModel.submitTickets()
@@ -185,7 +195,7 @@ class TicketFragment : BaseFragment() {
                 delay(500)
 
                 withContext(Dispatchers.Main) {
-                    bind.print.isEnabled = true
+                    binding.print.isEnabled = true
                 }
             }
         }

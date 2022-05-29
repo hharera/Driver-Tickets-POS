@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="enter_confirmation_code">Enter your wallet otp</string>
+    <string name="enter_confirmation_code">لتأكيد عملية الدفع بقيمة 100 ادخل الكود السري لمحفظتك</string>
     <string name="pay">دفع</string>
+    <string name="enter_confirmation_details">"Enter confirmation to verify %d transaction payment "</string>
 </resources>

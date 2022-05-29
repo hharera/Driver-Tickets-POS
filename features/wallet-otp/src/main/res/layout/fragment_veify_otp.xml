@@ -2,21 +2,29 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:background="@drawable/ticket_background"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/back"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:src="@drawable/ic_otp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.02" />
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/logo_colored"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.16"
+        app:layout_constraintHeight_percent="0.2"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/guideline"
+        app:layout_constraintWidth_percent="0.4" />
 
     <TextView
-        android:id="@+id/enter_confirmation"
+        android:id="@+id/confirmation_message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="23dp"
@@ -24,21 +32,22 @@
         android:text="@string/enter_confirmation_code"
         android:textColor="#303030"
         android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/back" />
+        app:layout_constraintTop_toBottomOf="@+id/logo" />
 
     <GridLayout
         android:id="@+id/otpGrid"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="16dp"
         android:columnCount="6"
+        android:layout_marginTop="@dimen/_10sdp"
         android:gravity="center"
         android:rowCount="1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/enter_confirmation">
+        app:layout_constraintTop_toBottomOf="@+id/confirmation_message">
 
         <TextView
             android:id="@+id/code_1"

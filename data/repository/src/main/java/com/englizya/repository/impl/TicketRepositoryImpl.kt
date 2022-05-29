@@ -60,4 +60,19 @@ class TicketRepositoryImpl @Inject constructor(
     override fun getAllUnPrintedTickets(): Result<List<UnPrintedTicket>> = kotlin.runCatching {
         ticketDao.getAllSavedTickets()
     }
+
+    override suspend fun requestTickets(
+        token: String,
+        uid: String,
+        quantity: Int,
+        selectedCategory: Int
+    ): Result<List<Ticket>> =
+        kotlin.runCatching {
+            ticketService.requestTickets(
+                token,
+                uid,
+                quantity,
+                selectedCategory
+            )
+        }
 }

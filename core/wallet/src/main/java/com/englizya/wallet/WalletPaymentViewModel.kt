@@ -5,25 +5,29 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.englizya.common.base.BaseViewModel
+import com.englizya.common.utils.Validity
 import com.englizya.datastore.core.DriverDataStore
 import com.englizya.datastore.core.ManifestoDataStore
 import com.englizya.datastore.core.TicketDataStore
 import com.englizya.model.LineStation
 import com.englizya.model.ReservationTicket
-import com.englizya.model.Station
 import com.englizya.model.Trip
-import com.englizya.model.request.*
-import com.englizya.model.response.*
-import com.englizya.repository.*
+import com.englizya.model.response.ManifestoDetails
+import com.englizya.model.response.WalletDetails
+import com.englizya.repository.ManifestoRepository
+import com.englizya.repository.TicketRepository
+import com.englizya.repository.WalletRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.joda.time.DateTime
+import javax.inject.Inject
 
-class WalletPaymentViewModel constructor(
-    private val userRepository: UserRepository,
+@HiltViewModel
+class WalletPaymentViewModel @Inject constructor(
     private val manifestoDataStore: ManifestoDataStore,
+    private val ticketRepository: TicketRepository,
     private val manifestoRepository: ManifestoRepository,
-    private val tripsRepository: TripRepository,
     private val ticketDataStore: TicketDataStore,
     private val walletRepository: WalletRepository,
     private val driverDataStore: DriverDataStore,
@@ -85,10 +89,21 @@ class WalletPaymentViewModel constructor(
     private var _walletDetails = MutableLiveData<WalletDetails>()
     val walletDetails: LiveData<WalletDetails> = _walletDetails
 
+    private var _ticketCategories = MutableLiveData<Set<String>>()
+    val ticketCategories: LiveData<Set<String>> = _ticketCategories
+
     init {
         setDefaultDate()
+        setDefaultSelectedCategory()
         resetQuantity()
         fetchDriverManifesto()
+    }
+
+    private fun setDefaultSelectedCategory() {
+        _selectedCategory.value =
+            ticketDataStore.getTicketCategories()?.firstOrNull()?.toInt()?.also {
+                _total.value = quantity.value?.times(it)
+            }
     }
 
     private fun setDefaultDate() {
@@ -131,20 +146,28 @@ class WalletPaymentViewModel constructor(
         }
     }
 
+    private fun createTicketsBilling() {
+
+    }
+
+    private fun createBookingBilling() {
+
+    }
+
     private fun calculateAmount(): Double {
         return trip.value?.let {
             it.plan?.seatPrices?.first {
-                it.source == source.value?.branchId &&
-                        it.destination == destination.value?.branchId
-            }?.vipPrice!! * selectedSeats.value!!.size
+                it.source == source.value?.branch?.branchId &&
+                        it.destination == destination.value?.branch?.branchId
+            }?.vipPrice!! * quantity.value!!
         }!!.toDouble()
     }
 
     fun putCharacter(numberCharacter: String) {
-        if (code.value.isNullOrBlank())
+        if (_code.value.isNullOrBlank())
             _code.value = numberCharacter
-        else if (code.value!!.length < 6)
-            _code.value = code.value!!.plus(numberCharacter)
+        else if (_code.value!!.length < 4)
+            _code.value = _code.value!!.plus(numberCharacter)
 
         checkCodeValidity()
     }
@@ -210,15 +233,17 @@ class WalletPaymentViewModel constructor(
     }
 
     fun decrementQuantity() {
-        _quantity.postValue(
-            (_quantity.value!! - 1).coerceAtLeast(Constant.MIN_TICKETS)
-        )
+        _quantity.value = (_quantity.value!! - 1).coerceAtLeast(Constant.MIN_TICKETS)
+        _total.value = selectedCategory.value?.let {
+            quantity.value?.times(it)
+        }
     }
 
     fun incrementQuantity() {
-        _quantity.postValue(
-            (_quantity.value!! + 1).coerceAtMost(Constant.MAX_TICKETS)
-        )
+        _quantity.value = (_quantity.value!! + 1).coerceAtMost(Constant.MAX_TICKETS)
+        _total.value = selectedCategory.value?.let {
+            quantity.value?.times(it)
+        }
     }
 
     private fun resetQuantity() {
@@ -233,5 +258,30 @@ class WalletPaymentViewModel constructor(
         ticketDataStore.getTicketCategories().let {
             _ticketCategories.postValue(it)
         }
+    }
+
+    fun whenPayClicked() {
+        updateLoading(true)
+        when (manifestoDataStore.getManifestoType()) {
+            0 -> {
+
+            }
+
+            1 -> {
+                requestShortTickets()
+            }
+        }
+    }
+
+    private fun requestShortTickets() = viewModelScope.launch {
+        ticketRepository
+            .requestTickets(driverDataStore.getToken(), qrContent.value!!, quantity.value!!, selectedCategory.value!!)
+            .onSuccess {
+                updateLoading(false)
+            }
+            .onFailure {
+                updateLoading(false)
+                handleException(it)
+            }
     }
 }

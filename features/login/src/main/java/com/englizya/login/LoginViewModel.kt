@@ -113,7 +113,7 @@ class LoginViewModel @Inject constructor(
         driverDataStore.setDriverCode(manifesto.driverCode)
         carDataStore.setCarCode(manifesto.carCode)
         carDataStore.setCarLineCode(manifesto.lineCode)
-        ticketDataStore.setTicketCategories(setOf(manifesto.ticketCategory.toString()))
+        ticketDataStore.setTicketCategories(manifesto.ticketCategory.map { it.toString() }.toSet())
     }
 
     fun setRedirectRouting(redirect: String) {
