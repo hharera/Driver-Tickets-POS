@@ -164,7 +164,7 @@ class TicketPrinter @Inject constructor(
         )
 
         page.addLine().addUnit("\n", 70)
-        XPrinterP300.print(logo, page.toBitmap(5000))
+        XPrinterP300.print(logo, endShiftReportResponse)
         return "OK"
     }
 
