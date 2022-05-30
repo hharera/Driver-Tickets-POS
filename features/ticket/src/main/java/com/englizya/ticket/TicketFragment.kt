@@ -73,11 +73,14 @@ class TicketFragment : BaseFragment() {
     }
 
     private fun setupCategoriesAdapter(categoryList: List<Int>) {
-        categoriesAdapter = CategoriesAdapter(categoryList.first(), categoryList) {
-            ticketViewModel.setSelectedCategory(it)
+        categoriesAdapter = categoryList.firstOrNull()?.let {
+            CategoriesAdapter(it, categoryList) {
+                ticketViewModel.setSelectedCategory(it)
+            }.also {
+                binding.categories.adapter = it
+            }
         }
 
-        binding.categories.adapter = categoriesAdapter
     }
 
     private fun setupObserves() {
@@ -133,8 +136,8 @@ class TicketFragment : BaseFragment() {
         setupCategoriesAdapter(it.map { it.toInt() }.toList())
     }
 
-    private fun updateCategories(it: Int) {
-        categoriesAdapter?.setSelectedCategory(it)
+    private fun updateCategories(it: Int?) {
+        it?.let { it1 -> categoriesAdapter?.setSelectedCategory(it1) }
     }
 
     private fun updatePaymentMethods(method: PaymentMethod) {
