@@ -6,7 +6,7 @@ import com.englizya.model.UnPrintedTicket
 import com.englizya.model.request.Ticket
 
 @Database(
-    version = 1,
+    version = 2,
     entities = [Ticket::class, UnPrintedTicket::class],
     exportSchema = true,
 )

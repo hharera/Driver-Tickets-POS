@@ -274,6 +274,7 @@ class WalletPaymentViewModel @Inject constructor(
     }
 
     private fun requestShortTickets() = viewModelScope.launch {
+        updateLoading(true)
         ticketRepository
             .requestTickets(driverDataStore.getToken(), qrContent.value!!, quantity.value!!, selectedCategory.value!!)
             .onSuccess {

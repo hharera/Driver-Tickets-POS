@@ -55,11 +55,11 @@ class PaymentMethodsAdapter(
             if (paymentMethod.javaClass == selectedPaymentMethod.javaClass) {
                 bind.paymentImage.apply {
                     setImageResource(paymentMethod.iconRes)
-                    setColorFilter(Color.BLUE)
+                    setColorFilter(Color.parseColor("#5F818E"))
                 }
                 bind.paymentText.apply {
                     setText(paymentMethod.titleRes)
-                    setTextColor(Color.BLUE)
+                    setTextColor(Color.parseColor("#5F818E"))
                 }
             }
         }

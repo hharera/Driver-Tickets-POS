@@ -12,7 +12,7 @@ class TicketDataStore(context: Context) {
             Context.MODE_PRIVATE)
 
     fun setTicketCategories(ticketCategories: Set<String>) {
-        ticketSharedPreferences.edit().putStringSet(TICKET_CATEGORIES, ticketCategories).apply()
+        ticketSharedPreferences.edit().putStringSet(TICKET_CATEGORIES, ticketCategories).commit()
     }
 
     fun getTicketCategories() : Set<String>? {

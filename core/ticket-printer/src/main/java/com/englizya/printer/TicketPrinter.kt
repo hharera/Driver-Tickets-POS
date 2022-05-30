@@ -40,12 +40,7 @@ class TicketPrinter @Inject constructor(
         val page = paxGLPage.createPage()
         page.addLine().addUnit("", 1)
 
-        val logo =
-            BitmapFactory.decodeResource(
-                application.baseContext.resources,
-                R.drawable.ic_ticket_logo
-            )
-        page.addLine().addUnit(logo, EAlign.CENTER)
+        val logo = getLogoBitmap()
         page.addLine().addUnit("\n", 28)
 
         page.addLine().addUnit(
@@ -169,9 +164,7 @@ class TicketPrinter @Inject constructor(
         )
 
         page.addLine().addUnit("\n", 70)
-        val pageBitmap = paxGLPage.pageToBitmap(page, 1400)
-
-        XPrinterP300.print(pageBitmap)
+        XPrinterP300.print(logo, page.toBitmap(5000))
         return "OK"
     }
 
