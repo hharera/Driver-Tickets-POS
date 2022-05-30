@@ -1,6 +1,7 @@
 package com.englizya.xprinter_p300
 
 import android.graphics.Bitmap
+import com.dantsu.escposprinter.EscPosCharsetEncoding
 import com.dantsu.escposprinter.EscPosPrinter
 import com.dantsu.escposprinter.connection.bluetooth.BluetoothPrintersConnections
 import com.dantsu.escposprinter.textparser.PrinterTextParserImg
@@ -131,18 +132,14 @@ object XPrinterP300 {
                 BluetoothPrintersConnections.selectFirstPaired(),
                 203,
                 50f,
-                32
+                32,
+                EscPosCharsetEncoding("ISO-8859-1", 6)
             )
 
         val logoHex = PrinterTextParserImg.bitmapToHexadecimalString(
             escPosPrinter,
             logo
         )
-
-
-//        val bytesToHexadecimalString =
-//            PrinterTextParserImg.bytesToHexadecimalString("${endShiftReportResponse.carCode}$CAR_CODE\n".toByteArray())
-//        escPosPrinter.printFormattedTextAndCut("[C]<img>$bytesToHexadecimalString</img>\n")
 
         escPosPrinter
             .printFormattedTextAndCut(
@@ -158,7 +155,18 @@ object XPrinterP300 {
                         "[L]${endShiftReportResponse.qr}[R]$QR_TICKETS\n" +
                         "[L]${endShiftReportResponse.card}[R]$CARD_TICKETS\n" +
                         "[L]${endShiftReportResponse.totalTickets}[R]$TOTAL_TICKETS\n" +
-                        "[L]${endShiftReportResponse.totalIncome}[R]$TOTAL_INCOME\n".let { String(it.toByteArray(), Charset.forName("UTF-8")) }
+                        "[L]${endShiftReportResponse.totalIncome}[R]$TOTAL_INCOME\n"
+            )
+    }
+
+    fun print() {
+        val escPosPrinter =
+            EscPosPrinter(
+                BluetoothPrintersConnections.selectFirstPaired(),
+                203,
+                58f,
+                32,
+                EscPosCharsetEncoding("UTF-8", 16)
             )
     }
 
@@ -184,7 +192,13 @@ object XPrinterP300 {
         escPosPrinter.printFormattedTextAndCut(
             "[C]<img>$logoHex</img>\n" +
                     "[C]=================\n" +
-                    "[C]<img>$pageHex</img>\n".let { String(it.toByteArray(), Charset.forName("UTF-8")) }
+                    "[C]<img>$pageHex</img>\n".let {
+                        String(
+                            it.toByteArray(),
+                            Charset.forName("UTF-8")
+                        )
+                    }
         )
     }
 }
+
