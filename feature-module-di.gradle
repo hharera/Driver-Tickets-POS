@@ -48,6 +48,7 @@ dependencies {
 
     implementation Libs.liveData
     implementation Libs.androidxCore
+    implementation Libs.playServicesLocation
 
     implementation Libs.materialDesign
     implementation Libs.lifeCycleRuntime

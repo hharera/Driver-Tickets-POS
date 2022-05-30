@@ -18,6 +18,6 @@ data class UnPrintedTicket(
     var ticketCategory: Int,
     var manifestoId: Int,
     var manifestoYear: Int,
-    var ticketLongitude: Int? = null,
-    var ticketLatitude: Int? = null,
+    var ticketLongitude: Double? = null,
+    var ticketLatitude: Double? = null,
 )

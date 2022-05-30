@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.englizya.common.base.BaseFragment
@@ -33,7 +34,7 @@ class TicketFragment : BaseFragment() {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1006
     }
 
-    private lateinit var ticketViewModel: TicketViewModel
+    private val ticketViewModel: TicketViewModel by activityViewModels()
     private lateinit var binding: FragmentTicketBinding
 
     private lateinit var paymentMethodsAdapter: PaymentMethodsAdapter
@@ -47,7 +48,6 @@ class TicketFragment : BaseFragment() {
         container: ViewGroup?, savedInstanceState: Bundle?,
     ): View {
         binding = FragmentTicketBinding.inflate(layoutInflater, container, false)
-        ticketViewModel = ViewModelProvider(this).get(TicketViewModel::class.java)
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
 
@@ -98,8 +98,7 @@ class TicketFragment : BaseFragment() {
             updateUI(it)
         }
 
-        ticketViewModel.lastTicket.observe(viewLifecycleOwner) { ticket ->
-//            bind.lastTicketId.text = ticket.ticketId
+        ticketViewModel.lastTicket.observe(requireActivity()) {
         }
 
         connectionLiveData.observe(viewLifecycleOwner) { state ->
