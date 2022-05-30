@@ -35,7 +35,7 @@ object Libs {
     const val playServicesMaps =
         "com.google.android.gms:play-services-maps:${Versions.GOOGLE_MAPS_VERSION}"
     const val playServicesLocation =
-        "com.google.android.gms:play-services-location:${Versions.GOOGLE_MAPS_VERSION}"
+        "com.google.android.gms:play-services-location:19.0.1"
 
     const val googleServices = "com.google.gms:google-services:${Versions.GMS_GOOGLE_SERVICES}"
     const val playServicesTasks =

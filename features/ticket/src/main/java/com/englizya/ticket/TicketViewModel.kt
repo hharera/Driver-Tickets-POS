@@ -1,5 +1,6 @@
 package com.englizya.ticket
 
+import android.location.Location
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -47,6 +48,9 @@ class TicketViewModel @Inject constructor(
 
     private var _lastTicket = MutableLiveData<Ticket>()
     val lastTicket: LiveData<Ticket> = _lastTicket
+
+    private var _location = MutableLiveData<Location>()
+    val location: LiveData<Location> = _location
 
     private var _paymentMethod = MutableLiveData<PaymentMethod>(PaymentMethod.Cash)
     val paymentMethod: LiveData<PaymentMethod> = _paymentMethod
@@ -207,8 +211,8 @@ class TicketViewModel @Inject constructor(
                     ticketCategory = selectedCategory.value!!,
                     manifestoId = manifestoDataStore.getManifestoNo(),
                     manifestoYear = manifestoDataStore.getManifestoYear(),
-                    ticketLatitude = null,
-                    ticketLongitude = null
+                    ticketLatitude = location.value?.latitude ?: null,
+                    ticketLongitude = location.value?.latitude
                 )
             )
         }
@@ -234,5 +238,10 @@ class TicketViewModel @Inject constructor(
 
     fun setSelectedCategory(category: Int) {
         _selectedCategory.value = category
+    }
+
+    fun updateLocation(location: Location) {
+        _location.value = location
+        Log.d(TAG, "updateLocation: ${location.latitude}")
     }
 }

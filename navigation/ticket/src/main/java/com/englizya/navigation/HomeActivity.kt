@@ -1,8 +1,14 @@
 package com.englizya.navigation
 
+import android.app.Activity
+import android.content.Intent
+import android.location.LocationManager
+import android.net.Uri
 import android.os.Bundle
 import android.os.Looper
+import android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS
 import android.util.Log
+import androidx.activity.viewModels
 import androidx.core.view.GravityCompat
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -13,20 +19,21 @@ import com.englizya.common.utils.navigation.Arguments
 import com.englizya.common.utils.navigation.Destination
 import com.englizya.common.utils.navigation.Domain
 import com.englizya.common.utils.navigation.NavigationUtils
+import com.englizya.ticket.TicketViewModel
 import com.englizya.ticket.navigation.R
 import com.englizya.ticket.navigation.databinding.ActivityHomeBinding
-import com.google.android.gms.location.LocationCallback
-import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationResult
-import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.*
+
 
 //TODO extend from base activity
 class HomeActivity : BaseActivity() {
 
     private lateinit var bind: ActivityHomeBinding
+    private val ticketViewModel: TicketViewModel by viewModels()
     private lateinit var navController: NavController
     private val TAG = "HomeActivity"
     private lateinit var locationCallback: LocationCallback
+    private var locationManager: LocationManager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,9 +43,45 @@ class HomeActivity : BaseActivity() {
         navController = Navigation.findNavController(this, R.id.nav_host)
         bind.navView.setupWithNavController(navController)
         NavigationUI.setupWithNavController(bind.navView, navController)
+        locationManager = getSystemService(LOCATION_SERVICE) as LocationManager?
+        setupLocationListener()
+        turnGPSOn()
 
         getExtras()
         getLocation()
+    }
+
+    private fun checkGPS() {
+        if (locationManager?.isProviderEnabled(LocationManager.GPS_PROVIDER) == false) {
+            turnGPSOn()
+        } else {
+            Log.d(TAG, "checkGPS: GPS is enabled")
+        }
+    }
+
+    private fun requestLocation() {
+        LocationSettingsRequest
+            .Builder()
+            .addLocationRequest(
+                LocationRequest
+                    .create()
+                    .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+            )
+            .build()
+    }
+
+    private fun setupLocationListener() {
+        try {
+            locationManager?.requestLocationUpdates(
+                LocationManager.NETWORK_PROVIDER,
+                0L,
+                0f
+            ) { location ->
+                ticketViewModel.updateLocation(location)
+            }
+        } catch (ex: SecurityException) {
+            ex.printStackTrace()
+        }
     }
 
     private fun getLocation() {
@@ -98,6 +141,26 @@ class HomeActivity : BaseActivity() {
                 }
             }
             return@setNavigationItemSelectedListener true
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == LocationRequest.PRIORITY_HIGH_ACCURACY)
+            when (resultCode) {
+                Activity.RESULT_OK -> {
+                    setupLocationListener()
+                }
+
+                Activity.RESULT_CANCELED -> {
+                    requestLocation()
+                }
+            }
+    }
+
+    private fun turnGPSOn() {
+        if (locationManager?.isProviderEnabled(LocationManager.GPS_PROVIDER) == false) {
+            startActivity(Intent(ACTION_LOCATION_SOURCE_SETTINGS))
         }
     }
 }
