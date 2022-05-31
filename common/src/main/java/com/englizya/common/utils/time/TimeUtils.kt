@@ -8,8 +8,8 @@ import java.text.SimpleDateFormat
 object TimeUtils {
 
     private val TIME_START = DateTime(2022, 1, 1, 0, 0)
-    private const val START_SHIFT_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss"
-    private const val END_SHIFT_DATE_FORMAT = "dd.MM.yyyy HH:mm:ss"
+    private const val START_SHIFT_DATE_FORMAT = "yyyy-MM-dd hh:mm:ss"
+    private const val END_SHIFT_DATE_FORMAT = "dd.MM.yyyy hh:mm:ss"
     private const val MILLIS_IN_SECOND = 1000
     private const val MILLIS_IN_MINUTE = 60000
     private const val MILLIS_IN_HOUR = 3600000
@@ -27,7 +27,7 @@ object TimeUtils {
 
     fun getTime(date: String): String {
         val dateTime = DateTime.parse(date)
-        return "${dateTime.hourOfDay}:${dateTime.secondOfMinute}:${dateTime.minuteOfHour}"
+        return "${dateTime.hourOfDay}".plus(":").plus(dateTime.minuteOfHour).plus(":").plus(dateTime.secondOfMinute)
     }
 
     fun calculateWorkHours(shiftReportResponse: ShiftReportResponse): String {
@@ -37,9 +37,9 @@ object TimeUtils {
         val millis = endTime.time - startTime.time
         val workTime = calculateWorkTime(millis)
         return " ${workTime.hours} "
-            .plus("س")
+            .plus("H")
             .plus(" ${workTime.minutes} ")
-            .plus("د")
+            .plus("M")
     }
 
     private fun calculateWorkTime(millis: Long): WorkTime {

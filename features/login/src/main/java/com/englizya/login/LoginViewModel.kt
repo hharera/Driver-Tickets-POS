@@ -1,5 +1,6 @@
 package com.englizya.login
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.englizya.common.base.BaseViewModel
@@ -113,6 +114,7 @@ class LoginViewModel @Inject constructor(
         driverDataStore.setDriverCode(manifesto.driverCode)
         carDataStore.setCarCode(manifesto.carCode)
         carDataStore.setCarLineCode(manifesto.lineCode)
+        Log.d("TAG", "updateLocalData: ${manifesto.ticketCategory}")
         ticketDataStore.setTicketCategories(manifesto.ticketCategory.map { it.toString() }.toSet())
     }
 

@@ -8,18 +8,18 @@ import com.dantsu.escposprinter.textparser.PrinterTextParserImg
 import com.englizya.common.utils.time.TimeUtils
 import com.englizya.model.request.Ticket
 import com.englizya.model.response.ShiftReportResponse
-import com.englizya.xprinter_p300.ArabicParameters.CARD_TICKETS
-import com.englizya.xprinter_p300.ArabicParameters.CAR_CODE
-import com.englizya.xprinter_p300.ArabicParameters.CASH_TICKETS
-import com.englizya.xprinter_p300.ArabicParameters.DRIVER_CODE
-import com.englizya.xprinter_p300.ArabicParameters.LINE_CODE
-import com.englizya.xprinter_p300.ArabicParameters.MANIFESTO_DATE
-import com.englizya.xprinter_p300.ArabicParameters.QR_TICKETS
-import com.englizya.xprinter_p300.ArabicParameters.SHIFT_END
-import com.englizya.xprinter_p300.ArabicParameters.SHIFT_START
-import com.englizya.xprinter_p300.ArabicParameters.TOTAL_INCOME
-import com.englizya.xprinter_p300.ArabicParameters.TOTAL_TICKETS
-import com.englizya.xprinter_p300.ArabicParameters.WORK_HOURS
+import com.englizya.xprinter_p300.Parameters.CARD_TICKETS
+import com.englizya.xprinter_p300.Parameters.CAR_CODE
+import com.englizya.xprinter_p300.Parameters.CASH_TICKETS
+import com.englizya.xprinter_p300.Parameters.DRIVER_CODE
+import com.englizya.xprinter_p300.Parameters.LINE_CODE
+import com.englizya.xprinter_p300.Parameters.MANIFESTO_DATE
+import com.englizya.xprinter_p300.Parameters.QR_TICKETS
+import com.englizya.xprinter_p300.Parameters.SHIFT_END
+import com.englizya.xprinter_p300.Parameters.SHIFT_START
+import com.englizya.xprinter_p300.Parameters.TOTAL_INCOME
+import com.englizya.xprinter_p300.Parameters.TOTAL_TICKETS
+import com.englizya.xprinter_p300.Parameters.WORK_HOURS
 import java.nio.charset.Charset
 
 
@@ -79,28 +79,14 @@ object XPrinterP300 {
     }
 
     fun print(
-        ticket: Ticket,
+        escPosPrinter: EscPosPrinter,
         logo: Bitmap,
-        category: Bitmap,
         tele: Bitmap,
         page: Bitmap,
     ) {
-        val escPosPrinter =
-            EscPosPrinter(
-                BluetoothPrintersConnections.selectFirstPaired(),
-                203,
-                50f,
-                32
-            )
-
         val logoHex = PrinterTextParserImg.bitmapToHexadecimalString(
             escPosPrinter,
             logo
-        )
-
-        val catHex = PrinterTextParserImg.bitmapToHexadecimalString(
-            escPosPrinter,
-            category
         )
 
         val teleHex = PrinterTextParserImg.bitmapToHexadecimalString(
@@ -113,29 +99,18 @@ object XPrinterP300 {
             page
         )
 
-        escPosPrinter.printFormattedTextAndCut(
-            "[C]<img>$logoHex</img>\n" +
+        escPosPrinter.printFormattedText(
+            "\n[C]<img>$logoHex</img>\n" +
                     "[C]<img>$pageHex</img>\n" +
-                    "[C]${TimeUtils.getDate(ticket.time)}\n" +
-                    "[C]${TimeUtils.getTime(ticket.time)}\n" +
-                    "[C]<img>$catHex</img>\n" +
                     "[C]<img>$teleHex</img>\n"
         )
     }
 
     fun print(
+        escPosPrinter : EscPosPrinter,
         logo: Bitmap,
         endShiftReportResponse: ShiftReportResponse
     ) {
-        val escPosPrinter =
-            EscPosPrinter(
-                BluetoothPrintersConnections.selectFirstPaired(),
-                203,
-                50f,
-                32,
-                EscPosCharsetEncoding("ISO-8859-1", 6)
-            )
-
         val logoHex = PrinterTextParserImg.bitmapToHexadecimalString(
             escPosPrinter,
             logo
@@ -144,18 +119,18 @@ object XPrinterP300 {
         escPosPrinter
             .printFormattedTextAndCut(
                 "[C]<img>$logoHex</img>\n" +
-                        "[L]${endShiftReportResponse.driverCode}[R]$DRIVER_CODE\n" +
-                        "[L]${endShiftReportResponse.carCode}[R]$CAR_CODE\n" +
-                        "[L]${endShiftReportResponse.lineCode}[R]$LINE_CODE\n" +
-                        "[L]${endShiftReportResponse.date}[R]$MANIFESTO_DATE\n" +
-                        "[L]${endShiftReportResponse.startTime}[R]$SHIFT_START\n" +
-                        "[L]${endShiftReportResponse.endTime}[R]$SHIFT_END\n" +
-                        "[L]${TimeUtils.calculateWorkHours(endShiftReportResponse)}[R]$WORK_HOURS\n" +
-                        "[L]${endShiftReportResponse.cash}[R]$CASH_TICKETS\n" +
-                        "[L]${endShiftReportResponse.qr}[R]$QR_TICKETS\n" +
-                        "[L]${endShiftReportResponse.card}[R]$CARD_TICKETS\n" +
-                        "[L]${endShiftReportResponse.totalTickets}[R]$TOTAL_TICKETS\n" +
-                        "[L]${endShiftReportResponse.totalIncome}[R]$TOTAL_INCOME\n"
+                        "[L]$DRIVER_CODE[R]${endShiftReportResponse.driverCode}\n" +
+                        "[L]$CAR_CODE[R]${endShiftReportResponse.carCode}\n" +
+                        "[L]$LINE_CODE[R]${endShiftReportResponse.lineCode}\n" +
+                        "[L]$MANIFESTO_DATE[R]${endShiftReportResponse.date}\n" +
+                        "[L]$SHIFT_START ${endShiftReportResponse.startTime}\n" +
+                        "[L]$SHIFT_END ${endShiftReportResponse.endTime}\n" +
+                        "[L]$WORK_HOURS[R]${TimeUtils.calculateWorkHours(endShiftReportResponse)}\n" +
+                        "[L]$CASH_TICKETS[R]${endShiftReportResponse.cash}\n" +
+                        "[L]$QR_TICKETS[R]${endShiftReportResponse.qr}\n" +
+                        "[L]$CARD_TICKETS[R]${endShiftReportResponse.card}\n" +
+                        "[L]$TOTAL_TICKETS[R]${endShiftReportResponse.totalTickets}\n" +
+                        "[L]$TOTAL_INCOME[R]${endShiftReportResponse.totalIncome}\n"
             )
     }
 

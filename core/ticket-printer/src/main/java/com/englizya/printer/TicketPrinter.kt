@@ -3,6 +3,7 @@ package com.englizya.printer
 import android.app.Application
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import com.dantsu.escposprinter.EscPosPrinter
 import com.englizya.common.utils.time.TimeUtils
 import com.englizya.model.request.Ticket
 import com.englizya.model.response.ShiftReportResponse
@@ -16,6 +17,8 @@ import com.englizya.printer.utils.ArabicParameters.QR_TICKETS
 import com.englizya.printer.utils.ArabicParameters.SHIFT_END
 import com.englizya.printer.utils.ArabicParameters.SHIFT_START
 import com.englizya.printer.utils.ArabicParameters.TICKET_CATEGORY
+import com.englizya.printer.utils.ArabicParameters.TICKET_DATE
+import com.englizya.printer.utils.ArabicParameters.TICKET_TIME
 import com.englizya.printer.utils.ArabicParameters.TOTAL_INCOME
 import com.englizya.printer.utils.ArabicParameters.TOTAL_TICKETS
 import com.englizya.printer.utils.ArabicParameters.WORK_HOURS
@@ -31,6 +34,7 @@ import javax.inject.Inject
 
 class TicketPrinter @Inject constructor(
     private val paxGLPage: PaxGLPage,
+    private val escPosPrinter: EscPosPrinter,
     private val application: Application,
 ) {
     private val TAG = "TicketPrinter"
@@ -164,7 +168,7 @@ class TicketPrinter @Inject constructor(
         )
 
         page.addLine().addUnit("\n", 70)
-        XPrinterP300.print(logo, endShiftReportResponse)
+        XPrinterP300.print(escPosPrinter, logo, endShiftReportResponse)
         return "OK"
     }
 
@@ -192,24 +196,31 @@ class TicketPrinter @Inject constructor(
         page.addLine()
             .addUnit(
                 getTicketQr(ticket.ticketId),
-                EAlign.LEFT,
+                EAlign.CENTER,
             )
+
+        page.addLine()
             .addUnit(
                 "$DRIVER_CODE${ticket.driverCode}"
                     .plus("\n")
                     .plus("$CAR_CODE${ticket.carCode}")
                     .plus("\n")
-                    .plus("$LINE_CODE${ticket.lineCode}"),
+                    .plus("$LINE_CODE${ticket.lineCode}")
+                    .plus("\n")
+                    .plus("$TICKET_CATEGORY${ticket.ticketCategory}")
+                    .plus("\n")
+                    .plus("$TICKET_DATE${TimeUtils.getDate(ticket.time)}")
+                    .plus("\n")
+                    .plus("$TICKET_TIME${TimeUtils.getTime(ticket.time)}"),
                 TEXT_SIZE,
-                EAlign.RIGHT,
+                EAlign.CENTER,
                 TEXT_STYLE
             )
 
 
         XPrinterP300.print(
-            ticket,
+            escPosPrinter,
             logo,
-            category,
             tele,
             page.toBitmap(5000)
         )

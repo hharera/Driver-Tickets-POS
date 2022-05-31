@@ -211,7 +211,7 @@ class TicketViewModel @Inject constructor(
                     ticketCategory = selectedCategory.value!!,
                     manifestoId = manifestoDataStore.getManifestoNo(),
                     manifestoYear = manifestoDataStore.getManifestoYear(),
-                    ticketLatitude = location.value?.latitude ?: null,
+                    ticketLatitude = location.value?.latitude,
                     ticketLongitude = location.value?.latitude
                 )
             )
@@ -238,6 +238,7 @@ class TicketViewModel @Inject constructor(
 
     fun setSelectedCategory(category: Int) {
         _selectedCategory.value = category
+        _quantity.value = quantity.value
     }
 
     fun updateLocation(location: Location) {
