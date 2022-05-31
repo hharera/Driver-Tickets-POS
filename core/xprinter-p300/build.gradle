@@ -1,5 +1,5 @@
 apply from: "$rootDir/${CommonBuild.FeatureModule}"
 
 dependencies {
-    implementation("com.github.DantSu:ESCPOS-ThermalPrinter-Android:3.2.0")
+    api("com.github.DantSu:ESCPOS-ThermalPrinter-Android:3.2.0")
 }
