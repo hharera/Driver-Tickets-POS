@@ -34,5 +34,5 @@ dependencies {
     implementation Libs.kotlin
     testImplementation Libs.junit4
 
-    implementation(project(Base.common))
+    implementation(project(Base.COMMON))
 }

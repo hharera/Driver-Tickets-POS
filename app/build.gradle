@@ -3,7 +3,6 @@ plugins {
     id 'kotlin-android'
 }
 apply plugin: 'kotlin-kapt'
-apply plugin: 'dagger.hilt.android.plugin'
 
 android {
     compileSdkVersion DefaultConfig.compileSdk
@@ -14,8 +13,6 @@ android {
         targetSdkVersion DefaultConfig.targetSdk
         versionCode Releases.versionCode
         versionName Releases.versionName
-
-        testInstrumentationRunner "com.englizya.ticket.HiltTestRunner"
     }
     buildFeatures {
         viewBinding true
@@ -49,14 +46,10 @@ android {
 }
 
 dependencies {
-    implementation project(Base.common)
+    implementation project(Base.COMMON)
     implementation project(Features.splash)
     implementation project(Functions.printer)
     implementation project(Navigation.WALLET_PAY)
-
-    //hilt
-    implementation(Libs.hiltAndroid)
-    kapt(Libs.hiltAndroidCompiler)
 
     implementation(Libs.playServicesTasks)
 
@@ -74,15 +67,4 @@ dependencies {
     implementation(Libs.liveData)
     implementation(Libs.viewModels)
     kapt(Libs.lifeCycleCompiler)
-
-    //hilt
-    kapt(Libs.hiltAndroidCompiler)
-    implementation(Libs.hiltAndroid)
-    implementation(TestDi.testRunner)
-
-    androidTestImplementation(TestDi.hiltTesting)
-    kaptAndroidTest(Libs.hiltAndroidCompiler)
-
-    testImplementation(TestDi.hiltTesting)
-    kaptTest(Libs.hiltAndroidCompiler)
 }

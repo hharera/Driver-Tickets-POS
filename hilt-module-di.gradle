@@ -1,12 +1,7 @@
 dependencies {
-    //hilt
-    kapt(Libs.hiltAndroidCompiler)
-    implementation(Libs.hiltAndroid)
-    implementation TestDi.testRunner
+    implementation Testing.testRunner
 
-    androidTestImplementation(TestDi.hiltTesting)
-    kaptAndroidTest(Libs.hiltAndroidCompiler)
+    androidTestImplementation(Testing.hiltTesting)
 
-    testImplementation(TestDi.hiltTesting)
-    kaptTest(Libs.hiltAndroidCompiler)
+    testImplementation(Testing.hiltTesting)
 }

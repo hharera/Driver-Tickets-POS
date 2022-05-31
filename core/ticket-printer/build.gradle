@@ -5,7 +5,6 @@ dependencies {
     api files('libs/gl-page-V1.03.00_20181030.jar')
 
     implementation(Libs.appcompat)
-    implementation(project(Base.common))
     implementation(project(Core.X_PRINTER))
     implementation(project(Data.model))
     api(BarCode.zxingEmbedded)

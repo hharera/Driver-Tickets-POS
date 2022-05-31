@@ -1,8 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: ("dagger.hilt.android.plugin")
 apply plugin: 'kotlin-kapt'
-apply from:"$rootDir/hilt-module-di.gradle"
 android {
     compileSdkVersion DefaultConfig.compileSdk
 
@@ -35,7 +33,7 @@ android {
 }
 
 dependencies {
-    api project(Base.common)
+    api project(Base.COMMON)
     api project(Data.repository)
     api project(Data.datastore)
 

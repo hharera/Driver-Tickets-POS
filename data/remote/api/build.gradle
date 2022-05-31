@@ -1,18 +1,9 @@
 apply from:"$rootDir/${CommonBuild.DATA_MODULE}"
-apply plugin: ("dagger.hilt.android.plugin")
 
 dependencies {
     api project(Data.model)
     api project(Data.datastore)
     //hilt
-    kapt(Libs.hiltAndroidCompiler)
-    implementation(Libs.hiltAndroid)
     implementation TestDi.testRunner
     implementation Ktor.ktorClientSerialization
-
-    androidTestImplementation(TestDi.hiltTesting)
-    kaptAndroidTest(Libs.hiltAndroidCompiler)
-
-    testImplementation(TestDi.hiltTesting)
-    kaptTest(Libs.hiltAndroidCompiler)
 }

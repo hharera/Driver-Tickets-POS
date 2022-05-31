@@ -1,12 +1,10 @@
 apply from: "$rootDir/${CommonBuild.UI_MODULE}"
 
 dependencies {
-    kapt(Libs.hiltAndroidCompiler)
-    implementation(Libs.hiltAndroid)
     implementation(Libs.androidxCore)
     implementation(Libs.picasso)
     implementation(Libs.materialDesign)
 
     implementation project(Data.repository)
-    implementation project(Base.common)
+    implementation project(Base.COMMON)
 }

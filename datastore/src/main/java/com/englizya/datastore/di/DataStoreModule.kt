@@ -2,7 +2,7 @@ package com.englizya.datastore.di
 
 import android.app.Application
 import com.englizya.datastore.core.*
-import dagger.Module
+import agger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent

@@ -1,3 +1,3 @@
 object Base {
-    const val common = ":common"
+    const val COMMON = ":common"
 }

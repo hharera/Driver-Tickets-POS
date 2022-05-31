@@ -1,5 +1,4 @@
 apply from:"$rootDir/${CommonBuild.DATA_MODULE}"
-apply plugin: ("dagger.hilt.android.plugin")
 
 dependencies {
     api project(Data.model)
@@ -12,13 +11,8 @@ dependencies {
     implementation(DI.hiltAndroid)
     kapt(DI.hiltAndroidCompiler)
 
-    testImplementation(TestDi.hiltTesting)
     testImplementation(TestDi.testRunner)
-    kaptTest(Libs.hiltAndroidCompiler)
-
     implementation(Libs.truth)
 
-    androidTestImplementation(TestDi.hiltTesting)
     androidTestImplementation(TestDi.testRunner)
-    kaptAndroidTest(Libs.hiltAndroidCompiler)
 }
