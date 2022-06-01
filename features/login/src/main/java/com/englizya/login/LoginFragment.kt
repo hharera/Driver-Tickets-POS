@@ -82,8 +82,6 @@ class LoginFragment : BaseFragment() {
     private fun checkLoginState(state: Boolean) {
         if (state) {
             redirect()
-        } else {
-            showToast(R.string.cannot_login)
         }
     }
 

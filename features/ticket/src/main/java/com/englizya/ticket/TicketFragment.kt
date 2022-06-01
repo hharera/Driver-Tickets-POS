@@ -116,9 +116,12 @@ class TicketFragment : BaseFragment() {
             updateCategories(it)
         }
 
-
         ticketViewModel.connectivity.observe(viewLifecycleOwner) {
             ticketViewModel.updateConnectivity(it)
+        }
+
+        ticketViewModel.error.observe(viewLifecycleOwner) {
+            handleFailure(it)
         }
     }
 

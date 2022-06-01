@@ -13,6 +13,7 @@
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="enableEdgeToEdge">true</item>
         <item name="iconSize">24dp</item>
+        <item name="fontFamily">@font/montserrat_arabic</item>
     </style>
 
     <style name="Englizya_Pay.NoActionBar">
