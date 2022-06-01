@@ -103,6 +103,10 @@ class VerifyWalletOtpFragment : BaseFragment() {
         walletPaymentViewModel.shortTicket.observe(viewLifecycleOwner) {
             walletPaymentViewModel.printTickets(it)
         }
+
+        walletPaymentViewModel.error.observe(viewLifecycleOwner) {
+            handleFailure(it)
+        }
     }
 
     private fun updateCodeUI(code: String) {

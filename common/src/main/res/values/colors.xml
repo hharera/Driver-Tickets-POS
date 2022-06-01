@@ -15,5 +15,12 @@
     <color name="grey">#72000000</color>
     <color name="blue_600">#03264F</color>
     <color name="white_600">#D5D9DB</color>
+    <color name="grey_500">#171B24</color>
+    <color name="grey_100">#F1F4F8</color>
+    <color name="grey_200">#6D809B</color>
+    <color name="grey_250">#E3E9F3</color>
+    <color name="grey_300">#303030</color>
+    <color name="grey_400">#171B24</color>
+    <color name="grey_350">#6D809B</color>
     <color name="splash_status_color">#021327</color>
 </resources>

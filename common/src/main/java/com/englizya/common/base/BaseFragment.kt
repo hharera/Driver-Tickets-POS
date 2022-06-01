@@ -5,11 +5,12 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.englizya.common.R
+import com.englizya.common.ui.ErrorDialog
 import com.englizya.common.ui.LoadingDialog
+import com.englizya.common.ui.NoInternetDialog
 import com.englizya.common.utils.network.ConnectionLiveData
 import dagger.hilt.android.AndroidEntryPoint
 import io.ktor.client.features.*
-import io.ktor.client.statement.*
 import io.ktor.http.*
 
 @AndroidEntryPoint
@@ -65,20 +66,36 @@ open class BaseFragment : Fragment() {
 
     private fun checkExceptionType(throwable: Throwable?) {
         when (throwable) {
-            is Exception -> handleFailure(throwable)
             is ClientRequestException  -> {
                 when(throwable.response.status) {
-                    HttpStatusCode.BadRequest -> showToast(throwable.message)
+                    HttpStatusCode.BadRequest -> showErrorDialog(throwable.message.split("Text:")[1].dropWhile { it == '"' })
                 }
-                when(throwable.response.status) {
-                    HttpStatusCode.Forbidden -> showToast(R.string.relogin)
+
+                when (throwable.response.status) {
+                    HttpStatusCode.Forbidden -> showErrorDialog(R.string.not_authorized)
                 }
             }
-            is HttpRequestTimeoutException -> showToast(R.string.check_your_internet)
+
+            is HttpRequestTimeoutException -> showNoInternetDialog(R.string.check_your_internet)
         }
     }
 
-    fun changeStatusBarColor(colorRes : Int) {
+    private fun showNoInternetDialog(messageId : Int) {
+        val dialog = NoInternetDialog(getString(messageId))
+        dialog.show(childFragmentManager, "NoInternetDialog")
+    }
+
+    private fun showErrorDialog(messageId: Int) {
+        val dialog = ErrorDialog(getString(messageId))
+        dialog.show(childFragmentManager, "errorDialog")
+    }
+
+    private fun showErrorDialog(message: String) {
+        val dialog = ErrorDialog(message)
+        dialog.show(childFragmentManager, "errorDialog")
+    }
+
+    fun changeStatusBarColor(colorRes: Int) {
         activity?.window?.statusBarColor = resources.getColor(colorRes)
     }
 
