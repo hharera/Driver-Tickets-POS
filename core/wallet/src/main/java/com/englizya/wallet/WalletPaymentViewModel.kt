@@ -264,13 +264,16 @@ class WalletPaymentViewModel @Inject constructor(
         updateLoading(true)
         when (manifestoDataStore.getManifestoType()) {
             0 -> {
-
+                requestTourismTickets()
             }
 
             1 -> {
                 requestShortTickets()
             }
         }
+    }
+
+    private fun requestTourismTickets() {
     }
 
     private fun requestShortTickets() = viewModelScope.launch {
