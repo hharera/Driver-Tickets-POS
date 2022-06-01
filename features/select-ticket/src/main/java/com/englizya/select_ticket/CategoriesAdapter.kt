@@ -48,9 +48,11 @@ class CategoriesAdapter(
                 onItemClicked(categoryValue)
             }
 
+            bind.categoryValue.text = categoryValue.toString()
+
             if (selectedCategory == categoryValue) {
-                bind.categoryValue.setTextColor(Color.BLACK)
-                bind.categoryImage.setColorFilter(Color.BLACK)
+                bind.categoryValue.setTextColor(Color.parseColor("#5F818E"))
+                bind.categoryImage.setColorFilter(Color.parseColor("#5F818E"))
             } else {
                 bind.categoryValue.setTextColor(Color.WHITE)
                 bind.categoryImage.setColorFilter(Color.WHITE)

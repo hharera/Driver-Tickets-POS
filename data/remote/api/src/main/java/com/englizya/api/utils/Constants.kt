@@ -26,9 +26,9 @@ object AuthenticationParameters {
 }
 
 object Domain {
-    const val ENGLIZYA_STAFF = "http://161.97.71.140:9105"
-//    const val ENGLIZYA_STAFF = "http://192.168.1.190:9105"
+//    const val ENGLIZYA_STAFF = "http://161.97.71.140:9105"
+    const val ENGLIZYA_STAFF = "http://192.168.1.190:9105"
 
-    const val ENGLIZYA_BUS = "http://161.97.71.140:9100"
-//    const val ENGLIZYA_BUS = "http://192.168.1.190:9100"
+//    const val ENGLIZYA_BUS = "http://161.97.71.140:9100"
+    const val ENGLIZYA_BUS = "http://192.168.1.190:9100"
 }
