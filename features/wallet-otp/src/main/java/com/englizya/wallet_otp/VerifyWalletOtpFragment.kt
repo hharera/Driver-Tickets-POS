@@ -95,6 +95,14 @@ class VerifyWalletOtpFragment : BaseFragment() {
         walletPaymentViewModel.codeValidity.observe(viewLifecycleOwner) {
             binding.pay.isEnabled = it
         }
+
+        walletPaymentViewModel.loading.observe(viewLifecycleOwner) {
+            handleLoading(it)
+        }
+
+        walletPaymentViewModel.shortTicket.observe(viewLifecycleOwner) {
+            walletPaymentViewModel.printTickets(it)
+        }
     }
 
     private fun updateCodeUI(code: String) {
