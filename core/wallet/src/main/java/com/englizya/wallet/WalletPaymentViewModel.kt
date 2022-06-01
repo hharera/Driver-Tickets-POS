@@ -12,8 +12,10 @@ import com.englizya.datastore.core.TicketDataStore
 import com.englizya.model.LineStation
 import com.englizya.model.ReservationTicket
 import com.englizya.model.Trip
+import com.englizya.model.request.Ticket
 import com.englizya.model.response.ManifestoDetails
 import com.englizya.model.response.WalletDetails
+import com.englizya.printer.TicketPrinter
 import com.englizya.repository.ManifestoRepository
 import com.englizya.repository.TicketRepository
 import com.englizya.repository.WalletRepository
@@ -31,6 +33,7 @@ class WalletPaymentViewModel @Inject constructor(
     private val ticketDataStore: TicketDataStore,
     private val walletRepository: WalletRepository,
     private val driverDataStore: DriverDataStore,
+    private val ticketPrinter: TicketPrinter,
 ) : BaseViewModel() {
 
     companion object {
@@ -91,6 +94,9 @@ class WalletPaymentViewModel @Inject constructor(
 
     private var _ticketCategories = MutableLiveData<Set<String>>()
     val ticketCategories: LiveData<Set<String>> = _ticketCategories
+
+    private var _shortTicket = MutableLiveData<List<Ticket>>()
+    val shortTicket: LiveData<List<Ticket>> = _shortTicket
 
     init {
         setDefaultDate()
@@ -282,10 +288,22 @@ class WalletPaymentViewModel @Inject constructor(
             .requestTickets(driverDataStore.getToken(), qrContent.value!!, quantity.value!!, selectedCategory.value!!)
             .onSuccess {
                 updateLoading(false)
+                _shortTicket.postValue(it)
             }
             .onFailure {
                 updateLoading(false)
                 handleException(it)
             }
+    }
+
+    fun printTickets(tickets: List<Ticket>) {
+        viewModelScope.launch(Dispatchers.IO) {
+            tickets.forEach { ticket ->
+                ticketPrinter.printTicket(ticket).let { printState ->
+//                    TODO : to check is it success or not
+//                    checkPrintState(printState, ticket)
+                }
+            }
+        }
     }
 }

@@ -191,4 +191,5 @@
     <string name="permission_required_toast">سماحية الوصول الي الموقع مطلوبه</string>
     <string name="permission_rationale_location">الرجاء السماح بالوصول الي موقعك الجغرافي</string>
     <string name="relogin">من فضلك اعد تسجسل الدخول</string>
+    <string name="not_authorized">غير مسموح</string>
 </resources>
