@@ -3,6 +3,7 @@ package com.englizya.login
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.englizya.common.base.BaseViewModel
 import com.englizya.common.utils.Validity
 import com.englizya.datastore.core.CarDataStore
@@ -17,6 +18,7 @@ import com.englizya.repository.ManifestoRepository
 import com.englizya.repository.UserRepository
 import com.englizya.ticket.login.R
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -103,7 +105,7 @@ class LoginViewModel @Inject constructor(
             }
     }
 
-    private fun updateLocalData(manifesto: ManifestoDetails) {
+    private fun updateLocalData(manifesto: ManifestoDetails) = viewModelScope.launch {
 //        TODO complete info
         manifestoDataStore.setManifestoDate(manifesto.date)
         manifestoDataStore.setIsManifestoShort(manifesto.isShortManifesto)
@@ -114,7 +116,6 @@ class LoginViewModel @Inject constructor(
         driverDataStore.setDriverCode(manifesto.driverCode)
         carDataStore.setCarCode(manifesto.carCode)
         carDataStore.setCarLineCode(manifesto.lineCode)
-        Log.d("TAG", "updateLocalData: ${manifesto.ticketCategory}")
         ticketDataStore.setTicketCategories(manifesto.ticketCategory.map { it.toString() }.toSet())
     }
 
