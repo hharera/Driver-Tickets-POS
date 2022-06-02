@@ -119,7 +119,7 @@ class TicketViewModel @Inject constructor(
 
     suspend fun submitTickets() {
         generateTickets(quantity.value!!).let { tickets ->
-            insertTickets(tickets, connectivity.value!!)
+            insertTickets(tickets, true)
         }
     }
 
