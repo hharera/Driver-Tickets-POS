@@ -98,6 +98,9 @@ class WalletPaymentViewModel @Inject constructor(
     private var _shortTicket = MutableLiveData<List<Ticket>>()
     val shortTicket: LiveData<List<Ticket>> = _shortTicket
 
+    private var _printingOperationCompleted = MutableLiveData<Boolean>()
+    val printingOperationCompleted: LiveData<Boolean> = _printingOperationCompleted
+
     init {
         setDefaultDate()
         setDefaultSelectedCategory()
@@ -297,10 +300,11 @@ class WalletPaymentViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             tickets.forEach { ticket ->
                 ticketPrinter.printTicket(ticket).let { printState ->
-//                    TODO : to check is it success or not
-//                    checkPrintState(printState, ticket)
+//                    TODO : Check print state
                 }
             }
+
+            _printingOperationCompleted.postValue(true)
         }
     }
 }

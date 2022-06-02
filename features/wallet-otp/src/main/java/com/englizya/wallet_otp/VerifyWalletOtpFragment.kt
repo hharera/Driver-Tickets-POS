@@ -106,6 +106,12 @@ class VerifyWalletOtpFragment : BaseFragment() {
         walletPaymentViewModel.error.observe(viewLifecycleOwner) {
             handleFailure(it)
         }
+
+        walletPaymentViewModel.printingOperationCompleted.observe(viewLifecycleOwner) {
+            when (it) {
+                true -> activity?.onBackPressed()
+            }
+        }
     }
 
     private fun updateCodeUI(code: String) {
