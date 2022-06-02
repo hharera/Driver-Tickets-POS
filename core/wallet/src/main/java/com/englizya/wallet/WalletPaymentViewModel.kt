@@ -21,6 +21,7 @@ import com.englizya.repository.TicketRepository
 import com.englizya.repository.WalletRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import org.joda.time.DateTime
 import javax.inject.Inject
@@ -108,11 +109,15 @@ class WalletPaymentViewModel @Inject constructor(
         fetchDriverManifesto()
     }
 
-    private fun setDefaultSelectedCategory() {
-        _selectedCategory.value =
-            ticketDataStore.getTicketCategories()?.firstOrNull()?.toInt()?.also {
-                _total.value = quantity.value?.times(it)
+    private fun setDefaultSelectedCategory() = viewModelScope.launch {
+        ticketDataStore.getTicketCategories().firstOrNull()?.also { categoryList ->
+            _ticketCategories.postValue(categoryList)
+
+            categoryList.firstOrNull()?.toInt()?.let { category ->
+                _selectedCategory.postValue(category)
+                _total.postValue(quantity.value?.times(category))
             }
+        }
     }
 
     private fun setDefaultDate() {
@@ -263,8 +268,8 @@ class WalletPaymentViewModel @Inject constructor(
         _selectedCategory.value = category
     }
 
-    fun getTicketCategories() {
-        ticketDataStore.getTicketCategories().let {
+    fun getTicketCategories() = viewModelScope.launch {
+        ticketDataStore.getTicketCategories().firstOrNull()?.also {
             _ticketCategories.postValue(it)
         }
     }

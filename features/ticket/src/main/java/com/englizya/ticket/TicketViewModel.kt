@@ -20,6 +20,7 @@ import com.englizya.repository.TicketRepository
 import com.englizya.ticket.utils.Constant
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import org.joda.time.DateTime
 import java.lang.Integer.max
@@ -67,12 +68,17 @@ class TicketViewModel @Inject constructor(
     val isPaperOut: LiveData<Boolean> = _isPaperOut
 
     init {
-        _ticketCategories.value = ticketDataStore.getTicketCategories().also {
-            _selectedCategory.value =  (ticketDataStore.getTicketCategories()?.firstOrNull()?.toInt())
-        }
+        getTicketCategories()
 
         fetchDriverManifesto()
         getLocalTickets()
+    }
+
+    private fun getTicketCategories() = viewModelScope.launch(Dispatchers.IO) {
+        ticketDataStore.getTicketCategories().firstOrNull()?.also {
+            _ticketCategories.postValue(it)
+            _selectedCategory.postValue(it.firstOrNull()?.toInt())
+        }
     }
 
     private fun getLocalTickets() = viewModelScope.launch(Dispatchers.IO) {
