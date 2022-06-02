@@ -16,6 +16,7 @@ interface TicketRepository {
         token: String,
         uid: String,
         quantity: Int,
-        selectedCategory: Int
+        selectedCategory: Int,
+        walletOtp: String
     ): Result<List<Ticket>>
 }

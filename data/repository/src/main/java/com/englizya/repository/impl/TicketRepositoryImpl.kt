@@ -65,14 +65,16 @@ class TicketRepositoryImpl @Inject constructor(
         token: String,
         uid: String,
         quantity: Int,
-        selectedCategory: Int
+        selectedCategory: Int,
+        walletOtp: String
     ): Result<List<Ticket>> =
         kotlin.runCatching {
             ticketService.requestTickets(
                 token,
                 uid,
                 quantity,
-                selectedCategory
+                selectedCategory,
+                walletOtp
             )
         }
 }

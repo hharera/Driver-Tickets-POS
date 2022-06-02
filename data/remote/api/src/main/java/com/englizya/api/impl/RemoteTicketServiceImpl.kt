@@ -46,13 +46,15 @@ class RemoteTicketServiceImpl @Inject constructor(
         token: String,
         uid: String,
         quantity: Int,
-        category: Int
+        category: Int,
+        walletOtp: String
     ) : List<Ticket> {
         return client.post {
             url(Routing.REQUEST_TICKETS_WITH_WALLET)
             parameter(Parameters.UID, uid)
             parameter(Parameters.QUANTITY, quantity)
             parameter(Parameters.CATEGORY, category)
+            parameter(Parameters.WALLET_OTP, walletOtp)
             header(Header.DRIVER_TOKEN,"${AuthScheme.Bearer} $token")
         }
     }
