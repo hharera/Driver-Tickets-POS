@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.findNavController
 import com.englizya.common.base.BaseFragment
 import com.englizya.wallet.WalletPaymentViewModel
 import com.englizya.wallet_otp.databinding.FragmentVeifyOtpBinding
@@ -88,7 +87,7 @@ class VerifyWalletOtpFragment : BaseFragment() {
 
         }
 
-        walletPaymentViewModel.code.observe(viewLifecycleOwner) {
+        walletPaymentViewModel.walletOtp.observe(viewLifecycleOwner) {
             updateCodeUI(it)
         }
 

@@ -17,6 +17,7 @@ object Request {
 
 object Parameters {
     const val CATEGORY = "category"
+    const val WALLET_OTP = "wallet_otp"
     const val QUANTITY = "quantity"
     const val UID = "uid"
 }

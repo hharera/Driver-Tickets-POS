@@ -74,8 +74,8 @@ class WalletPaymentViewModel @Inject constructor(
     private var _uid = MutableLiveData<String>()
     val uid: LiveData<String> = _uid
 
-    private var _code = MutableLiveData<String>("")
-    val code: LiveData<String> = _code
+    private var _walletOtp = MutableLiveData<String>("")
+    val walletOtp: LiveData<String> = _walletOtp
 
     private var _codeValidity = MutableLiveData<Boolean>(false)
     val codeValidity: LiveData<Boolean> = _codeValidity
@@ -170,24 +170,24 @@ class WalletPaymentViewModel @Inject constructor(
     }
 
     fun putCharacter(numberCharacter: String) {
-        if (_code.value.isNullOrBlank())
-            _code.value = numberCharacter
-        else if (_code.value!!.length < 4)
-            _code.value = _code.value!!.plus(numberCharacter)
+        if (_walletOtp.value.isNullOrBlank())
+            _walletOtp.value = numberCharacter
+        else if (_walletOtp.value!!.length < 4)
+            _walletOtp.value = _walletOtp.value!!.plus(numberCharacter)
 
         checkCodeValidity()
     }
 
     fun removeCharacter() {
-        if (null != _code.value && _code.value!!.isNotBlank()) {
-            _code.value = _code.value!!.dropLast(1)
+        if (null != _walletOtp.value && _walletOtp.value!!.isNotBlank()) {
+            _walletOtp.value = _walletOtp.value!!.dropLast(1)
         }
 
         checkCodeValidity()
     }
 
     private fun checkCodeValidity() {
-        _codeValidity.value = Validity.checkWalletOtpValidity(_code.value!!)
+        _codeValidity.value = Validity.checkWalletOtpValidity(_walletOtp.value!!)
     }
 
     fun setQrContent(contents: String) {
@@ -282,7 +282,7 @@ class WalletPaymentViewModel @Inject constructor(
     private fun requestShortTickets() = viewModelScope.launch {
         updateLoading(true)
         ticketRepository
-            .requestTickets(driverDataStore.getToken(), qrContent.value!!, quantity.value!!, selectedCategory.value!!)
+            .requestTickets(driverDataStore.getToken(), qrContent.value!!, quantity.value!!, selectedCategory.value!!, walletOtp.value!! )
             .onSuccess {
                 updateLoading(false)
                 _shortTicket.postValue(it)
