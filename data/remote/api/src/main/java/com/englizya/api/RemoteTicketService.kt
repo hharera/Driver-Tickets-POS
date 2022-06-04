@@ -10,6 +10,9 @@ interface RemoteTicketService {
         uid: String,
         quantity: Int,
         category: Int,
-        walletOtp: String
+        walletOtp: String,
+        latitude :Double,
+        longitude : Double,
+
     ) : List<Ticket>
 }

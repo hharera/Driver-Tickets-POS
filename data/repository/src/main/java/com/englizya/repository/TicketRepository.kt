@@ -17,6 +17,9 @@ interface TicketRepository {
         uid: String,
         quantity: Int,
         selectedCategory: Int,
-        walletOtp: String
+        walletOtp: String ,
+        latitude : Double ,
+        longitude : Double,
+
     ): Result<List<Ticket>>
 }
