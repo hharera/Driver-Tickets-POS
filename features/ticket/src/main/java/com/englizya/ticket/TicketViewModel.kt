@@ -67,9 +67,7 @@ class TicketViewModel @Inject constructor(
     val isPaperOut: LiveData<Boolean> = _isPaperOut
 
     init {
-        _ticketCategories.value = ticketDataStore.getTicketCategories().also {
-            _selectedCategory.value =  (ticketDataStore.getTicketCategories()?.firstOrNull()?.toInt())
-        }
+        checkOnCategoriesAvailability()
 
         fetchDriverManifesto()
         getLocalTickets()
@@ -95,6 +93,32 @@ class TicketViewModel @Inject constructor(
                 updateLoading(false)
                 handleException(it)
             }
+    }
+
+    fun checkOnCategoriesAvailability(){
+
+        if (ticketCategories.value == null){
+            _ticketCategories.value = ticketDataStore.getTicketCategories().also {
+                updateSelectedCategory(it)
+
+            }
+        }else{
+          updateSelectedCategory(ticketCategories.value)
+            updateLocalTicketDataStore()
+        }
+
+    }
+
+    private fun updateSelectedCategory(category : Set<String>?) {
+        _selectedCategory.value = category?.firstOrNull()?.toInt()
+    }
+
+    private fun updateLocalTicketDataStore() {
+        if(ticketDataStore.getTicketCategories()?.isEmpty() == true){
+            manifesto.value?.ticketCategory?.map { it.toString() }?.toSet()
+                ?.let { ticketDataStore.setTicketCategories(it) }
+
+        }
     }
 
     fun decrementQuantity() {
