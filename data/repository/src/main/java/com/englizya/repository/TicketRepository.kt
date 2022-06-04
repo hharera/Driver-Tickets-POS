@@ -22,4 +22,18 @@ interface TicketRepository {
         longitude : Double,
 
     ): Result<List<Ticket>>
+
+    suspend fun requestTourismTickets(
+        token: String,
+        uid: String,
+        quantity: Int,
+        from: String ,
+        to: String ,
+        walletOtp: String ,
+        latitude : Double ,
+        longitude : Double,
+
+
+
+        ): Result<List<Ticket>>
 }

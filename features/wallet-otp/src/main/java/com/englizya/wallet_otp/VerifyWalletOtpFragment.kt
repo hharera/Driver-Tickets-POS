@@ -124,6 +124,11 @@ class VerifyWalletOtpFragment : BaseFragment() {
             walletPaymentViewModel.printTickets(it)
         }
 
+        walletPaymentViewModel.tourismTicket.observe(viewLifecycleOwner) {
+            walletPaymentViewModel.printTickets(it)
+        }
+
+
         walletPaymentViewModel.error.observe(viewLifecycleOwner) {
             handleFailure(it)
         }

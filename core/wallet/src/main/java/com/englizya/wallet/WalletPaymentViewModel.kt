@@ -96,6 +96,9 @@ class WalletPaymentViewModel @Inject constructor(
     private var _ticketCategories = MutableLiveData<Set<String>>()
     val ticketCategories: LiveData<Set<String>> = _ticketCategories
 
+    private var _tourismTicket = MutableLiveData<List<Ticket>>()
+    val tourismTicket: LiveData<List<Ticket>> = _tourismTicket
+
     private var _shortTicket = MutableLiveData<List<Ticket>>()
     val shortTicket: LiveData<List<Ticket>> = _shortTicket
 
@@ -104,6 +107,13 @@ class WalletPaymentViewModel @Inject constructor(
 
     private var _longitude = MutableLiveData<Double>()
     val longitude: LiveData<Double> = _longitude
+
+
+    private var _from = MutableLiveData<String>()
+    val from: LiveData<String> = _from
+
+    private var _to = MutableLiveData<String>()
+    val to: LiveData<String> = _to
 
     private var _printingOperationCompleted = MutableLiveData<Boolean>()
     val printingOperationCompleted: LiveData<Boolean> = _printingOperationCompleted
@@ -281,12 +291,30 @@ class WalletPaymentViewModel @Inject constructor(
         when (manifestoDataStore.getManifestoType()) {
             0 -> {
 
+                requestTourismTickets()
             }
 
             1 -> {
                 requestShortTickets()
             }
         }
+    }
+
+
+    private fun requestTourismTickets() = viewModelScope.launch {
+        updateLoading(true)
+        ticketRepository
+            .requestTourismTickets(driverDataStore.getToken(),
+                qrContent.value!!, quantity.value!!,
+                 from.value!! , to.value!!, walletOtp.value!! ,latitude.value!! , longitude.value!! )
+            .onSuccess {
+                updateLoading(false)
+                _tourismTicket.postValue(it)
+            }
+            .onFailure {
+                updateLoading(false)
+                handleException(it)
+            }
     }
 
     private fun requestShortTickets() = viewModelScope.launch {
