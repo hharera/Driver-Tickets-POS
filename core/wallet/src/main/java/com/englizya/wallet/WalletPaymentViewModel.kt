@@ -320,7 +320,15 @@ class WalletPaymentViewModel @Inject constructor(
     private fun requestShortTickets() = viewModelScope.launch {
         updateLoading(true)
         ticketRepository
-            .requestTickets(driverDataStore.getToken(), qrContent.value!!, quantity.value!!, selectedCategory.value!!, walletOtp.value!! ,latitude.value!! , longitude.value!! )
+            .requestTickets(
+                driverDataStore.getToken(),
+                qrContent.value!!,
+                quantity.value!!,
+                selectedCategory.value!!,
+                walletOtp.value!!,
+                latitude.value,
+                longitude.value
+            )
             .onSuccess {
                 updateLoading(false)
                 _shortTicket.postValue(it)
