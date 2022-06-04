@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.activityViewModels
 import com.englizya.common.base.BaseFragment
 import com.englizya.wallet.WalletPaymentViewModel
@@ -35,8 +34,12 @@ class VerifyWalletOtpFragment : BaseFragment() {
         setupObservers()
         setupListeners()
         setupNumberListeners()
-        binding.confirmationMessage.text = getString(R.string.enter_confirmation_details, walletPaymentViewModel.total.value)
-        locationManager =activity?.getSystemService(AppCompatActivity.LOCATION_SERVICE) as LocationManager?
+        binding.confirmationMessage.text = getString(
+            R.string.enter_confirmation_details,
+            walletPaymentViewModel.total.value
+        )
+        locationManager =
+            activity?.getSystemService(AppCompatActivity.LOCATION_SERVICE) as LocationManager?
         setupLocationListener()
     }
 

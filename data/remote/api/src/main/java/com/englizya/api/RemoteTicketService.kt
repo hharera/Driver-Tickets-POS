@@ -3,7 +3,7 @@ package com.englizya.api
 import com.englizya.model.request.Ticket
 
 interface RemoteTicketService {
-    suspend fun insertTicket(ticket : Ticket): Ticket
+    suspend fun insertTicket(ticket: Ticket): Ticket
     suspend fun insertTickets(tickets: List<Ticket>): List<Ticket>
     suspend fun requestTickets(
         token: String,
@@ -11,20 +11,7 @@ interface RemoteTicketService {
         quantity: Int,
         category: Int,
         walletOtp: String,
-        latitude :Double,
-        longitude : Double,
-
-    ) : List<Ticket>
-
-    suspend fun requestTourismTickets(
-        token: String,
-        uid: String,
-        quantity: Int,
-        from: String ,
-        to: String ,
-        walletOtp: String,
-        latitude :Double,
-        longitude : Double,
-
-        ) : List<Ticket>
+        latitude: Double?,
+        longitude: Double?,
+    ): List<Ticket>
 }

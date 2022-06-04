@@ -17,10 +17,9 @@ interface TicketRepository {
         uid: String,
         quantity: Int,
         selectedCategory: Int,
-        walletOtp: String ,
-        latitude : Double ,
-        longitude : Double,
-
+        walletOtp: String,
+        latitude: Double?,
+        longitude: Double?,
     ): Result<List<Ticket>>
 
     suspend fun requestTourismTickets(
