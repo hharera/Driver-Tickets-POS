@@ -1,5 +1,6 @@
 package com.englizya.wallet
 
+import android.location.Location
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -97,6 +98,12 @@ class WalletPaymentViewModel @Inject constructor(
 
     private var _shortTicket = MutableLiveData<List<Ticket>>()
     val shortTicket: LiveData<List<Ticket>> = _shortTicket
+
+    private var _latitude = MutableLiveData<Double>()
+    val latitude: LiveData<Double> = _latitude
+
+    private var _longitude = MutableLiveData<Double>()
+    val longitude: LiveData<Double> = _longitude
 
     private var _printingOperationCompleted = MutableLiveData<Boolean>()
     val printingOperationCompleted: LiveData<Boolean> = _printingOperationCompleted
@@ -285,7 +292,15 @@ class WalletPaymentViewModel @Inject constructor(
     private fun requestShortTickets() = viewModelScope.launch {
         updateLoading(true)
         ticketRepository
-            .requestTickets(driverDataStore.getToken(), qrContent.value!!, quantity.value!!, selectedCategory.value!!, walletOtp.value!! )
+            .requestTickets(
+                driverDataStore.getToken(),
+                qrContent.value!!,
+                quantity.value!!,
+                selectedCategory.value!!,
+                walletOtp.value!!,
+                latitude.value,
+                longitude.value
+            )
             .onSuccess {
                 updateLoading(false)
                 _shortTicket.postValue(it)
@@ -294,6 +309,12 @@ class WalletPaymentViewModel @Inject constructor(
                 updateLoading(false)
                 handleException(it)
             }
+    }
+
+    fun updateLocation(location: Location) {
+        _latitude.value = location.latitude
+        _longitude.value = location.longitude
+        Log.d(TAG, "updateLocation: ${location.latitude}")
     }
 
     fun printTickets(tickets: List<Ticket>) {
