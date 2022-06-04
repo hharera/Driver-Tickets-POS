@@ -20,6 +20,8 @@ object Parameters {
     const val WALLET_OTP = "wallet_otp"
     const val QUANTITY = "quantity"
     const val UID = "uid"
+    const val LONGITUDE = "long"
+    const val LATITUDE = "lat"
 }
 
 object AuthenticationParameters {
@@ -31,5 +33,5 @@ object Domain {
     const val ENGLIZYA_STAFF = "http://192.168.1.190:9105"
 
 //    const val ENGLIZYA_BUS = "http://161.97.71.140:9100"
-    const val ENGLIZYA_BUS = "http://192.168.1.190:9100"
+    const val ENGLIZYA_BUS = "http://192.168.1.190:9101"
 }
