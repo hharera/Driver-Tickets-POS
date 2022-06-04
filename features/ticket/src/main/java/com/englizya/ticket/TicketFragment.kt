@@ -120,6 +120,7 @@ class TicketFragment : BaseFragment() {
             ticketViewModel.updateConnectivity(it)
         }
 
+
         ticketViewModel.error.observe(viewLifecycleOwner) {
             handleFailure(it)
         }
@@ -188,6 +189,7 @@ class TicketFragment : BaseFragment() {
 //        bind.savedTicketsTitle.setOnClickListener {
 //            ticketViewModel.printTicketsInMemory()
 //        }
+
 
         binding.print.setOnClickListener {
             lifecycleScope.launch(Dispatchers.IO) {

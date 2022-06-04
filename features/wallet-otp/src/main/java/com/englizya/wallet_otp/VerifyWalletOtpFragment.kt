@@ -1,9 +1,12 @@
 package com.englizya.wallet_otp
 
+import android.location.LocationManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.activityViewModels
 import com.englizya.common.base.BaseFragment
 import com.englizya.wallet.WalletPaymentViewModel
@@ -13,6 +16,8 @@ class VerifyWalletOtpFragment : BaseFragment() {
 
     private val walletPaymentViewModel: WalletPaymentViewModel by activityViewModels()
     private lateinit var binding: FragmentVeifyOtpBinding
+    private var locationManager: LocationManager? = null
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,6 +36,8 @@ class VerifyWalletOtpFragment : BaseFragment() {
         setupListeners()
         setupNumberListeners()
         binding.confirmationMessage.text = getString(R.string.enter_confirmation_details, walletPaymentViewModel.total.value)
+        locationManager =activity?.getSystemService(AppCompatActivity.LOCATION_SERVICE) as LocationManager?
+        setupLocationListener()
     }
 
     private fun setupNumberListeners() {
@@ -73,6 +80,20 @@ class VerifyWalletOtpFragment : BaseFragment() {
         binding.pay.setOnClickListener {
             walletPaymentViewModel.whenPayClicked()
             binding.pay.isEnabled = false
+        }
+    }
+
+    private fun setupLocationListener() {
+        try {
+            locationManager?.requestLocationUpdates(
+                LocationManager.NETWORK_PROVIDER,
+                0L,
+                0f
+            ) { location ->
+                walletPaymentViewModel.updateLocation(location)
+            }
+        } catch (ex: SecurityException) {
+            ex.printStackTrace()
         }
     }
 
