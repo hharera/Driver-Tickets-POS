@@ -14,4 +14,13 @@ interface RemoteTicketService {
         latitude: Double?,
         longitude: Double?,
     ): List<Ticket>
+
+    suspend fun requestTourismTickets(
+        token: String,
+        uid: String,
+        quantity: Int,
+        sourceStationId : Int,
+        destinationStationId : Int,
+        tripId : Int ,
+    ): List<Ticket>
 }
