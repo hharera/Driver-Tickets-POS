@@ -10,7 +10,6 @@ import com.englizya.common.utils.Validity
 import com.englizya.datastore.core.DriverDataStore
 import com.englizya.datastore.core.ManifestoDataStore
 import com.englizya.datastore.core.TicketDataStore
-import com.englizya.model.LineStation
 import com.englizya.model.ReservationTicket
 import com.englizya.model.Station
 import com.englizya.model.Trip
@@ -67,8 +66,11 @@ class WalletPaymentViewModel @Inject constructor(
     private var _date = MutableLiveData<DateTime>()
     val date: LiveData<DateTime> = _date
 
-    private var _tripId = MutableLiveData<Trip>()
-    val trip: LiveData<Trip> = _tripId
+    private var _tripId = MutableLiveData<Int>()
+    val tripId: LiveData<Int> = _tripId
+
+    private var _trip = MutableLiveData<Trip>()
+    val trip: LiveData<Trip> = _trip
 
     private var _total = MutableLiveData<Int>()
     val total: LiveData<Int> = _total
@@ -117,11 +119,11 @@ class WalletPaymentViewModel @Inject constructor(
     val longitude: LiveData<Double> = _longitude
 
 
-    private var _sourceStationId = MutableLiveData<String>()
-    val sourceStationId: LiveData<String> = _sourceStationId
+    private var _sourceStationId = MutableLiveData<Int>()
+    val sourceStationId: LiveData<Int> = _sourceStationId
 
-    private var _destinationStationId = MutableLiveData<String>()
-    val destinationStationId: LiveData<String> = _destinationStationId
+    private var _destinationStationId = MutableLiveData<Int>()
+    val destinationStationId: LiveData<Int> = _destinationStationId
 
     private var _printingOperationCompleted = MutableLiveData<Boolean>()
     val printingOperationCompleted: LiveData<Boolean> = _printingOperationCompleted
@@ -314,9 +316,11 @@ class WalletPaymentViewModel @Inject constructor(
         ticketRepository
             .requestTourismTickets(
                 driverDataStore.getToken(),
-                qrContent.value!!, quantity.value!!,
+                qrContent.value!!,
+                quantity.value!!,
                  sourceStationId.value!!
-                , destinationStationId.value!!)
+                , destinationStationId.value!!,
+                 tripId.value!!)
             .onSuccess {
                 updateLoading(false)
                 _tourismTicket.postValue(it)

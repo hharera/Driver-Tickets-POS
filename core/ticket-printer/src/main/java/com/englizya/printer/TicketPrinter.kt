@@ -40,6 +40,7 @@ class TicketPrinter @Inject constructor(
     private val TAG = "TicketPrinter"
 
 
+
     fun printShiftReport(endShiftReportResponse: ShiftReportResponse): String {
         val page = paxGLPage.createPage()
         page.addLine().addUnit("", 1)
@@ -226,7 +227,11 @@ class TicketPrinter @Inject constructor(
         )
 
         return "OK"
+
+
+
     }
+
 
     private fun getTicketQr(ticketId: String): Bitmap {
         return BarcodeEncoder().encodeBitmap(ticketId, BarcodeFormat.QR_CODE, 1500, 1500)
@@ -237,6 +242,7 @@ class TicketPrinter @Inject constructor(
             application.applicationContext.resources,
             R.drawable.ic_ticket_logo
         )
+
 
     fun printTickets(tickets: ArrayList<Ticket>): List<String> {
         return tickets.map { ticket ->
