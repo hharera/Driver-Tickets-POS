@@ -28,4 +28,6 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindStationRepository(stationRepository: StationRepositoryImpl) : StationRepository
+
+
 }
