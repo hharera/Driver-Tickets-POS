@@ -113,6 +113,7 @@ class BookingFragment : BaseFragment() {
         bookingViewModel.stations.observe(viewLifecycleOwner) {
             updateUI(it)
         }
+
         bookingViewModel.trip.observe(viewLifecycleOwner) {
 
         }

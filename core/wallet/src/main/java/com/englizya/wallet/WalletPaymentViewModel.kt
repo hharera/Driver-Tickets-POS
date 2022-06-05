@@ -10,7 +10,6 @@ import com.englizya.common.utils.Validity
 import com.englizya.datastore.core.DriverDataStore
 import com.englizya.datastore.core.ManifestoDataStore
 import com.englizya.datastore.core.TicketDataStore
-import com.englizya.model.LineStation
 import com.englizya.model.ReservationTicket
 import com.englizya.model.Station
 import com.englizya.model.Trip
@@ -38,8 +37,7 @@ class WalletPaymentViewModel @Inject constructor(
     private val driverDataStore: DriverDataStore,
     private val ticketPrinter: TicketPrinter,
     private val stationRepository: StationRepository,
-
-    ) : BaseViewModel() {
+) : BaseViewModel() {
 
     companion object {
         private const val TAG = "WalletPaymentViewModel"
@@ -102,7 +100,6 @@ class WalletPaymentViewModel @Inject constructor(
 
     private var _stations = MutableLiveData<List<Station>>()
     val stations: LiveData<List<Station>> = _stations
-
 
     private var _tourismTicket = MutableLiveData<List<Ticket>>()
     val tourismTicket: LiveData<List<Ticket>> = _tourismTicket
@@ -229,23 +226,24 @@ class WalletPaymentViewModel @Inject constructor(
         }
     }
 
-    private fun loadWalletDetails(qrContent: String) = viewModelScope.launch(Dispatchers.IO) {
-        Log.d(TAG, "updateQR: $qrContent")
-        updateLoading(true)
-        walletRepository
-            .getWallet(
-                driverToken = driverDataStore.getToken(),
-                uid = qrContent
-            )
-            .onSuccess {
-                updateLoading(false)
-                _walletDetails.postValue(it)
-            }
-            .onFailure {
-                updateLoading(false)
-                handleException(it)
-            }
-    }
+    private fun loadWalletDetails(qrContent: String) =
+        viewModelScope.launch(Dispatchers.IO) {
+            Log.d(TAG, "updateQR: $qrContent")
+            updateLoading(true)
+            walletRepository
+                .getWallet(
+                    driverToken = driverDataStore.getToken(),
+                    uid = qrContent
+                )
+                .onSuccess {
+                    updateLoading(false)
+                    _walletDetails.postValue(it)
+                }
+                .onFailure {
+                    updateLoading(false)
+                    handleException(it)
+                }
+        }
 
     fun getManifestoType(): Int {
         return manifestoDataStore.getManifestoType()
@@ -315,8 +313,8 @@ class WalletPaymentViewModel @Inject constructor(
             .requestTourismTickets(
                 driverDataStore.getToken(),
                 qrContent.value!!, quantity.value!!,
-                 sourceStationId.value!!
-                , destinationStationId.value!!)
+                sourceStationId.value!!, destinationStationId.value!!
+            )
             .onSuccess {
                 updateLoading(false)
                 _tourismTicket.postValue(it)
