@@ -22,6 +22,10 @@ object Parameters {
     const val UID = "uid"
     const val LONGITUDE = "long"
     const val LATITUDE = "lat"
+    const val SOURCE_STATION_ID = "from"
+    const val DESTINATION_STATION_ID = "to"
+    const val TRIP_ID = "tripId"
+
 }
 
 object AuthenticationParameters {
