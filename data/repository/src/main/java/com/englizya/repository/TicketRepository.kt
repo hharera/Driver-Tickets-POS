@@ -28,11 +28,5 @@ interface TicketRepository {
         quantity: Int,
         from: String ,
         to: String ,
-        walletOtp: String ,
-        latitude : Double ,
-        longitude : Double,
-
-
-
         ): Result<List<Ticket>>
 }
