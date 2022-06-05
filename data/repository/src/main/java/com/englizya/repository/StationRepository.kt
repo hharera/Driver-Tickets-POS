@@ -4,5 +4,5 @@ import com.englizya.model.Station
 
 interface StationRepository {
 
-    suspend  fun getAllStations(): Result<List<Station>>
+    suspend fun getAllStations(): Result<List<Station>>
 }
