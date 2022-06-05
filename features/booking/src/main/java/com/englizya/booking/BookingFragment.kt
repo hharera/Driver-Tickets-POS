@@ -14,6 +14,7 @@ import com.englizya.common.base.BaseFragment
 import com.englizya.common.utils.navigation.Destination
 import com.englizya.common.utils.navigation.Domain
 import com.englizya.common.utils.navigation.NavigationUtils
+import com.englizya.model.Station
 import com.englizya.wallet.WalletPaymentViewModel
 import kotlinx.coroutines.launch
 
@@ -45,6 +46,12 @@ class BookingFragment : BaseFragment() {
         setupListeners()
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        lifecycleScope.launch { bookingViewModel.getBookingOffices() }
+    }
+
     private fun setupListeners() {
         binding.source.setOnItemClickListener { adapterView, view, i, l ->
             adapterView.adapter.getItem(i).toString().let {
@@ -71,6 +78,25 @@ class BookingFragment : BaseFragment() {
         )
     }
 
+
+    private fun updateUI(it: List<Station>) {
+        sourceAdapter = ArrayAdapter<String>(
+            requireContext(),
+            R.layout.card_view_station,
+            R.id.station,
+            it.map { it.branchName }
+        )
+
+        destinationAdapter = ArrayAdapter<String>(
+            requireContext(),
+            R.layout.card_view_station,
+            R.id.station,
+            it.map { it.branchName }
+        )
+
+        binding.source.setAdapter(sourceAdapter)
+        binding.destination.setAdapter(destinationAdapter)
+    }
     private fun setupObservers() {
         bookingViewModel.source.observe(viewLifecycleOwner) {
             it.branch?.branchName?.let {
@@ -84,6 +110,9 @@ class BookingFragment : BaseFragment() {
             }
         }
 
+        bookingViewModel.stations.observe(viewLifecycleOwner) {
+            updateUI(it)
+        }
         bookingViewModel.trip.observe(viewLifecycleOwner) {
 
         }

@@ -12,12 +12,14 @@ import com.englizya.datastore.core.ManifestoDataStore
 import com.englizya.datastore.core.TicketDataStore
 import com.englizya.model.LineStation
 import com.englizya.model.ReservationTicket
+import com.englizya.model.Station
 import com.englizya.model.Trip
 import com.englizya.model.request.Ticket
 import com.englizya.model.response.ManifestoDetails
 import com.englizya.model.response.WalletDetails
 import com.englizya.printer.TicketPrinter
 import com.englizya.repository.ManifestoRepository
+import com.englizya.repository.StationRepository
 import com.englizya.repository.TicketRepository
 import com.englizya.repository.WalletRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -35,7 +37,9 @@ class WalletPaymentViewModel @Inject constructor(
     private val walletRepository: WalletRepository,
     private val driverDataStore: DriverDataStore,
     private val ticketPrinter: TicketPrinter,
-) : BaseViewModel() {
+    private val stationRepository: StationRepository,
+
+    ) : BaseViewModel() {
 
     companion object {
         private const val TAG = "WalletPaymentViewModel"
@@ -54,11 +58,11 @@ class WalletPaymentViewModel @Inject constructor(
     private var _manifesto = MutableLiveData<ManifestoDetails>()
     val manifesto: LiveData<ManifestoDetails> = _manifesto
 
-    private var _source = MutableLiveData<LineStation>()
-    val source: LiveData<LineStation> = _source
+    private var _source = MutableLiveData<Station>()
+    val source: LiveData<Station> = _source
 
-    private var _destination = MutableLiveData<LineStation>()
-    val destination: LiveData<LineStation> = _destination
+    private var _destination = MutableLiveData<Station>()
+    val destination: LiveData<Station> = _destination
 
     private var _date = MutableLiveData<DateTime>()
     val date: LiveData<DateTime> = _date
@@ -96,6 +100,10 @@ class WalletPaymentViewModel @Inject constructor(
     private var _ticketCategories = MutableLiveData<Set<String>>()
     val ticketCategories: LiveData<Set<String>> = _ticketCategories
 
+    private var _stations = MutableLiveData<List<Station>>()
+    val stations: LiveData<List<Station>> = _stations
+
+
     private var _tourismTicket = MutableLiveData<List<Ticket>>()
     val tourismTicket: LiveData<List<Ticket>> = _tourismTicket
 
@@ -109,11 +117,11 @@ class WalletPaymentViewModel @Inject constructor(
     val longitude: LiveData<Double> = _longitude
 
 
-    private var _from = MutableLiveData<String>()
-    val from: LiveData<String> = _from
+    private var _sourceStationId = MutableLiveData<String>()
+    val sourceStationId: LiveData<String> = _sourceStationId
 
-    private var _to = MutableLiveData<String>()
-    val to: LiveData<String> = _to
+    private var _destinationStationId = MutableLiveData<String>()
+    val destinationStationId: LiveData<String> = _destinationStationId
 
     private var _printingOperationCompleted = MutableLiveData<Boolean>()
     val printingOperationCompleted: LiveData<Boolean> = _printingOperationCompleted
@@ -146,16 +154,16 @@ class WalletPaymentViewModel @Inject constructor(
 
 
     fun setDestination(destination: String) {
-        _destination.value = trip.value?.stations?.firstOrNull {
-            it.branch?.branchName == destination
+        _destination.value = stations.value?.firstOrNull {
+            it.branchName == destination
         }
         checkFormValidity()
     }
 
     fun setSource(source: String) {
         Log.d(TAG, "setSource: $source")
-        _source.value = trip.value?.stations?.firstOrNull {
-            it.branch?.branchName == source
+        _source.value = stations.value?.firstOrNull {
+            it.branchName == source
         }
         checkFormValidity()
     }
@@ -183,8 +191,8 @@ class WalletPaymentViewModel @Inject constructor(
     private fun calculateAmount(): Double {
         return trip.value?.let {
             it.plan?.seatPrices?.first {
-                it.source == source.value?.branch?.branchId &&
-                        it.destination == destination.value?.branch?.branchId
+                it.source == source.value?.branchId &&
+                        it.destination == destination.value?.branchId
             }?.vipPrice!! * quantity.value!!
         }!!.toDouble()
     }
@@ -304,9 +312,11 @@ class WalletPaymentViewModel @Inject constructor(
     private fun requestTourismTickets() = viewModelScope.launch {
         updateLoading(true)
         ticketRepository
-            .requestTourismTickets(driverDataStore.getToken(),
+            .requestTourismTickets(
+                driverDataStore.getToken(),
                 qrContent.value!!, quantity.value!!,
-                 from.value!! , to.value!!, walletOtp.value!! ,latitude.value!! , longitude.value!! )
+                 sourceStationId.value!!
+                , destinationStationId.value!!)
             .onSuccess {
                 updateLoading(false)
                 _tourismTicket.postValue(it)
@@ -315,6 +325,26 @@ class WalletPaymentViewModel @Inject constructor(
                 updateLoading(false)
                 handleException(it)
             }
+    }
+
+
+    suspend fun getBookingOffices() {
+        updateLoading(true)
+        stationRepository.getAllStations()
+            .onSuccess {
+                updateLoading(false)
+                _stations.postValue(it)
+            }
+            .onFailure {
+                updateLoading(false)
+                handleException(it)
+            }
+    }
+
+
+    private fun updateData(list: List<Station>) {
+        _source.postValue(list.firstOrNull())
+        _destination.postValue(list.lastOrNull())
     }
 
     private fun requestShortTickets() = viewModelScope.launch {
