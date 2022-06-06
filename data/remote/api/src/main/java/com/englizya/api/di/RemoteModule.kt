@@ -4,6 +4,7 @@ import com.englizya.api.*
 import com.englizya.api.impl.RemoteManifestoServiceImpl
 import com.englizya.api.impl.RemoteTicketServiceImpl
 import com.englizya.api.impl.RemoteUserServiceImpl
+import com.englizya.api.impl.StationServiceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -34,4 +35,9 @@ abstract class RemoteModule {
     @Singleton
     @Binds
     abstract fun provideTripService(walletService : TripServiceImpl): TripService
+
+
+    @Singleton
+    @Binds
+    abstract fun provideStationService(stationService : StationServiceImpl): StationService
 }
