@@ -6,8 +6,9 @@ import com.englizya.model.Station
 import io.ktor.client.*
 import io.ktor.client.request.*
 import io.ktor.http.*
+import javax.inject.Inject
 
-class StationServiceImpl constructor(
+class StationServiceImpl @Inject constructor(
     private val client: HttpClient
 ) : StationService {
 

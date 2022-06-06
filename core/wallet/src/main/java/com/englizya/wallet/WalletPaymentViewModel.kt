@@ -187,6 +187,9 @@ class WalletPaymentViewModel @Inject constructor(
     }
 
     private fun createBookingBilling() {
+        // to go to booking fragment
+
+
 
     }
 
