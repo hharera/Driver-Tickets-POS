@@ -91,27 +91,23 @@ class TicketRepositoryImpl @Inject constructor(
             )
         }
 
-
     override suspend fun requestTourismTickets(
         token: String,
         uid: String,
         quantity: Int,
-        from: String,
-        to: String,
-        walletOtp: String,
-        latitude: Double,
-        longitude: Double
+        sourceStationId: Int,
+        destinationStationId: Int,
+        tripId : Int
     ): Result<List<Ticket>> =
         kotlin.runCatching {
             ticketService.requestTourismTickets(
-                token,
+                token ,
                 uid,
-                quantity,
-                from,
-                to,
-                walletOtp,
-                latitude,
-                longitude
+                quantity ,
+                sourceStationId ,
+                destinationStationId,
+                tripId,
+
 
             )
         }

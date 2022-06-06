@@ -37,7 +37,8 @@ class WalletPaymentViewModel @Inject constructor(
     private val driverDataStore: DriverDataStore,
     private val ticketPrinter: TicketPrinter,
     private val stationRepository: StationRepository,
-) : BaseViewModel() {
+
+    ) : BaseViewModel() {
 
     companion object {
         private const val TAG = "WalletPaymentViewModel"
@@ -65,8 +66,11 @@ class WalletPaymentViewModel @Inject constructor(
     private var _date = MutableLiveData<DateTime>()
     val date: LiveData<DateTime> = _date
 
-    private var _tripId = MutableLiveData<Trip>()
-    val trip: LiveData<Trip> = _tripId
+    private var _tripId = MutableLiveData<Int>()
+    val tripId: LiveData<Int> = _tripId
+
+    private var _trip = MutableLiveData<Trip>()
+    val trip: LiveData<Trip> = _trip
 
     private var _total = MutableLiveData<Int>()
     val total: LiveData<Int> = _total
@@ -101,6 +105,7 @@ class WalletPaymentViewModel @Inject constructor(
     private var _stations = MutableLiveData<List<Station>>()
     val stations: LiveData<List<Station>> = _stations
 
+
     private var _tourismTicket = MutableLiveData<List<Ticket>>()
     val tourismTicket: LiveData<List<Ticket>> = _tourismTicket
 
@@ -114,11 +119,11 @@ class WalletPaymentViewModel @Inject constructor(
     val longitude: LiveData<Double> = _longitude
 
 
-    private var _sourceStationId = MutableLiveData<String>()
-    val sourceStationId: LiveData<String> = _sourceStationId
+    private var _sourceStationId = MutableLiveData<Int>()
+    val sourceStationId: LiveData<Int> = _sourceStationId
 
-    private var _destinationStationId = MutableLiveData<String>()
-    val destinationStationId: LiveData<String> = _destinationStationId
+    private var _destinationStationId = MutableLiveData<Int>()
+    val destinationStationId: LiveData<Int> = _destinationStationId
 
     private var _printingOperationCompleted = MutableLiveData<Boolean>()
     val printingOperationCompleted: LiveData<Boolean> = _printingOperationCompleted
@@ -182,6 +187,9 @@ class WalletPaymentViewModel @Inject constructor(
     }
 
     private fun createBookingBilling() {
+        // to go to booking fragment
+
+
 
     }
 
@@ -226,24 +234,23 @@ class WalletPaymentViewModel @Inject constructor(
         }
     }
 
-    private fun loadWalletDetails(qrContent: String) =
-        viewModelScope.launch(Dispatchers.IO) {
-            Log.d(TAG, "updateQR: $qrContent")
-            updateLoading(true)
-            walletRepository
-                .getWallet(
-                    driverToken = driverDataStore.getToken(),
-                    uid = qrContent
-                )
-                .onSuccess {
-                    updateLoading(false)
-                    _walletDetails.postValue(it)
-                }
-                .onFailure {
-                    updateLoading(false)
-                    handleException(it)
-                }
-        }
+    private fun loadWalletDetails(qrContent: String) = viewModelScope.launch(Dispatchers.IO) {
+        Log.d(TAG, "updateQR: $qrContent")
+        updateLoading(true)
+        walletRepository
+            .getWallet(
+                driverToken = driverDataStore.getToken(),
+                uid = qrContent
+            )
+            .onSuccess {
+                updateLoading(false)
+                _walletDetails.postValue(it)
+            }
+            .onFailure {
+                updateLoading(false)
+                handleException(it)
+            }
+    }
 
     fun getManifestoType(): Int {
         return manifestoDataStore.getManifestoType()
@@ -312,9 +319,11 @@ class WalletPaymentViewModel @Inject constructor(
         ticketRepository
             .requestTourismTickets(
                 driverDataStore.getToken(),
-                qrContent.value!!, quantity.value!!,
-                sourceStationId.value!!, destinationStationId.value!!
-            )
+                qrContent.value!!,
+                quantity.value!!,
+                 sourceStationId.value!!
+                , destinationStationId.value!!,
+                 tripId.value!!)
             .onSuccess {
                 updateLoading(false)
                 _tourismTicket.postValue(it)

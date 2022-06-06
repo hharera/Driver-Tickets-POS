@@ -1,6 +1,8 @@
 package com.englizya.api.utils
 
 object Routing {
+    const val GET_ALL_STATIONS = "${Domain.ENGLIZYA_STAFF}api/station/all"
+
     const val REQUEST_TICKETS_WITH_WALLET = "${Domain.ENGLIZYA_BUS}/api/driver/request-short-tickets-with-wallet"
     const val GET_TRIP = "${Domain.ENGLIZYA_BUS}/api/trip"
     const val GET_WALLET_DETAILS = "${Domain.ENGLIZYA_BUS}/api/driver/get-wallet-details"
@@ -22,6 +24,10 @@ object Parameters {
     const val UID = "uid"
     const val LONGITUDE = "long"
     const val LATITUDE = "lat"
+    const val SOURCE_STATION_ID = "from"
+    const val DESTINATION_STATION_ID = "to"
+    const val TRIP_ID = "tripId"
+
 }
 
 object AuthenticationParameters {

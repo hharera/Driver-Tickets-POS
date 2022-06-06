@@ -63,4 +63,23 @@ class RemoteTicketServiceImpl @Inject constructor(
         }
     }
 
+    override suspend fun requestTourismTickets(
+        token: String,
+        uid: String,
+        quantity: Int,
+        sourceStationId: Int,
+        destinationStationId: Int,
+        tripId: Int
+    ): List<Ticket> {
+        return client.post{
+            url(Routing.REQUEST_TICKETS_WITH_WALLET)
+            parameter(Parameters.UID, uid)
+            parameter(Parameters.QUANTITY, quantity)
+            parameter(Parameters.SOURCE_STATION_ID, sourceStationId)
+            parameter(Parameters.DESTINATION_STATION_ID, destinationStationId)
+            parameter(Parameters.TRIP_ID, tripId)
+            header(Header.DRIVER_TOKEN,"${AuthScheme.Bearer} $token")
+        }
+    }
+
 }

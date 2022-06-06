@@ -99,13 +99,13 @@ class BookingFragment : BaseFragment() {
     }
     private fun setupObservers() {
         bookingViewModel.source.observe(viewLifecycleOwner) {
-            it.branch?.branchName?.let {
+            it.branchName?.let {
                 binding.source.setText(it)
             }
         }
 
         bookingViewModel.destination.observe(viewLifecycleOwner) {
-            it.branch?.branchName?.let {
+            it.branchName?.let {
                 binding.destination.setText(it)
             }
         }

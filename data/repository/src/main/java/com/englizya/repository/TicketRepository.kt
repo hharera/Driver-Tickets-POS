@@ -1,5 +1,6 @@
 package com.englizya.repository
 
+import com.englizya.model.Trip
 import com.englizya.model.UnPrintedTicket
 import com.englizya.model.request.Ticket
 
@@ -26,7 +27,8 @@ interface TicketRepository {
         token: String,
         uid: String,
         quantity: Int,
-        from: String ,
-        to: String ,
+        sourceStationId: Int,
+        destinationStationId: Int,
+        tripId: Int,
         ): Result<List<Ticket>>
 }
