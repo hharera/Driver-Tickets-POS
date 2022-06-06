@@ -1,23 +1,16 @@
 package com.englizya.printer.di
 
-import android.app.Application
+import com.englizya.printer.TicketPrinter
 import com.pax.gl.page.PaxGLPage
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import org.koin.dsl.module
 
 
-@InstallIn(SingletonComponent::class)
-@Module
-class PrinterModule {
+val printerModule = module {
+    single {
+        PaxGLPage.getInstance(get())
+    }
 
-    companion object {
-
-        @Singleton
-        @Provides
-        fun providePaxGl(application: Application): PaxGLPage =
-            PaxGLPage.getInstance(application.applicationContext)
+    single {
+        TicketPrinter(get(), get(), get())
     }
 }

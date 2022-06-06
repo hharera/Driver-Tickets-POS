@@ -5,10 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.englizya.common.base.BaseViewModel
 import com.englizya.common.utils.Validity
-import com.englizya.datastore.core.CarDataStore
-import com.englizya.datastore.core.DriverDataStore
-import com.englizya.datastore.core.ManifestoDataStore
-import com.englizya.datastore.core.TicketDataStore
+import com.englizya.datastore.LocalTicketPreferences
 import com.englizya.datastore.utils.Value
 import com.englizya.manager.login.LoginFormState
 import com.englizya.model.request.LoginRequest
@@ -16,17 +13,14 @@ import com.englizya.model.response.ManifestoDetails
 import com.englizya.repository.ManifestoRepository
 import com.englizya.repository.UserRepository
 import com.englizya.ticket.login.R
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 
-@HiltViewModel
-class LoginViewModel @Inject constructor(
+class LoginViewModel constructor(
     private val userRepository: UserRepository,
     private val manifestoRepository: ManifestoRepository,
-    private val manifestoDataStore: ManifestoDataStore,
-    private val carDataStore: CarDataStore,
-    private val driverDataStore: DriverDataStore,
-    private val ticketDataStore: TicketDataStore,
+    private val manifestoDataStore: LocalTicketPreferences,
+    private val carDataStore: LocalTicketPreferences,
+    private val driverDataStore: LocalTicketPreferences,
+    private val ticketDataStore: LocalTicketPreferences,
 ) : BaseViewModel() {
 
     private var _username = MutableLiveData<String>()

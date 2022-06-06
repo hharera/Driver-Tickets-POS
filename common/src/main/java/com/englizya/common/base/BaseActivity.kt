@@ -5,9 +5,7 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.englizya.common.ui.LoadingDialog
-import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
 open class BaseActivity : AppCompatActivity() {
 
     private val loadingDialog: LoadingDialog by lazy {

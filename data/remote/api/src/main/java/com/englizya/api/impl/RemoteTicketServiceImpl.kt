@@ -5,7 +5,7 @@ import com.englizya.api.utils.AuthenticationParameters
 import com.englizya.api.utils.Header
 import com.englizya.api.utils.Parameters
 import com.englizya.api.utils.Routing
-import com.englizya.datastore.core.DriverDataStore
+import com.englizya.datastore.LocalTicketPreferences
 import com.englizya.model.request.Ticket
 import io.ktor.client.*
 import io.ktor.client.request.*
@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 class RemoteTicketServiceImpl @Inject constructor(
     private val client: HttpClient,
-    private val driverDataStore: DriverDataStore,
+    private val driverDataStore: LocalTicketPreferences,
 ) : RemoteTicketService {
 
     override suspend fun insertTicket(ticket: Ticket): Ticket {

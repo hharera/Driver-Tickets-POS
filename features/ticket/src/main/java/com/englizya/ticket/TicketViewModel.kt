@@ -7,10 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.englizya.common.base.BaseViewModel
 import com.englizya.common.utils.time.TimeUtils.getTicketTimeMillis
-import com.englizya.datastore.core.CarDataStore
-import com.englizya.datastore.core.DriverDataStore
-import com.englizya.datastore.core.ManifestoDataStore
-import com.englizya.datastore.core.TicketDataStore
+import com.englizya.datastore.LocalTicketPreferences
 import com.englizya.model.request.Ticket
 import com.englizya.model.response.ManifestoDetails
 import com.englizya.printer.TicketPrinter
@@ -18,23 +15,20 @@ import com.englizya.printer.utils.PrinterState.OUT_OF_PAPER
 import com.englizya.repository.ManifestoRepository
 import com.englizya.repository.TicketRepository
 import com.englizya.ticket.utils.Constant
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.joda.time.DateTime
 import java.lang.Integer.max
 import java.lang.Integer.min
-import javax.inject.Inject
 
-@HiltViewModel
-class TicketViewModel @Inject constructor(
+class TicketViewModel constructor(
     private val ticketPrinter: TicketPrinter,
     private val ticketRepository: TicketRepository,
     private val manifestoRepository: ManifestoRepository,
-    private val manifestoDataStore: ManifestoDataStore,
-    private val driverDataStore: DriverDataStore,
-    private val carDataStore: CarDataStore,
-    private val ticketDataStore: TicketDataStore,
+    private val manifestoDataStore: LocalTicketPreferences,
+    private val driverDataStore: LocalTicketPreferences,
+    private val carDataStore: LocalTicketPreferences,
+    private val ticketDataStore: LocalTicketPreferences,
 ) : BaseViewModel() {
 
     private var _quantity = MutableLiveData<Int>(1)
@@ -68,7 +62,8 @@ class TicketViewModel @Inject constructor(
 
     init {
         _ticketCategories.value = ticketDataStore.getTicketCategories().also {
-            _selectedCategory.value =  (ticketDataStore.getTicketCategories()?.firstOrNull()?.toInt())
+            _selectedCategory.value =
+                (ticketDataStore.getTicketCategories()?.firstOrNull()?.toInt())
         }
 
         fetchDriverManifesto()
@@ -110,7 +105,12 @@ class TicketViewModel @Inject constructor(
     }
 
     fun setQuantity(quantity: Int) {
-        _quantity.postValue(min(max(Constant.MIN_TICKETS, quantity), Constant.MAX_TICKETS))
+        _quantity.postValue(
+            min(
+                max(Constant.MIN_TICKETS, quantity),
+                Constant.MAX_TICKETS
+            )
+        )
     }
 
     fun setPaymentMethod(method: PaymentMethod) {

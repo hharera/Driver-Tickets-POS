@@ -1,10 +1,5 @@
 apply from: "$rootDir/${CommonBuild.FeatureModule}"
 
 dependencies {
-    implementation(Libs.materialDesign)
-    implementation(Libs.fragments)
-    implementation(Libs.navigationFragment)
-
-    api project(Core.PRINTER)
-    api project(UiComponents.OUT_OF_PAPER_ALERT)
+    api project(Core.TICKET_PRINTER)
 }

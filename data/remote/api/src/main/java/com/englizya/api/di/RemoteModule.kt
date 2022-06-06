@@ -5,39 +5,32 @@ import com.englizya.api.impl.RemoteManifestoServiceImpl
 import com.englizya.api.impl.RemoteTicketServiceImpl
 import com.englizya.api.impl.RemoteUserServiceImpl
 import com.englizya.api.impl.StationServiceImpl
-import dagger.Binds
-import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import org.koin.dsl.module
 
 
-@Module
-@InstallIn(SingletonComponent::class)
-abstract class RemoteModule {
+val remoteModule = module {
 
-    @Singleton
-    @Binds
-    abstract fun provideRemoteUserService(remoteUserServiceImpl: RemoteUserServiceImpl): RemoteUserService
+    single<RemoteUserService> {
+        RemoteUserServiceImpl(get())
+    }
 
-    @Singleton
-    @Binds
-    abstract fun provideRemoteManifestoService(remoteManifestoServiceImpl: RemoteManifestoServiceImpl): RemoteManifestoService
+    single<RemoteTicketService> {
+        RemoteTicketServiceImpl(get(), get())
+    }
 
-    @Singleton
-    @Binds
-    abstract fun provideRemoteTicketService(remoteTicketServiceImpl: RemoteTicketServiceImpl): RemoteTicketService
+    single<RemoteManifestoService> {
+        RemoteManifestoServiceImpl(get(), get())
+    }
 
-    @Singleton
-    @Binds
-    abstract fun provideWalletService(walletService : WalletServiceImpl): WalletService
+    single<StationService> {
+        StationServiceImpl(get())
+    }
 
-    @Singleton
-    @Binds
-    abstract fun provideTripService(walletService : TripServiceImpl): TripService
+    single<WalletService> {
+        WalletServiceImpl(get())
+    }
 
-
-    @Singleton
-    @Binds
-    abstract fun provideStationService(stationService : StationServiceImpl): StationService
+    single<TripService> {
+        TripServiceImpl(get())
+    }
 }

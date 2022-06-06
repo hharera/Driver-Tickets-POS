@@ -3,7 +3,7 @@ package com.englizya.api.impl
 import com.englizya.api.RemoteManifestoService
 import com.englizya.api.utils.AuthenticationParameters
 import com.englizya.api.utils.Routing
-import com.englizya.datastore.core.DriverDataStore
+import com.englizya.datastore.LocalTicketPreferences
 import com.englizya.model.request.EndShiftRequest
 import com.englizya.model.response.ManifestoDetails
 import com.englizya.model.response.ShiftReportResponse
@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 class RemoteManifestoServiceImpl @Inject constructor(
     private val client: HttpClient,
-    private val driverDataStore: DriverDataStore,
+    private val driverDataStore: LocalTicketPreferences,
 ) : RemoteManifestoService {
 
     override suspend fun getManifesto(): ManifestoDetails {

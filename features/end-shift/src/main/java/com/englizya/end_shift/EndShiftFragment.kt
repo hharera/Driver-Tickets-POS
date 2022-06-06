@@ -4,24 +4,23 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.englizya.common.base.BaseFragment
 import com.englizya.common.utils.time.TimeUtils
 import com.englizya.model.response.ShiftReportResponse
-import com.englizya.printer.utils.ArabicParameters
 import com.englizya.ticket.end_shift.R
 import com.englizya.ticket.end_shift.databinding.FragmentEndShiftBinding
-import com.example.paper_out_alert.PaperOutDialog
+import com.englizya.common.ui.PaperOutDialog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class EndShiftFragment : BaseFragment() {
 
     private lateinit var binding: FragmentEndShiftBinding
-    private val endShiftViewModel: EndShiftViewModel by viewModels()
+    private val endShiftViewModel: EndShiftViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
