@@ -1,0 +1,15 @@
+*.iml
+.gradle
+.idea
+.DS_Store
+/build
+/app/release
+/app/debug
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+.gitignore
+
+# Project exclude paths
+/buildSrc/build/

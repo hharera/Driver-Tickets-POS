@@ -29,16 +29,14 @@ import com.google.zxing.BarcodeFormat
 import com.journeyapps.barcodescanner.BarcodeEncoder
 import com.pax.gl.page.IPage.EAlign
 import com.pax.gl.page.PaxGLPage
-import javax.inject.Inject
 
 
-class TicketPrinter @Inject constructor(
+class TicketPrinter constructor(
     private val paxGLPage: PaxGLPage,
     private val escPosPrinter: EscPosPrinter,
     private val application: Application,
 ) {
     private val TAG = "TicketPrinter"
-
 
 
     fun printShiftReport(endShiftReportResponse: ShiftReportResponse): String {
@@ -227,7 +225,6 @@ class TicketPrinter @Inject constructor(
         )
 
         return "OK"
-
 
 
     }

@@ -11,5 +11,5 @@ import com.englizya.model.request.Ticket
     exportSchema = true,
 )
 abstract class TicketDatabase : RoomDatabase() {
-    abstract fun getMarketDao(): TicketDao
+    abstract fun getTicketDao(): TicketDao
 }

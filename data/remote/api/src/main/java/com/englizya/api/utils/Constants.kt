@@ -1,11 +1,11 @@
 package com.englizya.api.utils
 
 object Routing {
-    const val GET_ALL_STATIONS = "${Domain.ENGLIZYA_STAFF}api/station/all"
-
+    const val GET_ALL_STATIONS = "${Domain.ENGLIZYA_BUS}/api/station/all"
     const val REQUEST_TICKETS_WITH_WALLET = "${Domain.ENGLIZYA_BUS}/api/driver/request-short-tickets-with-wallet"
     const val GET_TRIP = "${Domain.ENGLIZYA_BUS}/api/trip"
     const val GET_WALLET_DETAILS = "${Domain.ENGLIZYA_BUS}/api/driver/get-wallet-details"
+
     const val END_SHIFT = "${Domain.ENGLIZYA_STAFF}/end-shift"
     const val LOGIN = "${Domain.ENGLIZYA_STAFF}/login"
     const val GET_MANIFESTO = "${Domain.ENGLIZYA_STAFF}/manifesto"
@@ -14,7 +14,7 @@ object Routing {
 }
 
 object Request {
-    const val TIME_OUT = 5000.toLong()
+    const val TIME_OUT = 25000.toLong()
 }
 
 object Parameters {
@@ -35,9 +35,9 @@ object AuthenticationParameters {
 }
 
 object Domain {
-    const val ENGLIZYA_STAFF = "http://161.97.71.140:9105"
-//    const val ENGLIZYA_STAFF = "http://192.168.1.190:9105"
+//    const val ENGLIZYA_STAFF = "http://161.97.71.140:9105"
+    const val ENGLIZYA_STAFF = "http://192.168.1.190:9105"
 
-    const val ENGLIZYA_BUS = "http://161.97.71.140:9100"
-//    const val ENGLIZYA_BUS = "http://192.168.1.190:9101"
+//    const val ENGLIZYA_BUS = "http://161.97.71.140:9100"
+    const val ENGLIZYA_BUS = "http://192.168.1.190:9101"
 }

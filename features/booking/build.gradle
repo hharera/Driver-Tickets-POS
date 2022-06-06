@@ -1,7 +1,6 @@
 apply from: "$rootDir/${CommonBuild.FeatureModule}"
 
 dependencies {
-    api(project(Core.WALLET_PAYMENT))
     implementation(Libs.circleImage)
 }
 

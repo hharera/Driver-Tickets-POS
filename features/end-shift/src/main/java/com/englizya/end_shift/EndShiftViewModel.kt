@@ -4,8 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.englizya.common.base.BaseViewModel
-import com.englizya.datastore.core.DriverDataStore
-import com.englizya.datastore.core.ManifestoDataStore
+import com.englizya.datastore.LocalTicketPreferences
 import com.englizya.datastore.utils.Value
 import com.englizya.model.request.EndShiftRequest
 import com.englizya.model.request.Ticket
@@ -14,16 +13,12 @@ import com.englizya.printer.TicketPrinter
 import com.englizya.printer.utils.PrinterState.OUT_OF_PAPER
 import com.englizya.repository.ManifestoRepository
 import com.englizya.repository.TicketRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 
-@HiltViewModel
-class EndShiftViewModel @Inject constructor(
+class EndShiftViewModel constructor(
     private val ticketRepository: TicketRepository,
     private val ticketPrinter: TicketPrinter,
     private val manifestoRepository: ManifestoRepository,
-    private val manifestoDataStore: ManifestoDataStore,
-    private val driverDataStore: DriverDataStore,
+    private val dataStore: LocalTicketPreferences,
 ) : BaseViewModel() {
 
     private val TAG = "EndShiftViewModel"
@@ -95,8 +90,8 @@ class EndShiftViewModel @Inject constructor(
         manifestoRepository
             .getShiftReport(
                 EndShiftRequest(
-                    manifestoDataStore.getManifestoYear(),
-                    manifestoDataStore.getManifestoNo()
+                    dataStore.getManifestoYear(),
+                    dataStore.getManifestoNo()
                 )
             )
             .onSuccess {
@@ -111,7 +106,7 @@ class EndShiftViewModel @Inject constructor(
     }
 
     private fun logout() {
-        driverDataStore.setToken(Value.NULL_STRING)
+        dataStore.setToken(Value.NULL_STRING)
     }
 
     fun printReport(shiftReport: ShiftReportResponse) {

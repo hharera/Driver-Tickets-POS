@@ -1,5 +1,0 @@
-apply from:"$rootDir/${CommonBuild.FeatureModule}"
-
-dependencies {
-    api(project(Core.PRINTER))
-}

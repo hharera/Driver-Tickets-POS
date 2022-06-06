@@ -1,9 +1,10 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'com.google.gms.google-services'
 }
 apply plugin: 'kotlin-kapt'
-apply plugin: 'dagger.hilt.android.plugin'
+apply from: "$rootDir/${CommonBuild.KOIN_MODULE}"
 
 android {
     compileSdkVersion DefaultConfig.compileSdk
@@ -14,16 +15,18 @@ android {
         targetSdkVersion DefaultConfig.targetSdk
         versionCode Releases.versionCode
         versionName Releases.versionName
-
-        testInstrumentationRunner "com.englizya.ticket.HiltTestRunner"
     }
+
     buildFeatures {
         viewBinding true
     }
 
+    buildFeatures {
+        dataBinding true
+    }
     signingConfigs {
         release {
-            storeFile file("$rootDir/englizya-pay.jks")
+            storeFile file("$rootDir/englizya.jks")
             storePassword "englizya"
             keyAlias "key0"
             keyPassword "englizya"
@@ -37,52 +40,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
-    }
+    namespace 'com.englizya.client.ticket'
 }
 
 dependencies {
-    implementation project(Base.common)
-    implementation project(Features.splash)
-    implementation project(Functions.printer)
-    implementation project(Navigation.WALLET_PAY)
+    implementation project(Base.COMMON)
+    implementation project(Feature.SPLASH)
 
-    //hilt
-    implementation(Libs.hiltAndroid)
-    kapt(Libs.hiltAndroidCompiler)
 
-    implementation(Libs.playServicesTasks)
-
-    implementation(Libs.androidxCore)
-    implementation(Libs.appcompat)
-    implementation(Libs.activity)
-    implementation(Libs.fragments)
-
-    implementation(Libs.navigationUi)
-    implementation(Libs.navigationFragment)
-
-    implementation(Libs.materialDesign)
-    implementation(Libs.circleImage)
-
-    implementation(Libs.liveData)
-    implementation(Libs.viewModels)
-    kapt(Libs.lifeCycleCompiler)
-
-    //hilt
-    kapt(Libs.hiltAndroidCompiler)
-    implementation(Libs.hiltAndroid)
-    implementation(TestDi.testRunner)
-
-    androidTestImplementation(TestDi.hiltTesting)
-    kaptAndroidTest(Libs.hiltAndroidCompiler)
-
-    testImplementation(TestDi.hiltTesting)
-    kaptTest(Libs.hiltAndroidCompiler)
+    def appCenterSdkVersion = '4.3.1'
+    implementation "com.microsoft.appcenter:appcenter-analytics:${appCenterSdkVersion}"
+    implementation "com.microsoft.appcenter:appcenter-crashes:${appCenterSdkVersion}"
 }

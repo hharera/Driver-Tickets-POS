@@ -1,8 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: ("dagger.hilt.android.plugin")
 apply plugin: 'kotlin-kapt'
-apply from:"$rootDir/hilt-module-di.gradle"
+
 android {
     compileSdkVersion DefaultConfig.compileSdk
 
@@ -17,27 +16,12 @@ android {
     }
 
     kotlinOptions.jvmTarget = "1.8"
-
-    packagingOptions {
-        exclude 'META-INF/DEPENDENCIES'
-        exclude 'META-INF/LICENSE'
-        exclude 'META-INF/LICENSE.txt'
-        exclude 'META-INF/license.txt'
-        exclude 'META-INF/NOTICE'
-        exclude 'META-INF/NOTICE.txt'
-        exclude 'META-INF/notice.txt'
-        exclude 'META-INF/ASL2.0'
-        exclude 'META-INF/LGPL2.1'
-        exclude 'META-INF/AL2.0'
-        exclude "META-INF/*.kotlin_module"
-        exclude 'META-INF/proguard/androidx-annotations.pro'
-    }
 }
 
 dependencies {
-    api project(Base.common)
-    api project(Data.repository)
-    api project(Data.datastore)
+    api project(Base.COMMON)
+    api project(Data.REPOSITORY)
+    api project(Data.DATA_STORE)
 
     implementation(Libs.coroutinesCore)
 
@@ -45,10 +29,10 @@ dependencies {
     implementation(Libs.activity)
     implementation(Libs.fragments)
     implementation(Libs.navigationFragment)
+    api(GmsPlay.LOCATION)
 
     implementation Libs.liveData
     implementation Libs.androidxCore
-    implementation Libs.playServicesLocation
 
     implementation Libs.materialDesign
     implementation Libs.lifeCycleRuntime

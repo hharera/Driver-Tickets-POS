@@ -1,10 +1,6 @@
 apply from: "$rootDir/${CommonBuild.FeatureModule}"
 
 dependencies {
-    implementation Libs.playServicesTasks
     implementation Libs.circleImage
-    api project(Core.PRINTER)
-    api project(UiComponents.OUT_OF_PAPER_ALERT)
-    api Libs.playServicesLocation
-    implementation 'com.google.android.gms:play-services-location:19.0.1'
+    api project(Core.TICKET_PRINTER)
 }
