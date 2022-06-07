@@ -72,6 +72,14 @@ class BookingFragment : BaseFragment() {
             binding.search.isEnabled = false
             walletViewModel.requestLongTicketsWithWallet()
         }
+
+        binding.ticketPlus.setOnClickListener {
+            walletViewModel.incrementQuantity()
+        }
+
+        binding.ticketMinus.setOnClickListener {
+            walletViewModel.decrementQuantity()
+        }
     }
 
     private fun progressToSelectTrip() {
@@ -127,6 +135,10 @@ class BookingFragment : BaseFragment() {
 
         walletViewModel.formValidity.observe(viewLifecycleOwner) {
             binding.search.isEnabled = it
+        }
+
+        walletViewModel.quantity.observe(viewLifecycleOwner) {
+            binding.ticketQuantity.text = it.toString()
         }
     }
 }
