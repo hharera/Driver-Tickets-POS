@@ -4,11 +4,11 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.englizya.select_ticket.databinding.CardViewCategoryBinding
+import com.englizya.wallet.databinding.CardViewCategoryBinding
 
 class CategoriesAdapter(
     private var selectedCategory: Int,
-    private var categoryList: List<Int> ,
+    private var categoryList: List<Int>,
     private val onItemClicked: (Int) -> Unit,
 ) : RecyclerView.Adapter<CategoriesAdapter.ViewHolder>() {
 
@@ -42,7 +42,7 @@ class CategoriesAdapter(
     inner class ViewHolder(private val bind: CardViewCategoryBinding) :
         RecyclerView.ViewHolder(bind.root) {
 
-        fun updateUI(categoryValue : Int) {
+        fun updateUI(categoryValue: Int) {
             bind.root.setOnClickListener {
                 onItemClicked(categoryValue)
             }

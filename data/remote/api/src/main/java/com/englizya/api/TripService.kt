@@ -5,13 +5,12 @@ import com.englizya.model.Trip
 import io.ktor.client.*
 import io.ktor.client.request.*
 import io.ktor.http.*
-import javax.inject.Inject
 
 interface TripService {
     suspend fun getTrip(tripId: Int, driverToken: String): Trip
 }
 
-class TripServiceImpl @Inject constructor(
+class TripServiceImpl constructor(
     private val client: HttpClient
 ) : TripService {
 

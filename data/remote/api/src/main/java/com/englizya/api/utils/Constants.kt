@@ -14,7 +14,7 @@ object Routing {
 }
 
 object Request {
-    const val TIME_OUT = 25000.toLong()
+    const val TIME_OUT = 5000.toLong()
 }
 
 object Parameters {
@@ -35,9 +35,9 @@ object AuthenticationParameters {
 }
 
 object Domain {
-//    const val ENGLIZYA_STAFF = "http://161.97.71.140:9105"
-    const val ENGLIZYA_STAFF = "http://192.168.1.190:9105"
+    const val ENGLIZYA_STAFF = "http://161.97.71.140:9105"
+//    const val ENGLIZYA_STAFF = "http://192.168.1.190:9105"
 
-//    const val ENGLIZYA_BUS = "http://161.97.71.140:9100"
-    const val ENGLIZYA_BUS = "http://192.168.1.190:9101"
+    const val ENGLIZYA_BUS = "http://161.97.71.140:9100"
+//    const val ENGLIZYA_BUS = "http://192.168.1.190:9101"
 }

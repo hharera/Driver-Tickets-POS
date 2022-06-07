@@ -5,4 +5,7 @@ dependencies {
     api(project(Features.ticket))
     api(project(Features.dayReport))
     api(project(Features.endShift))
+
+    api((Libs.navigationFragment))
+    api((Libs.navigationUi))
 }

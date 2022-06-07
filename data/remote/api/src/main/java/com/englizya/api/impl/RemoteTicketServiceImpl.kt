@@ -11,9 +11,8 @@ import io.ktor.client.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.http.auth.*
-import javax.inject.Inject
 
-class RemoteTicketServiceImpl @Inject constructor(
+class RemoteTicketServiceImpl constructor(
     private val client: HttpClient,
     private val driverDataStore: LocalTicketPreferences,
 ) : RemoteTicketService {
@@ -50,7 +49,7 @@ class RemoteTicketServiceImpl @Inject constructor(
         walletOtp: String,
         latitude: Double?,
         longitude: Double?,
-    ) : List<Ticket> {
+    ): List<Ticket> {
         return client.post {
             url(Routing.REQUEST_TICKETS_WITH_WALLET)
             parameter(Parameters.UID, uid)
@@ -59,7 +58,7 @@ class RemoteTicketServiceImpl @Inject constructor(
             parameter(Parameters.WALLET_OTP, walletOtp)
             parameter(Parameters.LATITUDE, latitude)
             parameter(Parameters.LONGITUDE, longitude)
-            header(Header.DRIVER_TOKEN,"${AuthScheme.Bearer} $token")
+            header(Header.DRIVER_TOKEN, "${AuthScheme.Bearer} $token")
         }
     }
 
@@ -71,14 +70,14 @@ class RemoteTicketServiceImpl @Inject constructor(
         destinationStationId: Int,
         tripId: Int
     ): List<Ticket> {
-        return client.post{
+        return client.post {
             url(Routing.REQUEST_TICKETS_WITH_WALLET)
             parameter(Parameters.UID, uid)
             parameter(Parameters.QUANTITY, quantity)
             parameter(Parameters.SOURCE_STATION_ID, sourceStationId)
             parameter(Parameters.DESTINATION_STATION_ID, destinationStationId)
             parameter(Parameters.TRIP_ID, tripId)
-            header(Header.DRIVER_TOKEN,"${AuthScheme.Bearer} $token")
+            header(Header.DRIVER_TOKEN, "${AuthScheme.Bearer} $token")
         }
     }
 

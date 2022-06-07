@@ -23,13 +23,14 @@ import com.englizya.ticket.TicketViewModel
 import com.englizya.ticket.navigation.R
 import com.englizya.ticket.navigation.databinding.ActivityHomeBinding
 import com.google.android.gms.location.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 //TODO extend from base activity
 class HomeActivity : BaseActivity() {
 
     private lateinit var bind: ActivityHomeBinding
-    private val ticketViewModel: TicketViewModel by viewModels()
+    private val ticketViewModel: TicketViewModel by viewModel()
     private lateinit var navController: NavController
     private val TAG = "HomeActivity"
     private lateinit var locationCallback: LocationCallback

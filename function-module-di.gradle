@@ -1,0 +1,24 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply from: "$rootDir/${CommonBuild.KOIN_MODULE}"
+
+android {
+    compileSdkVersion DefaultConfig.compileSdk
+
+    defaultConfig {
+        minSdkVersion DefaultConfig.minSdk
+        targetSdkVersion DefaultConfig.targetSdk
+        versionCode Releases.versionCode
+        versionName Releases.versionName
+    }
+    buildFeatures{
+        viewBinding true
+    }
+
+    kotlinOptions.jvmTarget = "1.8"
+}
+
+dependencies {
+
+}

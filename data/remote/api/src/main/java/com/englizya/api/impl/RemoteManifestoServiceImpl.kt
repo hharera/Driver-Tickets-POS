@@ -10,9 +10,8 @@ import com.englizya.model.response.ShiftReportResponse
 import io.ktor.client.*
 import io.ktor.client.request.*
 import io.ktor.http.*
-import javax.inject.Inject
 
-class RemoteManifestoServiceImpl @Inject constructor(
+class RemoteManifestoServiceImpl constructor(
     private val client: HttpClient,
     private val driverDataStore: LocalTicketPreferences,
 ) : RemoteManifestoService {

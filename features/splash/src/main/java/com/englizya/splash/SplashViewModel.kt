@@ -8,7 +8,6 @@ import com.englizya.datastore.utils.Value.NULL_STRING
 import com.englizya.repository.UserRepository
 
 class SplashViewModel constructor(
-    private val userRepository: UserRepository,
     private val userDataStore: LocalTicketPreferences,
 ) : BaseViewModel() {
 
