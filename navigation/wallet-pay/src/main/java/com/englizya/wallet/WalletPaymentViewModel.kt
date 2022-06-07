@@ -19,6 +19,7 @@ import com.englizya.repository.ManifestoRepository
 import com.englizya.repository.StationRepository
 import com.englizya.repository.TicketRepository
 import com.englizya.repository.WalletRepository
+import io.ktor.http.auth.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.joda.time.DateTime
@@ -388,17 +389,16 @@ class WalletPaymentViewModel constructor(
 //        encapsulateRequest()
 //            .onSuccess = {
 //            _longTicketWithWallet.postValue(it)
-//        }
+//            }
 //            .onFailure = {
 //            handleException(it)
 //        }
-//        )
     }
 
 //    private fun encapsulateRequest(): Result<TourismTicketsWithWalletRequest> =
 //        kotlin.runCatching {
 //            TourismTicketsWithWalletRequest(
-//                localTicketPreferences.getToken(),
+//                AuthScheme.Bearer + localTicketPreferences.getToken(),
 //                localTicketPreferences.getReservationId(),
 //                qrContent.value!!,
 //                quantity.value!!,

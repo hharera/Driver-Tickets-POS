@@ -2,15 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:background="@color/blue_600"
     android:layout_height="match_parent">
-
-    <ImageView
-        android:id="@+id/imageView6"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:src="@drawable/background_layout_booking"
-        app:layout_constraintHeight_percent="0.8"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView2"
@@ -126,10 +119,10 @@
                 android:id="@+id/source"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/_6sdp"
                 android:fontFamily="@font/montserrat_arabic"
                 android:lines="1"
                 android:maxLines="1"
-                android:layout_marginHorizontal="@dimen/_6sdp"
                 android:singleLine="true"
                 android:textColor="@color/white"
                 android:textSize="30sp" />
@@ -181,32 +174,32 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
+                android:layout_marginHorizontal="@dimen/_6sdp"
                 android:fontFamily="@font/montserrat_arabic"
                 android:lines="1"
-                android:layout_marginHorizontal="@dimen/_6sdp"
-                app:boxStrokeWidth="0dp"
-                app:boxStrokeWidthFocused="0dp"
                 android:maxLines="1"
                 android:singleLine="true"
                 android:textColor="@color/white"
-                android:textSize="30sp" />
+                android:textSize="30sp"
+                app:boxStrokeWidth="0dp"
+                app:boxStrokeWidthFocused="0dp" />
         </com.google.android.material.textfield.TextInputLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/search"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="23dp"
-        android:background="@drawable/background_trip_reservation_type"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:backgroundTint="@color/red_400"
         android:enabled="false"
         android:fontFamily="@font/montserrat_arabic"
         android:text="@string/proceed"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView6" />
+        app:layout_constraintTop_toBottomOf="@+id/ticket_quantity" />
 
 
     <TextView
@@ -216,8 +209,8 @@
         android:background="@drawable/quantity_background"
         android:fontFamily="@font/abeezee"
         android:padding="@dimen/_10sdp"
-        android:textSize="40sp"
         android:text="9"
+        android:textSize="40sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
