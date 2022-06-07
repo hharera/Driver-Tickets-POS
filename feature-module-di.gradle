@@ -22,6 +22,7 @@ dependencies {
     api project(Base.COMMON)
     api project(Data.REPOSITORY)
     api project(Data.DATA_STORE)
+    api project(Core.TICKET_PRINTER)
 
     implementation(Libs.coroutinesCore)
 

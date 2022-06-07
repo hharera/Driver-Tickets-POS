@@ -26,7 +26,8 @@ import java.nio.charset.Charset
 object XPrinterP300 {
 
     fun print(ticket: Ticket, logo: Bitmap) {
-        val printer = EscPosPrinter(BluetoothPrintersConnections.selectFirstPaired(), 203, 48f, 32)
+        val printer =
+            EscPosPrinter(BluetoothPrintersConnections.selectFirstPaired(), 203, 48f, 32)
         printer
             .printFormattedText(
                 "[C]<img>" + PrinterTextParserImg.bitmapToHexadecimalString(
@@ -107,7 +108,7 @@ object XPrinterP300 {
     }
 
     fun print(
-        escPosPrinter : EscPosPrinter,
+        escPosPrinter: EscPosPrinter,
         logo: Bitmap,
         endShiftReportResponse: ShiftReportResponse
     ) {

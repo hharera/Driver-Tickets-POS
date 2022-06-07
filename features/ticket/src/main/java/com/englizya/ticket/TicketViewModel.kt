@@ -25,10 +25,7 @@ class TicketViewModel constructor(
     private val ticketPrinter: TicketPrinter,
     private val ticketRepository: TicketRepository,
     private val manifestoRepository: ManifestoRepository,
-    private val manifestoDataStore: LocalTicketPreferences,
-    private val driverDataStore: LocalTicketPreferences,
-    private val carDataStore: LocalTicketPreferences,
-    private val ticketDataStore: LocalTicketPreferences,
+    private val preferences: LocalTicketPreferences,
 ) : BaseViewModel() {
 
     private var _quantity = MutableLiveData<Int>(1)
@@ -61,9 +58,9 @@ class TicketViewModel constructor(
     val isPaperOut: LiveData<Boolean> = _isPaperOut
 
     init {
-        _ticketCategories.value = ticketDataStore.getTicketCategories().also {
+        _ticketCategories.value = preferences.getTicketCategories().also {
             _selectedCategory.value =
-                (ticketDataStore.getTicketCategories()?.firstOrNull()?.toInt())
+                (preferences.getTicketCategories()?.firstOrNull()?.toInt())
         }
 
         fetchDriverManifesto()
@@ -81,7 +78,7 @@ class TicketViewModel constructor(
         updateLoading(true)
 
         manifestoRepository
-            .getManifesto(driverDataStore.getToken())
+            .getManifesto(preferences.getToken())
             .onSuccess {
                 updateLoading(false)
                 _manifesto.postValue(it)
@@ -203,14 +200,14 @@ class TicketViewModel constructor(
             tickets.add(
                 Ticket(
                     ticketId = createTicketId(currentMillis + i * 5),
-                    lineCode = carDataStore.getCarLineCode(),
-                    driverCode = driverDataStore.getDriverCode(),
-                    carCode = carDataStore.getCarCode(),
+                    lineCode = preferences.getCarLineCode(),
+                    driverCode = preferences.getDriverCode(),
+                    carCode = preferences.getCarCode(),
                     time = DateTime.now().toString(),
                     paymentWay = getPaymentMethod(),
                     ticketCategory = selectedCategory.value!!,
-                    manifestoId = manifestoDataStore.getManifestoNo(),
-                    manifestoYear = manifestoDataStore.getManifestoYear(),
+                    manifestoId = preferences.getManifestoNo(),
+                    manifestoYear = preferences.getManifestoYear(),
                     ticketLatitude = location.value?.latitude,
                     ticketLongitude = location.value?.latitude
                 )
@@ -229,9 +226,9 @@ class TicketViewModel constructor(
     }
 
     private fun createTicketId(currentTime: Long): String {
-        return carDataStore.getCarCode()
+        return preferences.getCarCode()
             .plus("-")
-            .plus(driverDataStore.getDriverCode())
+            .plus(preferences.getDriverCode())
             .plus("-")
             .plus(currentTime)
     }

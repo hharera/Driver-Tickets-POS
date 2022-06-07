@@ -153,7 +153,7 @@ class TicketFragment : BaseFragment() {
     }
 
     private fun navigateToScanWalletQr() {
-        Class.forName("com.englizya.wallet_pay.WalletPayActivity").let {
+        Class.forName("com.englizya.wallet.WalletPayActivity").let {
             startActivity(Intent(context, it))
         }
     }

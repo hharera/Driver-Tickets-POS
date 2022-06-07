@@ -2,7 +2,7 @@ package com.englizya.wallet
 
 import android.os.Bundle
 import com.englizya.common.base.BaseActivity
-import com.englizya.wallet_pay.databinding.ActivityWalletPayBinding
+import com.englizya.wallet.databinding.ActivityWalletPayBinding
 
 class WalletPayActivity : BaseActivity() {
 

@@ -43,6 +43,8 @@ object Libs {
     //Navigation
     const val navigationFragment =
         "androidx.navigation:navigation-fragment-ktx:${Versions.JETPACK_NAVIGATION_VERSION}"
+    const val navigationUi =
+        "androidx.navigation:navigation-ui-ktx:${Versions.JETPACK_NAVIGATION_VERSION}"
 
     const val navigationSafeArgsPlugin =
         "androidx.navigation:navigation-safe-args-gradle-plugin:${Versions.JETPACK_NAVIGATION_VERSION}"

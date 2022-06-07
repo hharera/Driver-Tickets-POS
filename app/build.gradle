@@ -1,7 +1,6 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
-    id 'com.google.gms.google-services'
 }
 apply plugin: 'kotlin-kapt'
 apply from: "$rootDir/${CommonBuild.KOIN_MODULE}"
@@ -46,6 +45,7 @@ android {
 dependencies {
     implementation project(Base.COMMON)
     implementation project(Feature.SPLASH)
+    implementation project(Navigation.WALLET)
 
 
     def appCenterSdkVersion = '4.3.1'

@@ -5,10 +5,9 @@ import com.englizya.local.TicketDao
 import com.englizya.model.UnPrintedTicket
 import com.englizya.model.request.Ticket
 import com.englizya.repository.TicketRepository
-import javax.inject.Inject
 
 
-class TicketRepositoryImpl @Inject constructor(
+class TicketRepositoryImpl constructor(
     private val ticketService: RemoteTicketService,
     private val ticketDao: TicketDao,
 ) : TicketRepository {
@@ -97,18 +96,18 @@ class TicketRepositoryImpl @Inject constructor(
         quantity: Int,
         sourceStationId: Int,
         destinationStationId: Int,
-        tripId : Int
+        tripId: Int
     ): Result<List<Ticket>> =
         kotlin.runCatching {
             ticketService.requestTourismTickets(
-                token ,
+                token,
                 uid,
-                quantity ,
-                sourceStationId ,
+                quantity,
+                sourceStationId,
                 destinationStationId,
                 tripId,
 
 
-            )
+                )
         }
 }

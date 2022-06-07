@@ -5,7 +5,7 @@ import com.dantsu.escposprinter.connection.bluetooth.BluetoothPrintersConnection
 import org.koin.dsl.module
 
 
-val printerModule = module {
+val xprinterModule = module {
     single {
         EscPosPrinter(
             BluetoothPrintersConnections.selectFirstPaired(),
