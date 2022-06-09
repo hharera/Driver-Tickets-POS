@@ -299,7 +299,7 @@ class WalletPaymentViewModel constructor(
 
     fun whenPayClicked() {
         updateLoading(true)
-        when (0) {
+        when (getManifestoType()) {
             0 -> {
                 requestTourismTickets()
             }

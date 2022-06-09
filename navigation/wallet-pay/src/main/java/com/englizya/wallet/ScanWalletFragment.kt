@@ -165,7 +165,7 @@ class ScanWalletFragment : BaseFragment() {
 
     private fun progressNavigation(manifestoType: Int) {
         Log.d(TAG, "progressNavigation: $manifestoType")
-        when (0) {
+        when (manifestoType) {
             0 -> {
                 navigateToBooking()
             }
