@@ -1,15 +1,14 @@
 package com.englizya.api.impl
 
 import com.englizya.api.RemoteTicketService
-import com.englizya.api.utils.AuthenticationParameters
-import com.englizya.api.utils.Header
+import com.englizya.api.utils.*
 import com.englizya.api.utils.Parameters
-import com.englizya.api.utils.Routing
 import com.englizya.datastore.LocalTicketPreferences
 import com.englizya.model.request.Ticket
 import com.englizya.model.request.TourismTicketsWithWalletRequest
 import com.englizya.model.response.UserTicket
 import io.ktor.client.*
+import io.ktor.client.features.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.http.auth.*
@@ -88,6 +87,9 @@ class RemoteTicketServiceImpl constructor(
             url(Routing.REQUEST_LONG_TICKETS_WITH_WALLET)
             contentType(ContentType.Application.Json)
             body = request
+            timeout {
+                requestTimeoutMillis = 10000
+            }
         }
     }
 
