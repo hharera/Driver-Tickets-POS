@@ -4,6 +4,7 @@ import android.app.Application
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import com.dantsu.escposprinter.EscPosPrinter
+import com.englizya.common.date.DateOnly
 import com.englizya.common.utils.time.TimeUtils
 import com.englizya.model.request.Ticket
 import com.englizya.model.response.ShiftReportResponse
@@ -238,7 +239,7 @@ class TicketPrinter constructor(
 
 
     private fun getTicketQr(ticketId: String): Bitmap {
-        return BarcodeEncoder().encodeBitmap(ticketId, BarcodeFormat.QR_CODE, 1500, 1500)
+        return BarcodeEncoder().encodeBitmap(ticketId, BarcodeFormat.QR_CODE, 2000, 2000)
     }
 
     private fun getLogoBitmap() =
@@ -280,7 +281,7 @@ class TicketPrinter constructor(
 
         page.addLine()
             .addUnit(
-                getTicketQr(ticket.ticketId.toString()),
+                getTicketQr(ticket.ticketQr.toString()),
                 EAlign.CENTER,
             )
 
@@ -290,11 +291,11 @@ class TicketPrinter constructor(
                     .plus("\n")
                     .plus("$DESTINATION${ticket.destination}")
                     .plus("\n")
-                    .plus("$RESERVATION_DATE${ticket.reservationDate}")
+                    .plus("$RESERVATION_DATE${DateOnly.toMonthDate(ticket.reservationDate)}")
                     .plus("\n")
                     .plus("$SERVICE_DEGREE${ticket.serviceType}")
                     .plus("\n")
-                    .plus("$TRIP${ticket.tripId}")
+                    .plus("$TRIP${ticket.tripName}")
                     .plus("\n")
                     .plus("$SEAT_NO${ticket.seatNo}"),
                 TEXT_SIZE,

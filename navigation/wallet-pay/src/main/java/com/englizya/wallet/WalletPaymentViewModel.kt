@@ -129,7 +129,7 @@ class WalletPaymentViewModel constructor(
         setDefaultSelectedCategory()
         resetQuantity()
         fetchDriverManifesto()
-        _qrContent.postValue("RzuMXSKTGcNoc6Lwd6svPnK73E42")
+//        _qrContent.postValue("RzuMXSKTGcNoc6Lwd6svPnK73E42")
     }
 
     private fun setDefaultSelectedCategory() {
@@ -163,6 +163,7 @@ class WalletPaymentViewModel constructor(
         Log.d(TAG, "setSource: $source")
         _source.value = stations.value?.firstOrNull {
             it.branchName == source
+
         }
         checkFormValidity()
     }
@@ -419,12 +420,12 @@ class WalletPaymentViewModel constructor(
     private fun encapsulateRequest(): Result<TourismTicketsWithWalletRequest> =
         kotlin.runCatching {
             TourismTicketsWithWalletRequest(
-                AuthScheme.Bearer + localTicketPreferences.getToken(),
+                AuthScheme.Bearer + " " + localTicketPreferences.getToken(),
                 localTicketPreferences.getReservationId(),
                 localTicketPreferences.getTripId(),
                 qrContent.value!!,
-                sourceStationId.value!!,
-                destinationStationId.value!!,
+                source.value!!.branchId,
+                destination.value!!.branchId,
                 quantity.value!!
             )
         }

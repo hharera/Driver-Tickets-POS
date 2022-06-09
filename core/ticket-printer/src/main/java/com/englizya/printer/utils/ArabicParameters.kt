@@ -28,5 +28,5 @@ object ArabicParameters {
     const val TICKET_DATE = "تاريخ التذكرة : "
     const val SERIAL = "رقم التذكرة : "
     const val SEAT_NO = "رقم المقعد : "
-    const val TRIP = "رقم الرحلة : "
+    const val TRIP = "رحلة : "
 }
