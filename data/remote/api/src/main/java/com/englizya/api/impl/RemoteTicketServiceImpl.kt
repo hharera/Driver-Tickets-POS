@@ -7,6 +7,8 @@ import com.englizya.api.utils.Parameters
 import com.englizya.api.utils.Routing
 import com.englizya.datastore.LocalTicketPreferences
 import com.englizya.model.request.Ticket
+import com.englizya.model.request.TourismTicketsWithWalletRequest
+import com.englizya.model.response.UserTicket
 import io.ktor.client.*
 import io.ktor.client.request.*
 import io.ktor.http.*
@@ -78,6 +80,14 @@ class RemoteTicketServiceImpl constructor(
             parameter(Parameters.DESTINATION_STATION_ID, destinationStationId)
             parameter(Parameters.TRIP_ID, tripId)
             header(Header.DRIVER_TOKEN, "${AuthScheme.Bearer} $token")
+        }
+    }
+
+    override suspend fun requestLongTicketsWithWallet(request: TourismTicketsWithWalletRequest): List<UserTicket> {
+        return client.post {
+            url(Routing.REQUEST_LONG_TICKETS_WITH_WALLET)
+            contentType(ContentType.Application.Json)
+            body = request
         }
     }
 

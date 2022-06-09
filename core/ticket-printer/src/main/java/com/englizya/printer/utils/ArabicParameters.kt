@@ -7,6 +7,10 @@ object ArabicParameters {
     const val SPACE_SET = 1.toByte()
     const val INVERT_STATE = false
     const val DRIVER_CODE = "كود السائق : "
+    const val SOURCE = "من : "
+    const val DESTINATION = "الي : "
+    const val SERVICE_DEGREE = "نوع الخدمة : "
+    const val RESERVATION_DATE = "تاريخ الرحلة : "
     const val LINE_CODE = "كود الخط : "
     const val MANIFESTO_DATE = "تاريخ المنافستو : "
     const val SHIFT_START = "بداية الشيفت"
@@ -23,4 +27,6 @@ object ArabicParameters {
     const val TICKET_TIME = "وقت التذكرة : "
     const val TICKET_DATE = "تاريخ التذكرة : "
     const val SERIAL = "رقم التذكرة : "
+    const val SEAT_NO = "رقم المقعد : "
+    const val TRIP = "رقم الرحلة : "
 }

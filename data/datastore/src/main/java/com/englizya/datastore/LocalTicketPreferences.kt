@@ -2,12 +2,8 @@ package com.englizya.datastore
 
 import android.content.Context
 import com.englizya.datastore.utils.*
-import com.englizya.datastore.utils.CarConstants
-import com.englizya.datastore.utils.DriverConstants
-import com.englizya.datastore.utils.ManifestoConstants
-import com.englizya.datastore.utils.SourceConstants
-import com.englizya.datastore.utils.TicketConstants
 import com.englizya.datastore.utils.Value.CUSTOMER_SUPPORT
+import com.englizya.datastore.utils.Value.NULL_INT
 
 class LocalTicketPreferences(context: Context) {
 
@@ -155,14 +151,40 @@ class LocalTicketPreferences(context: Context) {
 
 
     private val ticketSharedPreferences =
-        context.getSharedPreferences(SourceConstants.TICKET_SHARED_PREFERENCES,
-            Context.MODE_PRIVATE)
+        context.getSharedPreferences(
+            SourceConstants.TICKET_SHARED_PREFERENCES,
+            Context.MODE_PRIVATE
+        )
 
     fun setTicketCategories(ticketCategories: Set<String>) {
-        ticketSharedPreferences.edit().putStringSet(TicketConstants.TICKET_CATEGORIES, ticketCategories).commit()
+        ticketSharedPreferences.edit()
+            .putStringSet(TicketConstants.TICKET_CATEGORIES, ticketCategories).apply()
     }
 
-    fun getTicketCategories() : Set<String>? {
+    fun getTicketCategories(): Set<String>? {
         return ticketSharedPreferences.getStringSet(TicketConstants.TICKET_CATEGORIES, HashSet())
+    }
+
+    fun setTripId(trip: Int?) {
+        trip?.let {
+            ticketSharedPreferences.edit().putInt(TicketConstants.TRIP_ID, it).apply()
+        }
+    }
+
+    fun getTripId(): Int {
+        return ticketSharedPreferences.getInt(TicketConstants.TRIP_ID, NULL_INT)
+    }
+
+    fun setReservationId(reservationId: Int?) {
+        reservationId?.let {
+            ticketSharedPreferences.edit().putInt(
+                TicketConstants.RESERVATION_ID,
+                it
+            ).apply()
+        }
+    }
+
+    fun getReservationId(): Int {
+        return ticketSharedPreferences.getInt(TicketConstants.RESERVATION_ID, NULL_INT)
     }
 }

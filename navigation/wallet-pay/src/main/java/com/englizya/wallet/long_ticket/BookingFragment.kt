@@ -140,5 +140,9 @@ class BookingFragment : BaseFragment() {
         walletViewModel.quantity.observe(viewLifecycleOwner) {
             binding.ticketQuantity.text = it.toString()
         }
+
+        walletViewModel.longTickets.observe(viewLifecycleOwner) {
+            walletViewModel.printLongTickets(it)
+        }
     }
 }

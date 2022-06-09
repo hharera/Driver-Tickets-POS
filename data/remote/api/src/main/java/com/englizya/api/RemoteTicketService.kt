@@ -1,6 +1,8 @@
 package com.englizya.api
 
 import com.englizya.model.request.Ticket
+import com.englizya.model.request.TourismTicketsWithWalletRequest
+import com.englizya.model.response.UserTicket
 
 interface RemoteTicketService {
     suspend fun insertTicket(ticket: Ticket): Ticket
@@ -19,8 +21,10 @@ interface RemoteTicketService {
         token: String,
         uid: String,
         quantity: Int,
-        sourceStationId : Int,
-        destinationStationId : Int,
-        tripId : Int ,
+        sourceStationId: Int,
+        destinationStationId: Int,
+        tripId: Int,
     ): List<Ticket>
+
+    suspend fun requestLongTicketsWithWallet(request: TourismTicketsWithWalletRequest): List<UserTicket>
 }
