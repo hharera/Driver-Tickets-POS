@@ -1,6 +1,5 @@
 package com.englizya.login
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.englizya.common.base.BaseViewModel
@@ -97,7 +96,6 @@ class LoginViewModel constructor(
     }
 
     private fun updateLocalData(manifesto: ManifestoDetails) {
-//        TODO complete info
         preferences.setManifestoDate(manifesto.date)
         preferences.setIsManifestoShort(manifesto.isShortManifesto)
         preferences.setManifestoNo(manifesto.manifestoId)
@@ -105,11 +103,13 @@ class LoginViewModel constructor(
         preferences.setManifestoType(manifesto.isShortManifesto)
 
         preferences.setDriverCode(manifesto.driverCode)
+        preferences.setReservationId(manifesto.reservationId)
+        preferences.setTripId(manifesto.tripId)
         preferences.setCarCode(manifesto.carCode)
         preferences.setCarLineCode(manifesto.lineCode)
-        Log.d("TAG", "updateLocalData: ${manifesto.ticketCategory}")
-        preferences.setTicketCategories(manifesto.ticketCategory.map { it.toString() }
-            .toSet())
+        preferences.setTicketCategories(
+            manifesto.lineCategory.map { it.toString() }
+                .toSet())
     }
 
     fun setRedirectRouting(redirect: String) {

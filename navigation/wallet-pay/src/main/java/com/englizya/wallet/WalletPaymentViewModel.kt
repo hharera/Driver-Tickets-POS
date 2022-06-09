@@ -12,7 +12,9 @@ import com.englizya.model.ReservationTicket
 import com.englizya.model.Station
 import com.englizya.model.Trip
 import com.englizya.model.request.Ticket
+import com.englizya.model.request.TourismTicketsWithWalletRequest
 import com.englizya.model.response.ManifestoDetails
+import com.englizya.model.response.UserTicket
 import com.englizya.model.response.WalletDetails
 import com.englizya.printer.TicketPrinter
 import com.englizya.repository.ManifestoRepository
@@ -37,6 +39,9 @@ class WalletPaymentViewModel constructor(
         private const val TAG = "WalletPaymentViewModel"
         private const val ACCEPT_PAYMENT_REQUEST = 3005
     }
+
+    private var _longTickets = MutableLiveData<List<UserTicket>>()
+    val longTickets: LiveData<List<UserTicket>> = _longTickets
 
     private var _quantity = MutableLiveData<Int>(1)
     val quantity: LiveData<Int> = _quantity
@@ -377,7 +382,6 @@ class WalletPaymentViewModel constructor(
         viewModelScope.launch(Dispatchers.IO) {
             tickets.forEach { ticket ->
                 ticketPrinter.printTicket(ticket).let { printState ->
-//                    TODO : Check print state
                 }
             }
 
@@ -386,26 +390,46 @@ class WalletPaymentViewModel constructor(
     }
 
     fun requestLongTicketsWithWallet() {
-//        encapsulateRequest()
-//            .onSuccess = {
-//            _longTicketWithWallet.postValue(it)
-//            }
-//            .onFailure = {
-//            handleException(it)
-//        }
+        updateLoading(true)
+        encapsulateRequest()
+            .onSuccess {
+                updateLoading(false)
+                requestLongTickets(it)
+            }
+            .onFailure {
+                updateLoading(false)
+                handleException(it)
+            }
     }
 
-//    private fun encapsulateRequest(): Result<TourismTicketsWithWalletRequest> =
-//        kotlin.runCatching {
-//            TourismTicketsWithWalletRequest(
-//                AuthScheme.Bearer + localTicketPreferences.getToken(),
-//                localTicketPreferences.getReservationId(),
-//                qrContent.value!!,
-//                quantity.value!!,
-//                walletOtp.value!!,
-//                sourceStationId.value!!,
-//                destinationStationId.value!!,
-//                tripId.value!!
-//            )
-//        }
+    private fun requestLongTickets(it: TourismTicketsWithWalletRequest) = viewModelScope.launch {
+        updateLoading(true)
+        ticketRepository
+            .requestLongTicketsWithWallet(it)
+            .onSuccess {
+                updateLoading(false)
+                _longTickets.postValue(it)
+            }
+            .onFailure {
+                updateLoading(false)
+                handleException(it)
+            }
+    }
+
+    private fun encapsulateRequest(): Result<TourismTicketsWithWalletRequest> =
+        kotlin.runCatching {
+            TourismTicketsWithWalletRequest(
+                AuthScheme.Bearer + localTicketPreferences.getToken(),
+                localTicketPreferences.getReservationId(),
+                localTicketPreferences.getTripId(),
+                qrContent.value!!,
+                sourceStationId.value!!,
+                destinationStationId.value!!,
+                quantity.value!!
+            )
+        }
+
+    fun printLongTickets(list: List<UserTicket>) {
+        ticketPrinter.printTickets(list)
+    }
 }

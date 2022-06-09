@@ -7,6 +7,7 @@ android {
 
 dependencies {
     implementation(project(Core.TICKET_PRINTER))
+    api(project(Data.DATA_STORE))
     implementation(BarCode.zxingEmbedded)
     implementation(Libs.circleImage)
     implementation("com.github.nisrulz:qreader:2.1.1")

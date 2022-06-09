@@ -1,4 +1,4 @@
-package com.englizya.wallet
+package com.englizya.model.request
 
 data class TourismTicketsWithWalletRequest(
     var driverAuthHeader: String,
