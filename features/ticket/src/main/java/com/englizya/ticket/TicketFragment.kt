@@ -146,6 +146,10 @@ class TicketFragment : BaseFragment() {
 
     private fun updatePaymentMethods(method: PaymentMethod) {
         setupPaymentAdapter(method)
+        method?.let{
+            method1 -> paymentMethodsAdapter?.setSelectedPaymentMethod(method1)
+        }
+      //  setupPaymentAdapter(method)
 
         if (method == PaymentMethod.QR) {
             navigateToScanWalletQr()
