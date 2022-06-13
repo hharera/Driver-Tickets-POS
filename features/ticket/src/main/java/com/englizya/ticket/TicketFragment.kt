@@ -148,13 +148,21 @@ class TicketFragment : BaseFragment() {
         setupPaymentAdapter(method)
 
         if (method == PaymentMethod.QR) {
-            navigateToScanWalletQr()
+            navigateToScanWalletQr(
+                quantity = ticketViewModel.quantity.value,
+                category = ticketViewModel.selectedCategory.value
+            )
         }
     }
 
-    private fun navigateToScanWalletQr() {
+    private fun navigateToScanWalletQr(quantity: Int?, category: Int?) {
+
         Class.forName("com.englizya.wallet.WalletPayActivity").let {
-            startActivity(Intent(context, it))
+            val intent = Intent(requireContext(), it)
+            intent.putExtra("quantity", quantity)
+            intent.putExtra("category", category)
+            startActivity(intent)
+
         }
     }
 
