@@ -1,17 +1,24 @@
 package com.englizya.end_shift
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.englizya.common.base.BaseFragment
 import com.englizya.common.utils.time.TimeUtils
 import com.englizya.model.response.ShiftReportResponse
 import com.englizya.ticket.end_shift.R
 import com.englizya.ticket.end_shift.databinding.FragmentEndShiftBinding
 import com.englizya.common.ui.PaperOutDialog
+import com.englizya.common.utils.navigation.Arguments
+import com.englizya.common.utils.navigation.Destination
+import com.englizya.common.utils.navigation.Domain
+import com.englizya.common.utils.navigation.NavigationUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -44,7 +51,16 @@ class EndShiftFragment : BaseFragment() {
         binding.print.setOnClickListener {
             binding.print.isEnabled = false
 
-            endShiftViewModel.shiftReport.value?.let { report -> endShiftViewModel.printReport(report) }
+            endShiftViewModel.shiftReport.value?.let {
+                    report ->
+                endShiftViewModel.printReport(
+                    report
+                )
+            }.also {
+            endShiftViewModel.logout()
+            navigateToLogin()
+                }
+
 
             lifecycleScope.launch(Dispatchers.IO) {
                 delay(500)
@@ -52,6 +68,17 @@ class EndShiftFragment : BaseFragment() {
 
             binding.print.isEnabled = true
         }
+    }
+
+    private fun navigateToLogin() {
+        Log.d("Navigate To Login ", " I am navigating")
+        findNavController().navigate(
+            NavigationUtils.getUriNavigation(
+                Domain.ENGLIZYA_PAY,
+                Destination.LOGIN,
+                Destination.TICKET
+            )
+        )
     }
 
     private fun setupObservers() {
