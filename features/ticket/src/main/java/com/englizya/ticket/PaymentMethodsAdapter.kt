@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.englizya.ticket.ticket.databinding.CardViewPaymentTypeBinding
 
 class PaymentMethodsAdapter(
-    private val selectedPaymentMethod: PaymentMethod = PaymentMethod.Cash,
+    private var selectedPaymentMethod: PaymentMethod = PaymentMethod.Cash,
     private val onMethodClicked: (PaymentMethod) -> Unit,
 ) : RecyclerView.Adapter<PaymentMethodsAdapter.ViewHolder>() {
 
@@ -41,6 +41,11 @@ class PaymentMethodsAdapter(
         return 3
     }
 
+    fun setSelectedPaymentMethod(it: PaymentMethod) {
+        selectedPaymentMethod = it
+
+        notifyDataSetChanged()
+    }
     inner class ViewHolder(private val bind: CardViewPaymentTypeBinding) :
         RecyclerView.ViewHolder(bind.root) {
 
@@ -55,11 +60,20 @@ class PaymentMethodsAdapter(
             if (paymentMethod.javaClass == selectedPaymentMethod.javaClass) {
                 bind.paymentImage.apply {
                     setImageResource(paymentMethod.iconRes)
-                    setColorFilter(Color.parseColor("#5F818E"))
+                    setColorFilter(Color.parseColor("#20ADDC"))
                 }
                 bind.paymentText.apply {
                     setText(paymentMethod.titleRes)
-                    setTextColor(Color.parseColor("#5F818E"))
+                    setTextColor(Color.parseColor("#20ADDC"))
+                }
+            }else {
+                bind.paymentImage.apply {
+                    setImageResource(paymentMethod.iconRes)
+                    setColorFilter(Color.WHITE)
+                }
+                bind.paymentText.apply {
+                    setText(paymentMethod.titleRes)
+                    setTextColor(Color.WHITE)
                 }
             }
         }

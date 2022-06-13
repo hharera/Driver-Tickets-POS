@@ -1,5 +1,8 @@
 package com.englizya.model.request
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class TourismTicketsWithWalletRequest(
     var driverAuthHeader: String,
     var reservationId: Int,
