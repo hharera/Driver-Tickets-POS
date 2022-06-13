@@ -39,6 +39,8 @@ class ScanWalletFragment : BaseFragment() {
     private lateinit var binding: FragmentScanWalletBinding
     private lateinit var cameraSource: CameraSource
     private lateinit var barcodeDetector: BarcodeDetector
+    val category = activity?.intent?.extras?.getString("category")
+    val quantity = activity?.intent?.extras?.getString("quantity")
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -56,6 +58,7 @@ class ScanWalletFragment : BaseFragment() {
 
         setupListeners()
         setupObservers()
+
     }
 
     private fun setupQrDetector() {
@@ -165,13 +168,15 @@ class ScanWalletFragment : BaseFragment() {
 
     private fun progressNavigation(manifestoType: Int) {
         Log.d(TAG, "progressNavigation: $manifestoType")
-        when (0) {
+        when (1) {
             0 -> {
                 navigateToBooking()
             }
 
             1 -> {
-                navigateToSelectTicket()
+
+                //ToMake:navigateToPrint(category , quantity)
+                //To Cancel: navigateToSelectTicket()
             }
         }
     }
