@@ -96,7 +96,6 @@ class EndShiftViewModel constructor(
             )
             .onSuccess {
                 updateLoading(false)
-                logout()
                 _shiftReport.postValue(it)
             }
             .onFailure {
@@ -105,7 +104,7 @@ class EndShiftViewModel constructor(
             }
     }
 
-    private fun logout() {
+    fun logout() {
         dataStore.setToken(Value.NULL_STRING)
     }
 

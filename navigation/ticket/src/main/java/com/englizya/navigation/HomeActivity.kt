@@ -132,12 +132,7 @@ class HomeActivity : BaseActivity() {
         bind.navView.setNavigationItemSelectedListener  {
             when (it.itemId) {
                 R.id.navigation_end_shift -> {
-                    navController.navigate(NavigationUtils.getUriNavigation(Domain.ENGLIZYA_PAY, Destination.LOGIN, Destination.END_SHIFT))
-                    bind.root.closeDrawer(GravityCompat.END, true)
-                }
-
-                R.id.navigation_end_shift -> {
-                    navController.navigate(R.id.navigation_day_report)
+                    navController.navigate(NavigationUtils.getUriNavigation(Domain.ENGLIZYA_PAY, Destination.END_SHIFT))
                     bind.root.closeDrawer(GravityCompat.END, true)
                 }
             }
