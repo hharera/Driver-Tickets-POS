@@ -12,3 +12,6 @@ local.properties
 
 # Project exclude paths
 /buildSrc/build/
+/datastore/build
+/core/wallet/build
+/ui-components

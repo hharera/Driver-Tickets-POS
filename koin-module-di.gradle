@@ -1,0 +1,12 @@
+dependencies {
+    //Koin
+    api(DI.koinCore)
+    api(DI.koinAndroid)
+    api(DI.koinCompose)
+
+    testApi(DI.koinJUnit4)
+    testApi(DI.koinTest)
+
+    androidTestApi(DI.koinJUnit4)
+    androidTestApi(DI.koinTest)
+}

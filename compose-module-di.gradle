@@ -1,0 +1,13 @@
+dependencies {
+    api(Compose.composeActivity)
+    api(Compose.composeAndroidX)
+    api(Compose.composUiTooling)
+    api(Compose.composeLivedata)
+    api(Compose.composeMaterial)
+    api(Compose.composeNavigation)
+    api(Compose.composePreview)
+    api(Compose.accompanist)
+    api(Compose.composJUnitTest)
+    api(Compose.composeRefresh)
+    debugImplementation(Compose.composUiTooling)
+}

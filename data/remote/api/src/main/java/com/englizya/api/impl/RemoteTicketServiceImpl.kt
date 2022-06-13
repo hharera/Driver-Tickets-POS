@@ -5,17 +5,18 @@ import com.englizya.api.utils.AuthenticationParameters
 import com.englizya.api.utils.Header
 import com.englizya.api.utils.Parameters
 import com.englizya.api.utils.Routing
-import com.englizya.datastore.core.DriverDataStore
+import com.englizya.datastore.LocalTicketPreferences
 import com.englizya.model.request.Ticket
+import com.englizya.model.request.TourismTicketsWithWalletRequest
+import com.englizya.model.response.UserTicket
 import io.ktor.client.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.http.auth.*
-import javax.inject.Inject
 
-class RemoteTicketServiceImpl @Inject constructor(
+class RemoteTicketServiceImpl constructor(
     private val client: HttpClient,
-    private val driverDataStore: DriverDataStore,
+    private val driverDataStore: LocalTicketPreferences,
 ) : RemoteTicketService {
 
     override suspend fun insertTicket(ticket: Ticket): Ticket {
@@ -47,15 +48,46 @@ class RemoteTicketServiceImpl @Inject constructor(
         uid: String,
         quantity: Int,
         category: Int,
-        walletOtp: String
-    ) : List<Ticket> {
+        walletOtp: String,
+        latitude: Double?,
+        longitude: Double?,
+    ): List<Ticket> {
         return client.post {
             url(Routing.REQUEST_TICKETS_WITH_WALLET)
             parameter(Parameters.UID, uid)
             parameter(Parameters.QUANTITY, quantity)
             parameter(Parameters.CATEGORY, category)
             parameter(Parameters.WALLET_OTP, walletOtp)
-            header(Header.DRIVER_TOKEN,"${AuthScheme.Bearer} $token")
+            parameter(Parameters.LATITUDE, latitude)
+            parameter(Parameters.LONGITUDE, longitude)
+            header(Header.DRIVER_TOKEN, "${AuthScheme.Bearer} $token")
+        }
+    }
+
+    override suspend fun requestTourismTickets(
+        token: String,
+        uid: String,
+        quantity: Int,
+        sourceStationId: Int,
+        destinationStationId: Int,
+        tripId: Int
+    ): List<Ticket> {
+        return client.post {
+            url(Routing.REQUEST_TICKETS_WITH_WALLET)
+            parameter(Parameters.UID, uid)
+            parameter(Parameters.QUANTITY, quantity)
+            parameter(Parameters.SOURCE_STATION_ID, sourceStationId)
+            parameter(Parameters.DESTINATION_STATION_ID, destinationStationId)
+            parameter(Parameters.TRIP_ID, tripId)
+            header(Header.DRIVER_TOKEN, "${AuthScheme.Bearer} $token")
+        }
+    }
+
+    override suspend fun requestLongTicketsWithWallet(request: TourismTicketsWithWalletRequest): List<UserTicket> {
+        return client.post {
+            url(Routing.REQUEST_LONG_TICKETS_WITH_WALLET)
+            contentType(ContentType.Application.Json)
+            body = request
         }
     }
 

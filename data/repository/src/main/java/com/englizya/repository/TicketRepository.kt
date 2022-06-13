@@ -2,6 +2,8 @@ package com.englizya.repository
 
 import com.englizya.model.UnPrintedTicket
 import com.englizya.model.request.Ticket
+import com.englizya.model.request.TourismTicketsWithWalletRequest
+import com.englizya.model.response.UserTicket
 
 
 interface TicketRepository {
@@ -17,6 +19,19 @@ interface TicketRepository {
         uid: String,
         quantity: Int,
         selectedCategory: Int,
-        walletOtp: String
+        walletOtp: String,
+        latitude: Double?,
+        longitude: Double?,
     ): Result<List<Ticket>>
+
+    suspend fun requestTourismTickets(
+        token: String,
+        uid: String,
+        quantity: Int,
+        sourceStationId: Int,
+        destinationStationId: Int,
+        tripId: Int,
+    ): Result<List<Ticket>>
+
+    suspend fun requestLongTicketsWithWallet(request: TourismTicketsWithWalletRequest): Result<List<UserTicket>>
 }

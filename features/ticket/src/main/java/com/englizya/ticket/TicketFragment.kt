@@ -9,22 +9,21 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.englizya.common.base.BaseFragment
+import com.englizya.common.ui.PaperOutDialog
 import com.englizya.common.utils.permission.PermissionUtils.isPermissionGranted
 import com.englizya.common.utils.permission.PermissionUtils.requestPermission
 import com.englizya.model.request.Ticket
 import com.englizya.ticket.ticket.R
 import com.englizya.ticket.ticket.databinding.FragmentTicketBinding
-import com.example.paper_out_alert.PaperOutDialog
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import android.Manifest.permission.ACCESS_FINE_LOCATION as ACCESS_FINE_LOCATION1
 
 class TicketFragment : BaseFragment() {
@@ -34,7 +33,7 @@ class TicketFragment : BaseFragment() {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1006
     }
 
-    private val ticketViewModel: TicketViewModel by activityViewModels()
+    private val ticketViewModel: TicketViewModel by sharedViewModel()
     private lateinit var binding: FragmentTicketBinding
 
     private lateinit var paymentMethodsAdapter: PaymentMethodsAdapter
@@ -49,7 +48,8 @@ class TicketFragment : BaseFragment() {
     ): View {
         binding = FragmentTicketBinding.inflate(layoutInflater, container, false)
 
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
+        fusedLocationClient =
+            LocationServices.getFusedLocationProviderClient(requireContext())
 
         ticketViewModel.setPaymentMethod(PaymentMethod.Cash)
         changeStatusBarColor(R.color.white_600)
@@ -120,6 +120,7 @@ class TicketFragment : BaseFragment() {
             ticketViewModel.updateConnectivity(it)
         }
 
+
         ticketViewModel.error.observe(viewLifecycleOwner) {
             handleFailure(it)
         }
@@ -152,7 +153,7 @@ class TicketFragment : BaseFragment() {
     }
 
     private fun navigateToScanWalletQr() {
-        Class.forName("com.englizya.wallet_pay.WalletPayActivity").let {
+        Class.forName("com.englizya.wallet.WalletPayActivity").let {
             startActivity(Intent(context, it))
         }
     }
@@ -188,6 +189,7 @@ class TicketFragment : BaseFragment() {
 //        bind.savedTicketsTitle.setOnClickListener {
 //            ticketViewModel.printTicketsInMemory()
 //        }
+
 
         binding.print.setOnClickListener {
             lifecycleScope.launch(Dispatchers.IO) {
@@ -232,7 +234,12 @@ class TicketFragment : BaseFragment() {
         grantResults: IntArray
     ) {
         if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
-            if (isPermissionGranted(permissions, grantResults, permission.ACCESS_FINE_LOCATION).not()) {
+            if (isPermissionGranted(
+                    permissions,
+                    grantResults,
+                    permission.ACCESS_FINE_LOCATION
+                ).not()
+            ) {
                 checkLocationPermission()
             }
         }

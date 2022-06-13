@@ -5,9 +5,8 @@ import com.englizya.model.request.EndShiftRequest
 import com.englizya.model.response.ManifestoDetails
 import com.englizya.model.response.ShiftReportResponse
 import com.englizya.repository.ManifestoRepository
-import javax.inject.Inject
 
-class ManifestoRepositoryImpl @Inject constructor(
+class ManifestoRepositoryImpl constructor(
     private val manifestoService: RemoteManifestoService
 ) : ManifestoRepository {
 

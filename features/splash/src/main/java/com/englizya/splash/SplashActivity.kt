@@ -11,10 +11,11 @@ import com.englizya.navigation.HomeActivity
 import com.englizya.splash.databinding.ActivitySplashBinding
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SplashActivity : BaseActivity() {
+class SplashActivity() : BaseActivity() {
 
-    private val splashViewModel: SplashViewModel by viewModels()
+    private val splashViewModel: SplashViewModel by viewModel()
     private lateinit var bind: ActivitySplashBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
