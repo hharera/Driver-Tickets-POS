@@ -1,6 +1,7 @@
 package com.englizya.wallet
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
@@ -8,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.SurfaceHolder
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.util.isNotEmpty
@@ -39,8 +41,9 @@ class ScanWalletFragment : BaseFragment() {
     private lateinit var binding: FragmentScanWalletBinding
     private lateinit var cameraSource: CameraSource
     private lateinit var barcodeDetector: BarcodeDetector
-    val category = activity?.intent?.extras?.getString("category")
-    val quantity = activity?.intent?.extras?.getString("quantity")
+
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -56,9 +59,13 @@ class ScanWalletFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
+        val category = activity?.intent?.extras?.getInt("category")
+        val quantity =  activity?.intent?.extras?.getInt("quantity")
+        quantity?.let { scanWalletViewModel.setQuantity(it) }
+        category?.let { scanWalletViewModel.setSelectedCategory(it) }
         setupListeners()
         setupObservers()
-
     }
 
     private fun setupQrDetector() {
@@ -168,15 +175,15 @@ class ScanWalletFragment : BaseFragment() {
 
     private fun progressNavigation(manifestoType: Int) {
         Log.d(TAG, "progressNavigation: $manifestoType")
-        when (1) {
+        when (manifestoType) {
             0 -> {
                 navigateToBooking()
             }
 
             1 -> {
 
-                //ToMake:navigateToPrint(category , quantity)
-                //To Cancel: navigateToSelectTicket()
+                scanWalletViewModel.whenPayClicked()
+
             }
         }
     }

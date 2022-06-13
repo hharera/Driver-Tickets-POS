@@ -1,7 +1,10 @@
 package com.englizya.wallet
 
+import android.content.Intent
 import android.location.Location
 import android.util.Log
+import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -129,7 +132,7 @@ class WalletPaymentViewModel constructor(
         setDefaultSelectedCategory()
         resetQuantity()
         fetchDriverManifesto()
-        _qrContent.postValue("RzuMXSKTGcNoc6Lwd6svPnK73E42")
+//        _qrContent.postValue("RzuMXSKTGcNoc6Lwd6svPnK73E42")
     }
 
     private fun setDefaultSelectedCategory() {
@@ -151,6 +154,10 @@ class WalletPaymentViewModel constructor(
         } else _formValidity.value = null != _date.value
     }
 
+    fun setQuantity(quantity: Int) {
+        _quantity.value = quantity
+    }
+
 
     fun setDestination(destination: String) {
         _destination.value = stations.value?.firstOrNull {
@@ -163,6 +170,7 @@ class WalletPaymentViewModel constructor(
         Log.d(TAG, "setSource: $source")
         _source.value = stations.value?.firstOrNull {
             it.branchName == source
+
         }
         checkFormValidity()
     }
@@ -298,7 +306,7 @@ class WalletPaymentViewModel constructor(
 
     fun whenPayClicked() {
         updateLoading(true)
-        when (0) {
+        when (getManifestoType()) {
             0 -> {
                 requestTourismTickets()
             }
@@ -365,6 +373,13 @@ class WalletPaymentViewModel constructor(
             .onSuccess {
                 updateLoading(false)
                 _shortTicket.postValue(it)
+//                Class.forName("com.englizya.navigation.HomeActivity").let {
+//                    val intent = Intent(requireContext(), it)
+//
+//                    startActivity(intent)
+                    //navigateToSelectTicket()
+       //         }
+
             }
             .onFailure {
                 updateLoading(false)
@@ -419,12 +434,12 @@ class WalletPaymentViewModel constructor(
     private fun encapsulateRequest(): Result<TourismTicketsWithWalletRequest> =
         kotlin.runCatching {
             TourismTicketsWithWalletRequest(
-                AuthScheme.Bearer + localTicketPreferences.getToken(),
+                AuthScheme.Bearer + " " + localTicketPreferences.getToken(),
                 localTicketPreferences.getReservationId(),
                 localTicketPreferences.getTripId(),
                 qrContent.value!!,
-                sourceStationId.value!!,
-                destinationStationId.value!!,
+                source.value!!.branchId,
+                destination.value!!.branchId,
                 quantity.value!!
             )
         }

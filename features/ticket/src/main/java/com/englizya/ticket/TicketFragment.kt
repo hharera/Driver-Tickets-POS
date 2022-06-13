@@ -146,16 +146,24 @@ class TicketFragment : BaseFragment() {
 
     private fun updatePaymentMethods(method: PaymentMethod) {
         setupPaymentAdapter(method)
+        method?.let{
+            method1 -> paymentMethodsAdapter?.setSelectedPaymentMethod(method1)
+        }
+      //  setupPaymentAdapter(method)
 
         if (method == PaymentMethod.QR) {
-            navigateToScanWalletQr(
-                quantity = ticketViewModel.quantity.value,
-                category = ticketViewModel.selectedCategory.value
-            )
+            ticketViewModel.selectedCategory.value?.let {
+                ticketViewModel.quantity.value?.let { it1 ->
+                    navigateToScanWalletQr(
+                        quantity = it1,
+                        category = it
+                    )
+                }
+            }
         }
     }
 
-    private fun navigateToScanWalletQr(quantity: Int?, category: Int?) {
+    private fun navigateToScanWalletQr(quantity: Int, category: Int) {
 
         Class.forName("com.englizya.wallet.WalletPayActivity").let {
             val intent = Intent(requireContext(), it)
