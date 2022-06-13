@@ -17,10 +17,11 @@ import com.englizya.ticket.login.R
 import com.englizya.ticket.login.databinding.FragmentLoginBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class LoginFragment : BaseFragment() {
 
-    private val loginViewModel: LoginViewModel by viewModels()
+    private val loginViewModel: LoginViewModel by viewModel()
     private lateinit var bind: FragmentLoginBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {

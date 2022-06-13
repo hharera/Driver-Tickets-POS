@@ -1,15 +1,10 @@
 package com.englizya.login
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
 import com.englizya.common.base.BaseViewModel
 import com.englizya.common.utils.Validity
-import com.englizya.datastore.core.CarDataStore
-import com.englizya.datastore.core.DriverDataStore
-import com.englizya.datastore.core.ManifestoDataStore
-import com.englizya.datastore.core.TicketDataStore
+import com.englizya.datastore.LocalTicketPreferences
 import com.englizya.datastore.utils.Value
 import com.englizya.manager.login.LoginFormState
 import com.englizya.model.request.LoginRequest
@@ -17,18 +12,11 @@ import com.englizya.model.response.ManifestoDetails
 import com.englizya.repository.ManifestoRepository
 import com.englizya.repository.UserRepository
 import com.englizya.ticket.login.R
-import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class LoginViewModel @Inject constructor(
+class LoginViewModel constructor(
     private val userRepository: UserRepository,
     private val manifestoRepository: ManifestoRepository,
-    private val manifestoDataStore: ManifestoDataStore,
-    private val carDataStore: CarDataStore,
-    private val driverDataStore: DriverDataStore,
-    private val ticketDataStore: TicketDataStore,
+    private val preferences: LocalTicketPreferences,
 ) : BaseViewModel() {
 
     private var _username = MutableLiveData<String>()
@@ -52,9 +40,11 @@ class LoginViewModel @Inject constructor(
         } else if (Validity.checkUsername(username.value!!).not()) {
             _formValidity.postValue(LoginFormState(usernameError = R.string.invalid_username_error))
         } else if (password.value.isNullOrBlank()) {
-            _formValidity.value = LoginFormState(passwordError = R.string.empty_password_error)
+            _formValidity.value =
+                LoginFormState(passwordError = R.string.empty_password_error)
         } else if (Validity.checkDriverPassword(password.value!!).not()) {
-            _formValidity.value = LoginFormState(passwordError = R.string.invalid_password_error)
+            _formValidity.value =
+                LoginFormState(passwordError = R.string.invalid_password_error)
         } else {
             _formValidity.value = LoginFormState(isValid = true)
         }
@@ -76,11 +66,11 @@ class LoginViewModel @Inject constructor(
             .login(LoginRequest(username.value!!.toInt(), password.value!!))
             .onSuccess {
                 updateLoading(false)
-                driverDataStore.setToken(it.jwt)
+                preferences.setToken(it.jwt)
                 getDriverDetails()
             }
             .onFailure {
-                driverDataStore.setToken(Value.NULL_STRING)
+                preferences.setToken(Value.NULL_STRING)
                 updateLoading(false)
                 _loginOperationState.postValue(false)
                 handleException(it)
@@ -100,23 +90,26 @@ class LoginViewModel @Inject constructor(
             .onFailure {
                 updateLoading(false)
                 _loginOperationState.postValue(false)
-                driverDataStore.setToken(Value.NULL_STRING)
+                preferences.setToken(Value.NULL_STRING)
                 handleException(it)
             }
     }
 
-    private fun updateLocalData(manifesto: ManifestoDetails) = viewModelScope.launch {
-//        TODO complete info
-        manifestoDataStore.setManifestoDate(manifesto.date)
-        manifestoDataStore.setIsManifestoShort(manifesto.isShortManifesto)
-        manifestoDataStore.setManifestoNo(manifesto.manifestoId)
-        manifestoDataStore.setManifestoYear(manifesto.year)
-        manifestoDataStore.setManifestoType(manifesto.isShortManifesto)
+    private fun updateLocalData(manifesto: ManifestoDetails) {
+        preferences.setManifestoDate(manifesto.date)
+        preferences.setIsManifestoShort(manifesto.isShortManifesto)
+        preferences.setManifestoNo(manifesto.manifestoId)
+        preferences.setManifestoYear(manifesto.year)
+        preferences.setManifestoType(manifesto.isShortManifesto)
 
-        driverDataStore.setDriverCode(manifesto.driverCode)
-        carDataStore.setCarCode(manifesto.carCode)
-        carDataStore.setCarLineCode(manifesto.lineCode)
-        ticketDataStore.setTicketCategories(manifesto.ticketCategory.map { it.toString() }.toSet())
+        preferences.setDriverCode(manifesto.driverCode)
+        preferences.setReservationId(manifesto.reservationId)
+        preferences.setTripId(manifesto.tripId)
+        preferences.setCarCode(manifesto.carCode)
+        preferences.setCarLineCode(manifesto.lineCode)
+        preferences.setTicketCategories(
+            manifesto.lineCategory.map { it.toString() }
+                .toSet())
     }
 
     fun setRedirectRouting(redirect: String) {

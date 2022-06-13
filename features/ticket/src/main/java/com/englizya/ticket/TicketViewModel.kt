@@ -7,10 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.englizya.common.base.BaseViewModel
 import com.englizya.common.utils.time.TimeUtils.getTicketTimeMillis
-import com.englizya.datastore.core.CarDataStore
-import com.englizya.datastore.core.DriverDataStore
-import com.englizya.datastore.core.ManifestoDataStore
-import com.englizya.datastore.core.TicketDataStore
+import com.englizya.datastore.LocalTicketPreferences
 import com.englizya.model.request.Ticket
 import com.englizya.model.response.ManifestoDetails
 import com.englizya.printer.TicketPrinter
@@ -18,24 +15,17 @@ import com.englizya.printer.utils.PrinterState.OUT_OF_PAPER
 import com.englizya.repository.ManifestoRepository
 import com.englizya.repository.TicketRepository
 import com.englizya.ticket.utils.Constant
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import org.joda.time.DateTime
 import java.lang.Integer.max
 import java.lang.Integer.min
-import javax.inject.Inject
 
-@HiltViewModel
-class TicketViewModel @Inject constructor(
+class TicketViewModel constructor(
     private val ticketPrinter: TicketPrinter,
     private val ticketRepository: TicketRepository,
     private val manifestoRepository: ManifestoRepository,
-    private val manifestoDataStore: ManifestoDataStore,
-    private val driverDataStore: DriverDataStore,
-    private val carDataStore: CarDataStore,
-    private val ticketDataStore: TicketDataStore,
+    private val preferences: LocalTicketPreferences,
 ) : BaseViewModel() {
 
     private var _quantity = MutableLiveData<Int>(1)
@@ -68,17 +58,13 @@ class TicketViewModel @Inject constructor(
     val isPaperOut: LiveData<Boolean> = _isPaperOut
 
     init {
-        getTicketCategories()
+        _ticketCategories.value = preferences.getTicketCategories().also {
+            _selectedCategory.value =
+                (preferences.getTicketCategories()?.firstOrNull()?.toInt())
+        }
 
         fetchDriverManifesto()
         getLocalTickets()
-    }
-
-    private fun getTicketCategories() = viewModelScope.launch(Dispatchers.IO) {
-        ticketDataStore.getTicketCategories().firstOrNull()?.also {
-            _ticketCategories.postValue(it)
-            _selectedCategory.postValue(it.firstOrNull()?.toInt())
-        }
     }
 
     private fun getLocalTickets() = viewModelScope.launch(Dispatchers.IO) {
@@ -92,7 +78,7 @@ class TicketViewModel @Inject constructor(
         updateLoading(true)
 
         manifestoRepository
-            .getManifesto(driverDataStore.getToken())
+            .getManifesto(preferences.getToken())
             .onSuccess {
                 updateLoading(false)
                 _manifesto.postValue(it)
@@ -116,7 +102,12 @@ class TicketViewModel @Inject constructor(
     }
 
     fun setQuantity(quantity: Int) {
-        _quantity.postValue(min(max(Constant.MIN_TICKETS, quantity), Constant.MAX_TICKETS))
+        _quantity.postValue(
+            min(
+                max(Constant.MIN_TICKETS, quantity),
+                Constant.MAX_TICKETS
+            )
+        )
     }
 
     fun setPaymentMethod(method: PaymentMethod) {
@@ -209,14 +200,14 @@ class TicketViewModel @Inject constructor(
             tickets.add(
                 Ticket(
                     ticketId = createTicketId(currentMillis + i * 5),
-                    lineCode = carDataStore.getCarLineCode(),
-                    driverCode = driverDataStore.getDriverCode(),
-                    carCode = carDataStore.getCarCode(),
+                    lineCode = preferences.getCarLineCode(),
+                    driverCode = preferences.getDriverCode(),
+                    carCode = preferences.getCarCode(),
                     time = DateTime.now().toString(),
                     paymentWay = getPaymentMethod(),
                     ticketCategory = selectedCategory.value!!,
-                    manifestoId = manifestoDataStore.getManifestoNo(),
-                    manifestoYear = manifestoDataStore.getManifestoYear(),
+                    manifestoId = preferences.getManifestoNo(),
+                    manifestoYear = preferences.getManifestoYear(),
                     ticketLatitude = location.value?.latitude,
                     ticketLongitude = location.value?.latitude
                 )
@@ -235,9 +226,9 @@ class TicketViewModel @Inject constructor(
     }
 
     private fun createTicketId(currentTime: Long): String {
-        return carDataStore.getCarCode()
+        return preferences.getCarCode()
             .plus("-")
-            .plus(driverDataStore.getDriverCode())
+            .plus(preferences.getDriverCode())
             .plus("-")
             .plus(currentTime)
     }

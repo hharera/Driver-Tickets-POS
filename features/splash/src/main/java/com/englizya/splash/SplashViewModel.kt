@@ -3,17 +3,12 @@ package com.englizya.splash
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.englizya.common.base.BaseViewModel
+import com.englizya.datastore.LocalTicketPreferences
 import com.englizya.datastore.utils.Value.NULL_STRING
-import com.englizya.datastore.core.DriverDataStore
 import com.englizya.repository.UserRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 
-@HiltViewModel
-class SplashViewModel @Inject constructor(
-    private val userRepository: UserRepository,
-    private val userDataStore: DriverDataStore,
-    //TODO add common module dependencies
+class SplashViewModel constructor(
+    private val userDataStore: LocalTicketPreferences,
 ) : BaseViewModel() {
 
     private val _loginState = MutableLiveData<Boolean>()

@@ -9,11 +9,9 @@ import com.englizya.common.ui.ErrorDialog
 import com.englizya.common.ui.LoadingDialog
 import com.englizya.common.ui.NoInternetDialog
 import com.englizya.common.utils.network.ConnectionLiveData
-import dagger.hilt.android.AndroidEntryPoint
 import io.ktor.client.features.*
 import io.ktor.http.*
 
-@AndroidEntryPoint
 open class BaseFragment : Fragment() {
 
     lateinit var connectionLiveData: ConnectionLiveData

@@ -1,7 +1,5 @@
 apply from: "$rootDir/${CommonBuild.FeatureModule}"
 
 dependencies {
-    implementation Libs.playServicesTasks
-
-    api project(Navigation.payment)
+    api(project(Navigation.TICKET))
 }
