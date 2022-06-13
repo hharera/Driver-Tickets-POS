@@ -5,6 +5,7 @@ import com.englizya.api.di.clientModule
 import com.englizya.api.di.remoteModule
 import com.englizya.common.di.baseModule
 import com.englizya.datastore.di.dataStoreModule
+import com.englizya.end_shift.di.endShiftModule
 import com.englizya.local.di.databaseModule
 import com.englizya.login.di.loginModule
 import com.englizya.printer.di.printerModule
@@ -41,6 +42,7 @@ class TicketApplication : Application() {
                 walletModule,
                 ticketModule,
                 loginModule,
+                endShiftModule,
             )
         }
     }
