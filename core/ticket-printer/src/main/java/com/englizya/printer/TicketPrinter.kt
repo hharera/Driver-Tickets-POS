@@ -239,7 +239,7 @@ class TicketPrinter constructor(
 
 
     private fun getTicketQr(ticketId: String): Bitmap {
-        return BarcodeEncoder().encodeBitmap(ticketId, BarcodeFormat.QR_CODE, 2000, 2000)
+        return BarcodeEncoder().encodeBitmap(ticketId, BarcodeFormat.QR_CODE, 1500, 1500)
     }
 
     private fun getLogoBitmap() =

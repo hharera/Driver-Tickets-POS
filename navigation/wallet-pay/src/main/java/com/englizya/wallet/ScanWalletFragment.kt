@@ -43,8 +43,6 @@ class ScanWalletFragment : BaseFragment() {
     private lateinit var barcodeDetector: BarcodeDetector
 
 
-
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -61,7 +59,7 @@ class ScanWalletFragment : BaseFragment() {
 
 
         val category = activity?.intent?.extras?.getInt("category")
-        val quantity =  activity?.intent?.extras?.getInt("quantity")
+        val quantity = activity?.intent?.extras?.getInt("quantity")
         quantity?.let { scanWalletViewModel.setQuantity(it) }
         category?.let { scanWalletViewModel.setSelectedCategory(it) }
         setupListeners()
@@ -144,6 +142,10 @@ class ScanWalletFragment : BaseFragment() {
 
         scanWalletViewModel.error.observe(viewLifecycleOwner) {
             handleFailure(it)
+        }
+        scanWalletViewModel.shortTicket.observe(viewLifecycleOwner) { ticket ->
+
+            scanWalletViewModel.printTickets(ticket)
         }
     }
 
