@@ -75,19 +75,19 @@ class TicketRepositoryImpl constructor(
         uid: String,
         quantity: Int,
         selectedCategory: Int,
-        walletOtp: String,
-        latitude: Double?,
-        longitude: Double?,
+//        walletOtp: String,
+//        latitude: Double?,
+//        longitude: Double?,
     ): Result<List<Ticket>> =
         kotlin.runCatching {
             ticketService.requestTickets(
                 token,
                 uid,
                 quantity,
-                selectedCategory,
-                walletOtp,
-                latitude,
-                longitude
+                selectedCategory
+//                walletOtp,
+//                latitude,
+//                longitude
 
             )
         }

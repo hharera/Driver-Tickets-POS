@@ -366,16 +366,15 @@ class WalletPaymentViewModel constructor(
                 qrContent.value!!,
                 quantity.value!!,
                 selectedCategory.value!!,
-                walletOtp.value!!,
-                latitude.value,
-                longitude.value
+//                walletOtp.value!!,
+//                latitude.value,
+//                longitude.value
             )
             .onSuccess {
                 updateLoading(false)
                 _shortTicket.postValue(it)
 //                Class.forName("com.englizya.navigation.HomeActivity").let {
 //                    val intent = Intent(requireContext(), it)
-//
 //                    startActivity(intent)
                     //navigateToSelectTicket()
        //         }
