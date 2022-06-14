@@ -5,11 +5,13 @@ import android.location.Location
 import android.util.Log
 import android.widget.Toast
 import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.englizya.common.base.BaseViewModel
 import com.englizya.common.utils.Validity
+import com.englizya.common.utils.time.TimeUtils
 import com.englizya.datastore.LocalTicketPreferences
 import com.englizya.model.ReservationTicket
 import com.englizya.model.Station
@@ -24,6 +26,7 @@ import com.englizya.repository.ManifestoRepository
 import com.englizya.repository.StationRepository
 import com.englizya.repository.TicketRepository
 import com.englizya.repository.WalletRepository
+import com.englizya.ticket.TicketViewModel
 import io.ktor.http.auth.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -46,7 +49,7 @@ class WalletPaymentViewModel constructor(
     private var _longTickets = MutableLiveData<List<UserTicket>>()
     val longTickets: LiveData<List<UserTicket>> = _longTickets
 
-    private var _quantity = MutableLiveData<Int>(1)
+    private var _quantity = MutableLiveData<Int>()
     val quantity: LiveData<Int> = _quantity
 
     private var _selectedCategory = MutableLiveData<Int>()
@@ -130,7 +133,7 @@ class WalletPaymentViewModel constructor(
     init {
         setDefaultDate()
         setDefaultSelectedCategory()
-        resetQuantity()
+        //resetQuantity()
         fetchDriverManifesto()
 //        _qrContent.postValue("RzuMXSKTGcNoc6Lwd6svPnK73E42")
     }
@@ -359,6 +362,7 @@ class WalletPaymentViewModel constructor(
     }
 
     private fun requestShortTickets() = viewModelScope.launch {
+        Log.d(TAG, "requestShortTickets: ${quantity.value}")
         updateLoading(true)
         ticketRepository
             .requestTickets(
@@ -373,12 +377,6 @@ class WalletPaymentViewModel constructor(
             .onSuccess {
                 updateLoading(false)
                 _shortTicket.postValue(it)
-//                Class.forName("com.englizya.navigation.HomeActivity").let {
-//                    val intent = Intent(requireContext(), it)
-//                    startActivity(intent)
-                    //navigateToSelectTicket()
-       //         }
-
             }
             .onFailure {
                 updateLoading(false)
@@ -392,7 +390,8 @@ class WalletPaymentViewModel constructor(
         Log.d(TAG, "updateLocation: ${location.latitude}")
     }
 
-    fun printTickets(tickets: List<Ticket>) {
+    fun printTickets(tickets: List<Ticket> ) {
+        Log.d(TAG, "printTickets: ${tickets.size}")
         viewModelScope.launch(Dispatchers.IO) {
             tickets.forEach { ticket ->
                 ticketPrinter.printTicket(ticket).let { printState ->
