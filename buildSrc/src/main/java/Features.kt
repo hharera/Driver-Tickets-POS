@@ -8,4 +8,6 @@ object Features {
     const val ticket = ":features:ticket"
     const val dayReport = ":features:day-report"
     const val endShift = ":features:end-shift"
+    const val scanReservedTicket = ":features:scan-reserved-ticket"
+
 }

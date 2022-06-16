@@ -182,4 +182,5 @@
     <string name="warning_paper_out">الورق انتهي</string>
     <string name="action_put_new_roll">ضع بكرة ورق جديدة ثم اطبع</string>
     <string name="print_again">معاودة الطباعة</string>
+    <string name="scan_qr_txt">مسح تذكرة</string>
 </resources>
