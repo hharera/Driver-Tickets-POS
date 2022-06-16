@@ -8,4 +8,10 @@
         android:icon="@drawable/ic_shift"
         android:iconTint="@color/grey"
         android:title="@string/end_shift" />
+
+    <item
+        android:id="@+id/navigation_scan_payed_ticket"
+        android:icon="@drawable/qr_100"
+        android:iconTint="@color/grey"
+        android:title="@string/scan_qr_txt" />
 </menu>

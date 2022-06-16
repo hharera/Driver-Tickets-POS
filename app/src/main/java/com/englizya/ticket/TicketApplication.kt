@@ -14,6 +14,7 @@ import com.englizya.splash.di.splashModule
 import com.englizya.ticket.di.ticketModule
 import com.englizya.wallet.di.walletModule
 import com.englizya.xprinter_p300.di.xprinterModule
+import com.example.scan_reserved_ticket.di.scanReservedTicketModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
@@ -41,6 +42,7 @@ class TicketApplication : Application() {
                 splashModule,
                 walletModule,
                 ticketModule,
+                scanReservedTicketModule,
                 loginModule,
                 endShiftModule,
             )

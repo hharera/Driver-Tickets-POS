@@ -100,7 +100,8 @@ class HomeActivity : BaseActivity() {
         fusedLocationClient.requestLocationUpdates(
             LocationRequest(),
             locationCallback,
-            Looper.getMainLooper())
+            Looper.getMainLooper()
+        )
 
     }
 
@@ -129,11 +130,28 @@ class HomeActivity : BaseActivity() {
 
     private fun listenToNavigation() {
         bind.navView.bringToFront()
-        bind.navView.setNavigationItemSelectedListener  {
+        bind.navView.setNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.navigation_end_shift -> {
-                    navController.navigate(NavigationUtils.getUriNavigation(Domain.ENGLIZYA_PAY, Destination.END_SHIFT))
+                    navController.navigate(
+                        NavigationUtils.getUriNavigation(
+                            Domain.ENGLIZYA_PAY,
+                            Destination.END_SHIFT
+                        )
+                    )
                     bind.root.closeDrawer(GravityCompat.END, true)
+                }
+                R.id.navigation_scan_payed_ticket -> {
+                    navController.navigate(
+                        NavigationUtils.getUriNavigation(
+                            Domain.ENGLIZYA_PAY,
+                            Destination.SCAN_QR,
+                            false
+                        )
+                    )
+                    bind.root.closeDrawer(GravityCompat.END, true)
+
+
                 }
             }
             return@setNavigationItemSelectedListener true

@@ -20,5 +20,6 @@ data class UserTicket(
     val bookingOfficeName: String,
     val reservationDate: String,
     val tripId: Int,
+    val isActive :Boolean
 )
 

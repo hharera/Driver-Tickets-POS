@@ -138,6 +138,7 @@ class VerifyWalletOtpFragment : BaseFragment() {
         walletPaymentViewModel.printingOperationCompleted.observe(viewLifecycleOwner) {
             when (it) {
                 true -> activity?.onBackPressed()
+                else -> {}
             }
         }
     }
