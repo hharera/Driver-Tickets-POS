@@ -101,5 +101,12 @@ class RemoteTicketServiceImpl constructor(
             header(Header.DRIVER_TOKEN, "${AuthScheme.Bearer} $token")
         }
     }
-
+    override suspend fun deactivateTicket(token: String, uid: String): String {
+        return client.post {
+            url(Routing.DEACTIVATE_TICKET)
+            contentType(ContentType.Application.Json)
+            parameter(Parameters.TICKET_QR , uid)
+            header(Header.DRIVER_TOKEN, "${AuthScheme.Bearer} $token")
+        }
+    }
 }

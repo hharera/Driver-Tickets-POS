@@ -34,6 +34,9 @@ class ScanReservedTicketViewModel constructor(
     private var _printingOperationCompleted = MutableLiveData<Boolean>()
     val printingOperationCompleted: LiveData<Boolean> = _printingOperationCompleted
 
+
+    private var _deactivationResponse = MutableLiveData<String>()
+    val deactivationResponse: LiveData<String> = _deactivationResponse
     fun setQrContent(contents: String) {
         Log.d(TAG, "setQrContent: $contents")
         _qrContent.postValue(contents)
@@ -55,6 +58,21 @@ class ScanReservedTicketViewModel constructor(
             }
     }
 
+    fun deactivateTicket() = viewModelScope.launch {
+        updateLoading(true)
+        ticketRepository.deactivateTicket(
+            localTicketPreferences.getToken(),
+            _qrContent.value!!
+        )
+            .onSuccess {
+                updateLoading(false)
+                _deactivationResponse.postValue(it)
+            }
+            .onFailure {
+                updateLoading(false)
+                handleException(it)
+            }
+    }
     fun whenPrintClicked(){
         reservedTicketResponse.value?.let { printTickets(it) }
     }

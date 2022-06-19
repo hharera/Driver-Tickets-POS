@@ -32,4 +32,9 @@ interface RemoteTicketService {
         token: String,
         uid: String,
     ): UserTicket
+
+    suspend fun deactivateTicket(
+        token: String,
+        uid: String,
+    ): String
 }

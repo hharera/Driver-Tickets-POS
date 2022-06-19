@@ -38,5 +38,9 @@ interface TicketRepository {
         uid: String,
     ): Result<UserTicket>
 
+    suspend fun deactivateTicket(
+        token: String,
+        uid: String,
+    ): Result<String>
     suspend fun requestLongTicketsWithWallet(request: TourismTicketsWithWalletRequest): Result<List<UserTicket>>
 }

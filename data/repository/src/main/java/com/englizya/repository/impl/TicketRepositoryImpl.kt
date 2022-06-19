@@ -125,4 +125,10 @@ class TicketRepositoryImpl constructor(
         ticketService.requestReservedTicket(token , uid)
     }
 
+    override suspend fun deactivateTicket(
+        token: String,
+        uid: String,
+    ): Result<String> =kotlin.runCatching {
+        ticketService.deactivateTicket(token , uid)
+    }
 }
