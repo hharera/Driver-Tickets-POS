@@ -10,9 +10,11 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.util.isNotEmpty
+import androidx.navigation.fragment.findNavController
 import com.englizya.common.base.BaseFragment
 import com.englizya.common.utils.permission.PermissionUtils
 import com.englizya.model.response.ReservedTicketResponse
+import com.englizya.model.response.UserTicket
 import com.example.scan_reserved_ticket.databinding.FragmentScanReservedTicketBinding
 import com.google.android.gms.vision.CameraSource
 import com.google.android.gms.vision.Detector
@@ -114,6 +116,8 @@ class ScanReservedTicketFragment : BaseFragment() {
 
     private fun setupObservers() {
         scanReservedTicketViewModel.qrContent.observe(viewLifecycleOwner) {
+            cameraSource.stop()
+
             scanReservedTicketViewModel.requestPayedTicket()
         }
 
@@ -126,7 +130,7 @@ class ScanReservedTicketFragment : BaseFragment() {
         }
         scanReservedTicketViewModel.printingOperationCompleted.observe(viewLifecycleOwner) {
             when (it) {
-                true -> activity?.onBackPressed()
+                true -> findNavController().popBackStack()
 
                 else -> {}
             }
@@ -134,16 +138,17 @@ class ScanReservedTicketFragment : BaseFragment() {
 
     }
 
-    private fun updateUI(reservedTicketResponse: ReservedTicketResponse) {
+    private fun updateUI(ticket: UserTicket) {
         binding.ticketDetailsFrame.visibility = View.VISIBLE.also {
-            binding.ticketId.text = reservedTicketResponse.data?.ticketId.toString()
-            binding.tripId.text = reservedTicketResponse.data?.tripId.toString()
-            binding.seatNo.text = reservedTicketResponse.data?.seatNo.toString()
-            binding.print.isEnabled = reservedTicketResponse.data!!.isActive
+            binding.ticketId.text =  getString(R.string.ticket_id, ticket.ticketId)
+            binding.tripId.text =  getString(R.string.trip_no, ticket.tripId)
+            binding.seatNo.text =getString(R.string.seat_no, ticket.seatNo)
+            binding.print.isEnabled = ticket.isActive
 
-            if (reservedTicketResponse.data?.isActive == true) {
+            if (ticket.isActive) {
                 binding.qr.setBackgroundResource(R.drawable.ic_ok)
             } else {
+
                 binding.qr.setBackgroundResource(R.drawable.ic_error2)
             }
 

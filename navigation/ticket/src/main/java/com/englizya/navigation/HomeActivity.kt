@@ -177,4 +177,6 @@ class HomeActivity : BaseActivity() {
             startActivity(Intent(ACTION_LOCATION_SOURCE_SETTINGS))
         }
     }
+
+
 }

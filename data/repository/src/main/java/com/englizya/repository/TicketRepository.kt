@@ -3,7 +3,6 @@ package com.englizya.repository
 import com.englizya.model.UnPrintedTicket
 import com.englizya.model.request.Ticket
 import com.englizya.model.request.TourismTicketsWithWalletRequest
-import com.englizya.model.response.ReservedTicketResponse
 import com.englizya.model.response.UserTicket
 
 
@@ -37,7 +36,7 @@ interface TicketRepository {
     suspend fun requestReservedTicket(
         token: String,
         uid: String,
-    ): Result<ReservedTicketResponse>
+    ): Result<UserTicket>
 
     suspend fun requestLongTicketsWithWallet(request: TourismTicketsWithWalletRequest): Result<List<UserTicket>>
 }

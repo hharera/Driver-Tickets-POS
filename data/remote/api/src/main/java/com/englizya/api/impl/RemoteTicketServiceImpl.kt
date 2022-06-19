@@ -6,7 +6,6 @@ import com.englizya.api.utils.Parameters
 import com.englizya.datastore.LocalTicketPreferences
 import com.englizya.model.request.Ticket
 import com.englizya.model.request.TourismTicketsWithWalletRequest
-import com.englizya.model.response.ReservedTicketResponse
 import com.englizya.model.response.UserTicket
 import io.ktor.client.*
 import io.ktor.client.features.*
@@ -94,7 +93,7 @@ class RemoteTicketServiceImpl constructor(
         }
     }
 
-    override suspend fun requestReservedTicket(token: String, uid: String): ReservedTicketResponse {
+    override suspend fun requestReservedTicket(token: String, uid: String): UserTicket {
         return client.get {
             url(Routing.GET_RESERVED_TICKET)
             contentType(ContentType.Application.Json)
