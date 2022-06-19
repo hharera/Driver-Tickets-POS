@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.englizya.common.base.BaseViewModel
 import com.englizya.datastore.LocalTicketPreferences
 import com.englizya.model.request.Ticket
-import com.englizya.model.response.ReservedTicketResponse
 import com.englizya.model.response.UserTicket
 import com.englizya.printer.TicketPrinter
 import com.englizya.repository.TicketRepository
@@ -28,8 +27,8 @@ class ScanReservedTicketViewModel constructor(
     private var _qrContent = MutableLiveData<String>()
     val qrContent: LiveData<String> = _qrContent
 
-    private var _reservedTicketResponse = MutableLiveData<ReservedTicketResponse>()
-    val reservedTicketResponse: LiveData<ReservedTicketResponse> = _reservedTicketResponse
+    private var _reservedTicketResponse = MutableLiveData<UserTicket>()
+    val reservedTicketResponse: LiveData<UserTicket> = _reservedTicketResponse
 
 
     private var _printingOperationCompleted = MutableLiveData<Boolean>()
@@ -60,12 +59,10 @@ class ScanReservedTicketViewModel constructor(
         reservedTicketResponse.value?.let { printTickets(it) }
     }
 
-    fun printTickets(ticket: ReservedTicketResponse) {
+    fun printTickets(ticket: UserTicket) {
 
         viewModelScope.launch(Dispatchers.IO) {
-            if(ticket.data != null){
-                ticketPrinter.printTicket(ticket.data!!).let { printState ->
-                }
+            ticketPrinter.printTicket(ticket).let { printState ->
             }
 
             _printingOperationCompleted.postValue(true)

@@ -2,7 +2,6 @@ package com.englizya.api
 
 import com.englizya.model.request.Ticket
 import com.englizya.model.request.TourismTicketsWithWalletRequest
-import com.englizya.model.response.ReservedTicketResponse
 import com.englizya.model.response.UserTicket
 
 interface RemoteTicketService {
@@ -32,5 +31,5 @@ interface RemoteTicketService {
      suspend fun requestReservedTicket(
         token: String,
         uid: String,
-    ): ReservedTicketResponse
+    ): UserTicket
 }

@@ -6,7 +6,7 @@ object Routing {
     const val REQUEST_LONG_TICKETS_WITH_WALLET = "${Domain.ENGLIZYA_BUS}/api/driver/request-long-tickets-with-wallet"
     const val GET_TRIP = "${Domain.ENGLIZYA_BUS}/api/trip"
     const val GET_WALLET_DETAILS = "${Domain.ENGLIZYA_BUS}/api/driver/get-wallet-details"
-    const val GET_RESERVED_TICKET = "${Domain.ENGLIZYA_BUS}/api/ticket"
+    const val GET_RESERVED_TICKET = "${Domain.ENGLIZYA_BUS}/api/driver/ticket"
 
     const val END_SHIFT = "${Domain.ENGLIZYA_STAFF}/end-shift"
     const val LOGIN = "${Domain.ENGLIZYA_STAFF}/login"
@@ -29,7 +29,7 @@ object Parameters {
     const val SOURCE_STATION_ID = "from"
     const val DESTINATION_STATION_ID = "to"
     const val TRIP_ID = "tripId"
-    const val TICKET_QR = "ticketQr"
+    const val TICKET_QR = "ticketQR"
 
 
 }
@@ -42,6 +42,6 @@ object Domain {
     const val ENGLIZYA_STAFF = "http://161.97.71.140:9105"
 //    const val ENGLIZYA_STAFF = "http://192.168.1.190:9105"
 
-    const val ENGLIZYA_BUS = "http://161.97.71.140:9100"
-//    const val ENGLIZYA_BUS = "http://192.168.1.190:9100"
+  //  const val ENGLIZYA_BUS = "http://161.97.71.140:9100"
+  const val ENGLIZYA_BUS = "http://192.168.1.190:9100"
 }
