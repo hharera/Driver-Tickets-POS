@@ -128,6 +128,9 @@ class ScanReservedTicketFragment : BaseFragment() {
         scanReservedTicketViewModel.error.observe(viewLifecycleOwner) {
             handleFailure(it)
         }
+        scanReservedTicketViewModel.deactivationResponse.observe(viewLifecycleOwner) {
+            scanReservedTicketViewModel.whenPrintClicked()
+        }
         scanReservedTicketViewModel.printingOperationCompleted.observe(viewLifecycleOwner) {
             when (it) {
                 true -> findNavController().popBackStack()
@@ -164,7 +167,7 @@ class ScanReservedTicketFragment : BaseFragment() {
         }
 
         binding.print.setOnClickListener {
-            scanReservedTicketViewModel.whenPrintClicked()
+            scanReservedTicketViewModel.deactivateTicket()
         }
     }
 

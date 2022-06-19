@@ -7,6 +7,8 @@ object Routing {
     const val GET_TRIP = "${Domain.ENGLIZYA_BUS}/api/trip"
     const val GET_WALLET_DETAILS = "${Domain.ENGLIZYA_BUS}/api/driver/get-wallet-details"
     const val GET_RESERVED_TICKET = "${Domain.ENGLIZYA_BUS}/api/driver/ticket"
+    const val DEACTIVATE_TICKET = "${Domain.ENGLIZYA_BUS}/api/driver/ticket/deactivate"
+
 
     const val END_SHIFT = "${Domain.ENGLIZYA_STAFF}/end-shift"
     const val LOGIN = "${Domain.ENGLIZYA_STAFF}/login"
