@@ -149,10 +149,10 @@ class ScanReservedTicketFragment : BaseFragment() {
             binding.print.isEnabled = ticket.isActive
 
             if (ticket.isActive) {
-                binding.qr.setBackgroundResource(R.drawable.ic_ok)
+                binding.qr.setImageResource(R.drawable.ic_ok)
             } else {
 
-                binding.qr.setBackgroundResource(R.drawable.ic_error2)
+                binding.qr.setImageResource(R.drawable.ic_error2)
             }
 
         }
