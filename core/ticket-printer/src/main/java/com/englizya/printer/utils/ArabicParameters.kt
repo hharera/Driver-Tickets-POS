@@ -21,6 +21,11 @@ object ArabicParameters {
     const val CARD_TICKETS = "تذاكر كارت : "
     const val TOTAL_TICKETS = "اجمالي عدد التذاكر : "
     const val TICKET_CATEGORY = "فئة : "
+    const val SEAT_NO = "مقعد : "
+    const val TRIP_ID = "رحلة : "
+    const val SOURCE = "من : "
+    const val DESTINATION = "إلي : "
+    const val SERVICE_DEGREE = "درجة الخدمة : "
     const val TOTAL_INCOME = "الايراد : "
     const val CAR_CODE = "كود السيارة : "
     const val CUSTOMER_SUPPORT = "0100005550"
@@ -28,5 +33,5 @@ object ArabicParameters {
     const val TICKET_DATE = "تاريخ التذكرة : "
     const val SERIAL = "رقم التذكرة : "
     const val SEAT_NO = "رقم المقعد : "
-    const val TRIP = "رقم الرحلة : "
+    const val TRIP = "رحلة : "
 }

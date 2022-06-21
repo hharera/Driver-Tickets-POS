@@ -1,9 +1,12 @@
 package com.englizya.wallet.short_ticket
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.englizya.common.base.BaseFragment
@@ -105,7 +108,13 @@ class SelectTicketFragment : BaseFragment() {
         }
 
         binding.proceed.setOnClickListener {
-            navigateToSetWalletOtp()
+//            navigateToSetWalletOtp()
+//            walletPaymentViewModel.whenPayClicked()
+//            Toast.makeText(activity , "تم طباعة التذاكر" , Toast.LENGTH_LONG).show()
+//            activity ?.let{
+//                val intent = Intent (it, HomeActivity::class.java)
+//                it.startActivity(intent)
+//            }
         }
     }
 

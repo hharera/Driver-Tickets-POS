@@ -1,12 +1,17 @@
 package com.englizya.wallet
 
+import android.content.Intent
 import android.location.Location
 import android.util.Log
+import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.englizya.common.base.BaseViewModel
 import com.englizya.common.utils.Validity
+import com.englizya.common.utils.time.TimeUtils
 import com.englizya.datastore.LocalTicketPreferences
 import com.englizya.model.ReservationTicket
 import com.englizya.model.Station
@@ -21,6 +26,7 @@ import com.englizya.repository.ManifestoRepository
 import com.englizya.repository.StationRepository
 import com.englizya.repository.TicketRepository
 import com.englizya.repository.WalletRepository
+import com.englizya.ticket.TicketViewModel
 import io.ktor.http.auth.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -43,7 +49,7 @@ class WalletPaymentViewModel constructor(
     private var _longTickets = MutableLiveData<List<UserTicket>>()
     val longTickets: LiveData<List<UserTicket>> = _longTickets
 
-    private var _quantity = MutableLiveData<Int>(1)
+    private var _quantity = MutableLiveData<Int>()
     val quantity: LiveData<Int> = _quantity
 
     private var _selectedCategory = MutableLiveData<Int>()
@@ -127,9 +133,9 @@ class WalletPaymentViewModel constructor(
     init {
         setDefaultDate()
         setDefaultSelectedCategory()
-        resetQuantity()
+        //resetQuantity()
         fetchDriverManifesto()
-        _qrContent.postValue("RzuMXSKTGcNoc6Lwd6svPnK73E42")
+//        _qrContent.postValue("RzuMXSKTGcNoc6Lwd6svPnK73E42")
     }
 
     private fun setDefaultSelectedCategory() {
@@ -151,6 +157,10 @@ class WalletPaymentViewModel constructor(
         } else _formValidity.value = null != _date.value
     }
 
+    fun setQuantity(quantity: Int) {
+        _quantity.value = quantity
+    }
+
 
     fun setDestination(destination: String) {
         _destination.value = stations.value?.firstOrNull {
@@ -163,6 +173,7 @@ class WalletPaymentViewModel constructor(
         Log.d(TAG, "setSource: $source")
         _source.value = stations.value?.firstOrNull {
             it.branchName == source
+
         }
         checkFormValidity()
     }
@@ -298,7 +309,7 @@ class WalletPaymentViewModel constructor(
 
     fun whenPayClicked() {
         updateLoading(true)
-        when (0) {
+        when (getManifestoType()) {
             0 -> {
                 requestTourismTickets()
             }
@@ -351,6 +362,7 @@ class WalletPaymentViewModel constructor(
     }
 
     private fun requestShortTickets() = viewModelScope.launch {
+        Log.d(TAG, "requestShortTickets: ${quantity.value}")
         updateLoading(true)
         ticketRepository
             .requestTickets(
@@ -358,9 +370,9 @@ class WalletPaymentViewModel constructor(
                 qrContent.value!!,
                 quantity.value!!,
                 selectedCategory.value!!,
-                walletOtp.value!!,
-                latitude.value,
-                longitude.value
+//                walletOtp.value!!,
+//                latitude.value,
+//                longitude.value
             )
             .onSuccess {
                 updateLoading(false)
@@ -378,7 +390,8 @@ class WalletPaymentViewModel constructor(
         Log.d(TAG, "updateLocation: ${location.latitude}")
     }
 
-    fun printTickets(tickets: List<Ticket>) {
+    fun printTickets(tickets: List<Ticket> ) {
+        Log.d(TAG, "printTickets: ${tickets.size}")
         viewModelScope.launch(Dispatchers.IO) {
             tickets.forEach { ticket ->
                 ticketPrinter.printTicket(ticket).let { printState ->
@@ -419,12 +432,12 @@ class WalletPaymentViewModel constructor(
     private fun encapsulateRequest(): Result<TourismTicketsWithWalletRequest> =
         kotlin.runCatching {
             TourismTicketsWithWalletRequest(
-                AuthScheme.Bearer + localTicketPreferences.getToken(),
+                AuthScheme.Bearer + " " + localTicketPreferences.getToken(),
                 localTicketPreferences.getReservationId(),
                 localTicketPreferences.getTripId(),
                 qrContent.value!!,
-                sourceStationId.value!!,
-                destinationStationId.value!!,
+                source.value!!.branchId,
+                destination.value!!.branchId,
                 quantity.value!!
             )
         }

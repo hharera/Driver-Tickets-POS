@@ -75,19 +75,19 @@ class TicketRepositoryImpl constructor(
         uid: String,
         quantity: Int,
         selectedCategory: Int,
-        walletOtp: String,
-        latitude: Double?,
-        longitude: Double?,
+//        walletOtp: String,
+//        latitude: Double?,
+//        longitude: Double?,
     ): Result<List<Ticket>> =
         kotlin.runCatching {
             ticketService.requestTickets(
                 token,
                 uid,
                 quantity,
-                selectedCategory,
-                walletOtp,
-                latitude,
-                longitude
+                selectedCategory
+//                walletOtp,
+//                latitude,
+//                longitude
 
             )
         }
@@ -118,4 +118,17 @@ class TicketRepositoryImpl constructor(
             ticketService.requestLongTicketsWithWallet(request)
         }
 
+    override suspend fun requestReservedTicket(
+        token: String,
+        uid: String,
+    ): Result<UserTicket> = kotlin.runCatching {
+        ticketService.requestReservedTicket(token , uid)
+    }
+
+    override suspend fun deactivateTicket(
+        token: String,
+        uid: String,
+    ): Result<String> =kotlin.runCatching {
+        ticketService.deactivateTicket(token , uid)
+    }
 }

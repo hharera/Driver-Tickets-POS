@@ -1,6 +1,7 @@
 package com.englizya.wallet
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
@@ -8,9 +9,12 @@ import android.view.LayoutInflater
 import android.view.SurfaceHolder
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat
 import androidx.core.content.ContextCompat
 import androidx.core.util.isNotEmpty
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.englizya.common.base.BaseFragment
 import com.englizya.common.utils.navigation.Destination
@@ -25,6 +29,7 @@ import com.google.android.gms.vision.barcode.Barcode
 import com.google.android.gms.vision.barcode.BarcodeDetector
 import com.google.zxing.BarcodeFormat
 import com.journeyapps.barcodescanner.BarcodeEncoder
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 
@@ -40,6 +45,7 @@ class ScanWalletFragment : BaseFragment() {
     private lateinit var cameraSource: CameraSource
     private lateinit var barcodeDetector: BarcodeDetector
 
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -54,6 +60,12 @@ class ScanWalletFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
+        val category = activity?.intent?.extras?.getInt("category")
+        val quantity = activity?.intent?.extras?.getInt("quantity")
+        Log.d("ScanWalletFragment", "category: $category, quantity: $quantity")
+        quantity?.let { scanWalletViewModel.setQuantity(it) }
+        category?.let { scanWalletViewModel.setSelectedCategory(it) }
         setupListeners()
         setupObservers()
     }
@@ -135,6 +147,11 @@ class ScanWalletFragment : BaseFragment() {
         scanWalletViewModel.error.observe(viewLifecycleOwner) {
             handleFailure(it)
         }
+        scanWalletViewModel.shortTicket.observe(viewLifecycleOwner) { tickets ->
+            Log.d("shortTicket", tickets.toString())
+
+            scanWalletViewModel.printTickets(tickets)
+        }
     }
 
     private fun updateUI(walletDetails: WalletDetails) {
@@ -165,13 +182,22 @@ class ScanWalletFragment : BaseFragment() {
 
     private fun progressNavigation(manifestoType: Int) {
         Log.d(TAG, "progressNavigation: $manifestoType")
-        when (0) {
+        when (manifestoType) {
             0 -> {
                 navigateToBooking()
             }
 
             1 -> {
-                navigateToSelectTicket()
+
+                lifecycleScope.launch {
+                    scanWalletViewModel.whenPayClicked()
+                    Class.forName("com.englizya.navigation.HomeActivity").let {
+                        val intent = Intent(requireContext(), it)
+                        startActivity(intent)
+                    }
+
+                }
+
             }
         }
     }
