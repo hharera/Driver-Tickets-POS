@@ -12,9 +12,9 @@ interface RemoteTicketService {
         uid: String,
         quantity: Int,
         category: Int,
-        walletOtp: String,
-        latitude: Double?,
-        longitude: Double?,
+//        walletOtp: String,
+//        latitude: Double?,
+//        longitude: Double?,
     ): List<Ticket>
 
     suspend fun requestTourismTickets(
@@ -27,4 +27,14 @@ interface RemoteTicketService {
     ): List<Ticket>
 
     suspend fun requestLongTicketsWithWallet(request: TourismTicketsWithWalletRequest): List<UserTicket>
+
+     suspend fun requestReservedTicket(
+        token: String,
+        uid: String,
+    ): UserTicket
+
+    suspend fun deactivateTicket(
+        token: String,
+        uid: String,
+    ): String
 }

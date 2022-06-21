@@ -4,30 +4,27 @@ import android.app.Application
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import com.dantsu.escposprinter.EscPosPrinter
+import com.englizya.common.date.DateOnly
 import com.englizya.common.utils.time.TimeUtils
 import com.englizya.model.request.Ticket
 import com.englizya.model.response.ShiftReportResponse
+import com.englizya.model.response.TourismTicket
 import com.englizya.model.response.UserTicket
+import com.englizya.printer.utils.ArabicParameters
 import com.englizya.printer.utils.ArabicParameters.CARD_TICKETS
 import com.englizya.printer.utils.ArabicParameters.CAR_CODE
 import com.englizya.printer.utils.ArabicParameters.CASH_TICKETS
-import com.englizya.printer.utils.ArabicParameters.DESTINATION
 import com.englizya.printer.utils.ArabicParameters.DRIVER_CODE
 import com.englizya.printer.utils.ArabicParameters.LINE_CODE
 import com.englizya.printer.utils.ArabicParameters.MANIFESTO_DATE
 import com.englizya.printer.utils.ArabicParameters.QR_TICKETS
-import com.englizya.printer.utils.ArabicParameters.RESERVATION_DATE
-import com.englizya.printer.utils.ArabicParameters.SEAT_NO
-import com.englizya.printer.utils.ArabicParameters.SERVICE_DEGREE
 import com.englizya.printer.utils.ArabicParameters.SHIFT_END
 import com.englizya.printer.utils.ArabicParameters.SHIFT_START
-import com.englizya.printer.utils.ArabicParameters.SOURCE
 import com.englizya.printer.utils.ArabicParameters.TICKET_CATEGORY
 import com.englizya.printer.utils.ArabicParameters.TICKET_DATE
 import com.englizya.printer.utils.ArabicParameters.TICKET_TIME
 import com.englizya.printer.utils.ArabicParameters.TOTAL_INCOME
 import com.englizya.printer.utils.ArabicParameters.TOTAL_TICKETS
-import com.englizya.printer.utils.ArabicParameters.TRIP
 import com.englizya.printer.utils.ArabicParameters.WORK_HOURS
 import com.englizya.printer.utils.TicketParameter.TEXT_SIZE
 import com.englizya.printer.utils.TicketParameter.TEXT_STYLE
@@ -36,9 +33,10 @@ import com.google.zxing.BarcodeFormat
 import com.journeyapps.barcodescanner.BarcodeEncoder
 import com.pax.gl.page.IPage.EAlign
 import com.pax.gl.page.PaxGLPage
+import javax.inject.Inject
 
 
-class TicketPrinter constructor(
+class TicketPrinter @Inject constructor(
     private val paxGLPage: PaxGLPage,
     private val escPosPrinter: EscPosPrinter,
     private val application: Application,
@@ -178,6 +176,66 @@ class TicketPrinter constructor(
         return "OK"
     }
 
+    fun printTourismTicket(ticket: TourismTicket): String {
+        val logo = getLogoBitmap()
+        val category = BitmapFactory.decodeResource(
+            application.applicationContext.resources,
+            R.drawable.cat_5
+        )
+        val tele = BitmapFactory.decodeResource(
+            application.applicationContext.resources,
+            R.drawable.tele
+        )
+
+        val page = paxGLPage.createPage()
+
+        page.addLine()
+            .addUnit(
+                ticket.ticketId,
+                TEXT_SIZE,
+                EAlign.CENTER,
+                TEXT_STYLE
+            )
+
+        page.addLine()
+            .addUnit(
+                getTicketQr(ticket.ticketId),
+                EAlign.CENTER,
+            )
+
+        page.addLine()
+            .addUnit(
+                String()
+                    .plus("$SEAT_NO${ticket.seatNo}")
+                    .plus("\n")
+                    .plus("${ArabicParameters.TRIP_ID}${ticket.tripId}")
+                    .plus("\n")
+                    .plus("$SOURCE${ticket.source}")
+                    .plus("\n")
+                    .plus("$DESTINATION${ticket.destination}")
+                    .plus("\n")
+                    .plus("$SERVICE_DEGREE${ticket.serviceDegree}")
+                    .plus("\n")
+                    .plus("$TICKET_CATEGORY${ticket.ticketCategory}")
+                    .plus("\n")
+                    .plus("$TICKET_DATE${TimeUtils.getDate(ticket.time)}")
+                    .plus("\n")
+                    .plus("$TICKET_TIME${TimeUtils.getTime(ticket.time)}"),
+                TEXT_SIZE,
+                EAlign.CENTER,
+                TEXT_STYLE
+            )
+
+
+        XPrinterP300.print(
+            escPosPrinter,
+            logo,
+            tele,
+            page.toBitmap(5000)
+        )
+
+        return "OK"
+    }
     fun printTicket(ticket: Ticket): String {
         val logo = getLogoBitmap()
         val category = BitmapFactory.decodeResource(
@@ -232,10 +290,7 @@ class TicketPrinter constructor(
         )
 
         return "OK"
-
-
     }
-
 
     private fun getTicketQr(ticketId: String): Bitmap {
         return BarcodeEncoder().encodeBitmap(ticketId, BarcodeFormat.QR_CODE, 1500, 1500)
@@ -247,13 +302,11 @@ class TicketPrinter constructor(
             R.drawable.ic_ticket_logo
         )
 
-
     fun printTickets(tickets: ArrayList<Ticket>): List<String> {
         return tickets.map { ticket ->
             printTicket(ticket = ticket)
         }
     }
-
     fun printTickets(tickets: List<UserTicket>) {
         tickets.forEach {
             printTicket(it)
@@ -280,7 +333,7 @@ class TicketPrinter constructor(
 
         page.addLine()
             .addUnit(
-                getTicketQr(ticket.ticketId.toString()),
+                getTicketQr(ticket.ticketQr.toString()),
                 EAlign.CENTER,
             )
 
@@ -290,11 +343,11 @@ class TicketPrinter constructor(
                     .plus("\n")
                     .plus("$DESTINATION${ticket.destination}")
                     .plus("\n")
-                    .plus("$RESERVATION_DATE${ticket.reservationDate}")
+                    .plus("${ArabicParameters.RESERVATION_DATE}${DateOnly.toMonthDate(ticket.reservationDate)}")
                     .plus("\n")
                     .plus("$SERVICE_DEGREE${ticket.serviceType}")
                     .plus("\n")
-                    .plus("$TRIP${ticket.tripId}")
+                    .plus("${ArabicParameters.TRIP}${ticket.tripName}")
                     .plus("\n")
                     .plus("$SEAT_NO${ticket.seatNo}"),
                 TEXT_SIZE,

@@ -10,7 +10,8 @@
         android:name="com.englizya.wallet.ScanWalletFragment"
         tools:layout="@layout/fragment_scan_wallet">
 
-        <deepLink app:uri="EnglizyaPay://scan-wallet" />
+
+        <deepLink app:uri="EnglizyaPay://scan-wallet/" />
     </fragment>
 
     <fragment

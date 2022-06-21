@@ -19,9 +19,9 @@ interface TicketRepository {
         uid: String,
         quantity: Int,
         selectedCategory: Int,
-        walletOtp: String,
-        latitude: Double?,
-        longitude: Double?,
+//        walletOtp: String,
+//        latitude: Double?,
+//        longitude: Double?,
     ): Result<List<Ticket>>
 
     suspend fun requestTourismTickets(
@@ -33,5 +33,14 @@ interface TicketRepository {
         tripId: Int,
     ): Result<List<Ticket>>
 
+    suspend fun requestReservedTicket(
+        token: String,
+        uid: String,
+    ): Result<UserTicket>
+
+    suspend fun deactivateTicket(
+        token: String,
+        uid: String,
+    ): Result<String>
     suspend fun requestLongTicketsWithWallet(request: TourismTicketsWithWalletRequest): Result<List<UserTicket>>
 }

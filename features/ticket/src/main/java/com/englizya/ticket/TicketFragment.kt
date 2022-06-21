@@ -4,6 +4,7 @@ import android.Manifest.permission
 import android.content.Intent
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -146,15 +147,32 @@ class TicketFragment : BaseFragment() {
 
     private fun updatePaymentMethods(method: PaymentMethod) {
         setupPaymentAdapter(method)
+        method.let{
+            method1 -> paymentMethodsAdapter.setSelectedPaymentMethod(method1)
+        }
+      //  setupPaymentAdapter(method)
 
         if (method == PaymentMethod.QR) {
-            navigateToScanWalletQr()
+            ticketViewModel.selectedCategory.value?.let {
+                ticketViewModel.quantity.value?.let { it1 ->
+                    navigateToScanWalletQr(
+                        quantity = it1,
+                        category = it
+                    )
+                }
+            }
         }
     }
 
-    private fun navigateToScanWalletQr() {
+    private fun navigateToScanWalletQr(quantity: Int, category: Int) {
+
         Class.forName("com.englizya.wallet.WalletPayActivity").let {
-            startActivity(Intent(context, it))
+            val intent = Intent(requireContext(), it)
+            Log.d(TAG, "navigateToScanWalletQr: $quantity, $category")
+            intent.putExtra("quantity", quantity)
+            intent.putExtra("category", category)
+            startActivity(intent)
+
         }
     }
 
