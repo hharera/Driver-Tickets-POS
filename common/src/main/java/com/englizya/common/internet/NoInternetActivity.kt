@@ -4,14 +4,11 @@ import android.os.Bundle
 import com.englizya.common.base.BaseActivity
 import com.englizya.common.utils.network.ConnectionLiveData
 import com.englizya.common.R
-import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
+import org.koin.android.ext.android.inject
 
-@AndroidEntryPoint
 class NoInternetActivity : BaseActivity() {
 
-    @Inject
-    lateinit var connectionLiveData: ConnectionLiveData
+    private val connectionLiveData: ConnectionLiveData by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

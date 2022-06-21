@@ -2,6 +2,10 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlinx-serialization'
+apply from: "$rootDir/${CommonBuild.TESTING_MODULE}"
+apply from: "$rootDir/${CommonBuild.KOIN_MODULE}"
+apply from: "$rootDir/${CommonBuild.KTOR_MODULE}"
+apply from: "$rootDir/${CommonBuild.ROOM_MODULE}"
 
 android {
     compileSdkVersion DefaultConfig.compileSdk
@@ -12,31 +16,9 @@ android {
         versionCode Releases.versionCode
         versionName Releases.versionName
     }
-
-//    TODO what is package options exclude
-    packagingOptions {
-        exclude 'META-INF/DEPENDENCIES'
-        exclude 'META-INF/LICENSE'
-        exclude 'META-INF/LICENSE.txt'
-        exclude 'META-INF/license.txt'
-        exclude 'META-INF/NOTICE'
-        exclude 'META-INF/NOTICE.txt'
-        exclude 'META-INF/notice.txt'
-        exclude 'META-INF/ASL2.0'
-        exclude 'META-INF/LGPL2.1'
-        exclude 'META-INF/AL2.0'
-        exclude "META-INF/*.kotlin_module"
-        exclude 'META-INF/proguard/androidx-annotations.pro'
-    }
 }
 
 dependencies {
-    implementation Libs.kotlin
-    testImplementation TestDi.junit4
-
-    api(Ktor.ktorClientAndroid)
-    api(Ktor.ktorClient)
-
+    api(Libs.jodaTime)
     api(Libs.serializer)
-    api(Ktor.ktorClientGson)
 }

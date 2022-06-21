@@ -1,6 +1,4 @@
 object Core {
-
-    const val PRINTER = ":core:ticket-printer"
     const val X_PRINTER = ":core:xprinter-p300"
-    const val WALLET_PAYMENT = ":core:wallet"
+    const val TICKET_PRINTER = ":core:ticket-printer"
 }

@@ -1,0 +1,4 @@
+apply from: "$rootDir/${CommonBuild.UI_MODULE}"
+
+dependencies {
+}

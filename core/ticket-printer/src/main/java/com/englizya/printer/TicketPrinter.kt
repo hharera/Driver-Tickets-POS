@@ -4,29 +4,27 @@ import android.app.Application
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import com.dantsu.escposprinter.EscPosPrinter
+import com.englizya.common.date.DateOnly
 import com.englizya.common.utils.time.TimeUtils
 import com.englizya.model.request.Ticket
 import com.englizya.model.response.ShiftReportResponse
 import com.englizya.model.response.TourismTicket
+import com.englizya.model.response.UserTicket
+import com.englizya.printer.utils.ArabicParameters
 import com.englizya.printer.utils.ArabicParameters.CARD_TICKETS
 import com.englizya.printer.utils.ArabicParameters.CAR_CODE
 import com.englizya.printer.utils.ArabicParameters.CASH_TICKETS
-import com.englizya.printer.utils.ArabicParameters.DESTINATION
 import com.englizya.printer.utils.ArabicParameters.DRIVER_CODE
 import com.englizya.printer.utils.ArabicParameters.LINE_CODE
 import com.englizya.printer.utils.ArabicParameters.MANIFESTO_DATE
 import com.englizya.printer.utils.ArabicParameters.QR_TICKETS
-import com.englizya.printer.utils.ArabicParameters.SEAT_NO
-import com.englizya.printer.utils.ArabicParameters.SERVICE_DEGREE
 import com.englizya.printer.utils.ArabicParameters.SHIFT_END
 import com.englizya.printer.utils.ArabicParameters.SHIFT_START
-import com.englizya.printer.utils.ArabicParameters.SOURCE
 import com.englizya.printer.utils.ArabicParameters.TICKET_CATEGORY
 import com.englizya.printer.utils.ArabicParameters.TICKET_DATE
 import com.englizya.printer.utils.ArabicParameters.TICKET_TIME
 import com.englizya.printer.utils.ArabicParameters.TOTAL_INCOME
 import com.englizya.printer.utils.ArabicParameters.TOTAL_TICKETS
-import com.englizya.printer.utils.ArabicParameters.TRIP_ID
 import com.englizya.printer.utils.ArabicParameters.WORK_HOURS
 import com.englizya.printer.utils.TicketParameter.TEXT_SIZE
 import com.englizya.printer.utils.TicketParameter.TEXT_STYLE
@@ -210,7 +208,7 @@ class TicketPrinter @Inject constructor(
                 String()
                     .plus("$SEAT_NO${ticket.seatNo}")
                     .plus("\n")
-                    .plus("$TRIP_ID${ticket.tripId}")
+                    .plus("${ArabicParameters.TRIP_ID}${ticket.tripId}")
                     .plus("\n")
                     .plus("$SOURCE${ticket.source}")
                     .plus("\n")
@@ -238,7 +236,6 @@ class TicketPrinter @Inject constructor(
 
         return "OK"
     }
-
     fun printTicket(ticket: Ticket): String {
         val logo = getLogoBitmap()
         val category = BitmapFactory.decodeResource(
@@ -309,5 +306,61 @@ class TicketPrinter @Inject constructor(
         return tickets.map { ticket ->
             printTicket(ticket = ticket)
         }
+    }
+    fun printTickets(tickets: List<UserTicket>) {
+        tickets.forEach {
+            printTicket(it)
+        }
+    }
+
+    fun printTicket(ticket: UserTicket) {
+        val logo = getLogoBitmap()
+
+        val tele = BitmapFactory.decodeResource(
+            application.applicationContext.resources,
+            R.drawable.tele
+        )
+
+        val page = paxGLPage.createPage()
+
+        page.addLine()
+            .addUnit(
+                ticket.ticketId.toString(),
+                TEXT_SIZE,
+                EAlign.CENTER,
+                TEXT_STYLE
+            )
+
+        page.addLine()
+            .addUnit(
+                getTicketQr(ticket.ticketQr.toString()),
+                EAlign.CENTER,
+            )
+
+        page.addLine()
+            .addUnit(
+                "$SOURCE${ticket.source}"
+                    .plus("\n")
+                    .plus("$DESTINATION${ticket.destination}")
+                    .plus("\n")
+                    .plus("${ArabicParameters.RESERVATION_DATE}${DateOnly.toMonthDate(ticket.reservationDate)}")
+                    .plus("\n")
+                    .plus("$SERVICE_DEGREE${ticket.serviceType}")
+                    .plus("\n")
+                    .plus("${ArabicParameters.TRIP}${ticket.tripName}")
+                    .plus("\n")
+                    .plus("$SEAT_NO${ticket.seatNo}"),
+                TEXT_SIZE,
+                EAlign.CENTER,
+                TEXT_STYLE
+            )
+
+
+        XPrinterP300.print(
+            escPosPrinter,
+            logo,
+            tele,
+            page.toBitmap(5000)
+        )
     }
 }
