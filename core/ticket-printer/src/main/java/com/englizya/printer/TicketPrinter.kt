@@ -14,12 +14,16 @@ import com.englizya.printer.utils.ArabicParameters
 import com.englizya.printer.utils.ArabicParameters.CARD_TICKETS
 import com.englizya.printer.utils.ArabicParameters.CAR_CODE
 import com.englizya.printer.utils.ArabicParameters.CASH_TICKETS
+import com.englizya.printer.utils.ArabicParameters.DESTINATION
 import com.englizya.printer.utils.ArabicParameters.DRIVER_CODE
 import com.englizya.printer.utils.ArabicParameters.LINE_CODE
 import com.englizya.printer.utils.ArabicParameters.MANIFESTO_DATE
 import com.englizya.printer.utils.ArabicParameters.QR_TICKETS
+import com.englizya.printer.utils.ArabicParameters.SEAT_NO
+import com.englizya.printer.utils.ArabicParameters.SERVICE_DEGREE
 import com.englizya.printer.utils.ArabicParameters.SHIFT_END
 import com.englizya.printer.utils.ArabicParameters.SHIFT_START
+import com.englizya.printer.utils.ArabicParameters.SOURCE
 import com.englizya.printer.utils.ArabicParameters.TICKET_CATEGORY
 import com.englizya.printer.utils.ArabicParameters.TICKET_DATE
 import com.englizya.printer.utils.ArabicParameters.TICKET_TIME
@@ -33,10 +37,9 @@ import com.google.zxing.BarcodeFormat
 import com.journeyapps.barcodescanner.BarcodeEncoder
 import com.pax.gl.page.IPage.EAlign
 import com.pax.gl.page.PaxGLPage
-import javax.inject.Inject
 
 
-class TicketPrinter @Inject constructor(
+class TicketPrinter constructor(
     private val paxGLPage: PaxGLPage,
     private val escPosPrinter: EscPosPrinter,
     private val application: Application,
@@ -52,66 +55,42 @@ class TicketPrinter @Inject constructor(
         page.addLine().addUnit("\n", 28)
 
         page.addLine().addUnit(
-            "$DRIVER_CODE${endShiftReportResponse.driverCode}",
-            TEXT_SIZE,
-            EAlign.CENTER,
-            TEXT_STYLE
+            "$DRIVER_CODE${endShiftReportResponse.driverCode}", TEXT_SIZE, EAlign.CENTER, TEXT_STYLE
         )
         page.addLine().addUnit("\n", 10)
 
         page.addLine().addUnit(
-            "$CAR_CODE${endShiftReportResponse.carCode}",
-            TEXT_SIZE,
-            EAlign.CENTER,
-            TEXT_STYLE
+            "$CAR_CODE${endShiftReportResponse.carCode}", TEXT_SIZE, EAlign.CENTER, TEXT_STYLE
         )
         page.addLine().addUnit("\n", 10)
 
         page.addLine().addUnit(
-            "$LINE_CODE${endShiftReportResponse.lineCode}",
-            TEXT_SIZE,
-            EAlign.CENTER,
-            TEXT_STYLE
+            "$LINE_CODE${endShiftReportResponse.lineCode}", TEXT_SIZE, EAlign.CENTER, TEXT_STYLE
         )
         page.addLine().addUnit("\n", 10)
 
         page.addLine().addUnit(
-            "$MANIFESTO_DATE${endShiftReportResponse.date}",
-            TEXT_SIZE,
-            EAlign.CENTER,
-            TEXT_STYLE
+            "$MANIFESTO_DATE${endShiftReportResponse.date}", TEXT_SIZE, EAlign.CENTER, TEXT_STYLE
         )
         page.addLine().addUnit("\n", 10)
 
         page.addLine().addUnit(
-            SHIFT_START,
-            TEXT_SIZE,
-            EAlign.CENTER,
-            TEXT_STYLE
+            SHIFT_START, TEXT_SIZE, EAlign.CENTER, TEXT_STYLE
         )
         page.addLine().addUnit("\n", 10)
 
         page.addLine().addUnit(
-            endShiftReportResponse.startTime,
-            TEXT_SIZE,
-            EAlign.CENTER,
-            TEXT_STYLE
+            endShiftReportResponse.startTime, TEXT_SIZE, EAlign.CENTER, TEXT_STYLE
         )
         page.addLine().addUnit("\n", 10)
 
         page.addLine().addUnit(
-            SHIFT_END,
-            TEXT_SIZE,
-            EAlign.CENTER,
-            TEXT_STYLE
+            SHIFT_END, TEXT_SIZE, EAlign.CENTER, TEXT_STYLE
         )
         page.addLine().addUnit("\n", 10)
 
         page.addLine().addUnit(
-            endShiftReportResponse.endTime,
-            TEXT_SIZE,
-            EAlign.CENTER,
-            TEXT_STYLE
+            endShiftReportResponse.endTime, TEXT_SIZE, EAlign.CENTER, TEXT_STYLE
         )
         page.addLine().addUnit("\n", 10)
 
@@ -124,27 +103,17 @@ class TicketPrinter @Inject constructor(
         page.addLine().addUnit("\n", 10)
 
         page.addLine().addUnit(
-            "$CASH_TICKETS${endShiftReportResponse.cash}",
-            TEXT_SIZE,
-            EAlign.CENTER,
-            TEXT_STYLE
+            "$CASH_TICKETS${endShiftReportResponse.cash}", TEXT_SIZE, EAlign.CENTER, TEXT_STYLE
         )
         page.addLine().addUnit("\n", 10)
 
-        page.addLine()
-            .addUnit(
-                "$QR_TICKETS${endShiftReportResponse.qr}",
-                TEXT_SIZE,
-                EAlign.CENTER,
-                TEXT_STYLE
+        page.addLine().addUnit(
+                "$QR_TICKETS${endShiftReportResponse.qr}", TEXT_SIZE, EAlign.CENTER, TEXT_STYLE
             )
         page.addLine().addUnit("\n", 10)
 
         page.addLine().addUnit(
-            "$CARD_TICKETS${endShiftReportResponse.card}",
-            TEXT_SIZE,
-            EAlign.CENTER,
-            TEXT_STYLE
+            "$CARD_TICKETS${endShiftReportResponse.card}", TEXT_SIZE, EAlign.CENTER, TEXT_STYLE
         )
         page.addLine().addUnit("\n", 10)
 
@@ -179,47 +148,31 @@ class TicketPrinter @Inject constructor(
     fun printTourismTicket(ticket: TourismTicket): String {
         val logo = getLogoBitmap()
         val category = BitmapFactory.decodeResource(
-            application.applicationContext.resources,
-            R.drawable.cat_5
+            application.applicationContext.resources, R.drawable.cat_5
         )
         val tele = BitmapFactory.decodeResource(
-            application.applicationContext.resources,
-            R.drawable.tele
+            application.applicationContext.resources, R.drawable.tele
         )
 
         val page = paxGLPage.createPage()
 
-        page.addLine()
-            .addUnit(
-                ticket.ticketId,
-                TEXT_SIZE,
-                EAlign.CENTER,
-                TEXT_STYLE
+        page.addLine().addUnit(
+                ticket.ticketId, TEXT_SIZE, EAlign.CENTER, TEXT_STYLE
             )
 
-        page.addLine()
-            .addUnit(
+        page.addLine().addUnit(
                 getTicketQr(ticket.ticketId),
                 EAlign.CENTER,
             )
 
-        page.addLine()
-            .addUnit(
-                String()
-                    .plus("$SEAT_NO${ticket.seatNo}")
-                    .plus("\n")
-                    .plus("${ArabicParameters.TRIP_ID}${ticket.tripId}")
-                    .plus("\n")
-                    .plus("$SOURCE${ticket.source}")
-                    .plus("\n")
-                    .plus("$DESTINATION${ticket.destination}")
-                    .plus("\n")
-                    .plus("$SERVICE_DEGREE${ticket.serviceDegree}")
-                    .plus("\n")
-                    .plus("$TICKET_CATEGORY${ticket.ticketCategory}")
-                    .plus("\n")
-                    .plus("$TICKET_DATE${TimeUtils.getDate(ticket.time)}")
-                    .plus("\n")
+        page.addLine().addUnit(
+                String().plus("$SEAT_NO${ticket.seatNo}").plus("\n")
+                    .plus("${ArabicParameters.TRIP_ID}${ticket.tripId}").plus("\n")
+                    .plus("$SOURCE${ticket.source}").plus("\n")
+                    .plus("$DESTINATION${ticket.destination}").plus("\n")
+                    .plus("$SERVICE_DEGREE${ticket.serviceDegree}").plus("\n")
+                    .plus("$TICKET_CATEGORY${ticket.ticketCategory}").plus("\n")
+                    .plus("$TICKET_DATE${TimeUtils.getDate(ticket.time)}").plus("\n")
                     .plus("$TICKET_TIME${TimeUtils.getTime(ticket.time)}"),
                 TEXT_SIZE,
                 EAlign.CENTER,
@@ -228,53 +181,37 @@ class TicketPrinter @Inject constructor(
 
 
         XPrinterP300.print(
-            escPosPrinter,
-            logo,
-            tele,
-            page.toBitmap(5000)
+            escPosPrinter, logo, tele, page.toBitmap(5000)
         )
 
         return "OK"
     }
+
     fun printTicket(ticket: Ticket): String {
         val logo = getLogoBitmap()
         val category = BitmapFactory.decodeResource(
-            application.applicationContext.resources,
-            R.drawable.cat_5
+            application.applicationContext.resources, R.drawable.cat_5
         )
         val tele = BitmapFactory.decodeResource(
-            application.applicationContext.resources,
-            R.drawable.tele
+            application.applicationContext.resources, R.drawable.tele
         )
 
         val page = paxGLPage.createPage()
 
-        page.addLine()
-            .addUnit(
-                ticket.ticketId,
-                TEXT_SIZE,
-                EAlign.CENTER,
-                TEXT_STYLE
+        page.addLine().addUnit(
+                ticket.ticketId, TEXT_SIZE, EAlign.CENTER, TEXT_STYLE
             )
 
-        page.addLine()
-            .addUnit(
+        page.addLine().addUnit(
                 getTicketQr(ticket.ticketId),
                 EAlign.CENTER,
             )
 
-        page.addLine()
-            .addUnit(
-                "$DRIVER_CODE${ticket.driverCode}"
-                    .plus("\n")
-                    .plus("$CAR_CODE${ticket.carCode}")
-                    .plus("\n")
-                    .plus("$LINE_CODE${ticket.lineCode}")
-                    .plus("\n")
-                    .plus("$TICKET_CATEGORY${ticket.ticketCategory}")
-                    .plus("\n")
-                    .plus("$TICKET_DATE${TimeUtils.getDate(ticket.time)}")
-                    .plus("\n")
+        page.addLine().addUnit(
+                "$DRIVER_CODE${ticket.driverCode}".plus("\n").plus("$CAR_CODE${ticket.carCode}")
+                    .plus("\n").plus("$LINE_CODE${ticket.lineCode}").plus("\n")
+                    .plus("$TICKET_CATEGORY${ticket.ticketCategory}").plus("\n")
+                    .plus("$TICKET_DATE${TimeUtils.getDate(ticket.time)}").plus("\n")
                     .plus("$TICKET_TIME${TimeUtils.getTime(ticket.time)}"),
                 TEXT_SIZE,
                 EAlign.CENTER,
@@ -283,10 +220,7 @@ class TicketPrinter @Inject constructor(
 
 
         XPrinterP300.print(
-            escPosPrinter,
-            logo,
-            tele,
-            page.toBitmap(5000)
+            escPosPrinter, logo, tele, page.toBitmap(5000)
         )
 
         return "OK"
@@ -296,17 +230,16 @@ class TicketPrinter @Inject constructor(
         return BarcodeEncoder().encodeBitmap(ticketId, BarcodeFormat.QR_CODE, 1500, 1500)
     }
 
-    private fun getLogoBitmap() =
-        BitmapFactory.decodeResource(
-            application.applicationContext.resources,
-            R.drawable.ic_ticket_logo
-        )
+    private fun getLogoBitmap() = BitmapFactory.decodeResource(
+        application.applicationContext.resources, R.drawable.ic_ticket_logo
+    )
 
     fun printTickets(tickets: ArrayList<Ticket>): List<String> {
         return tickets.map { ticket ->
             printTicket(ticket = ticket)
         }
     }
+
     fun printTickets(tickets: List<UserTicket>) {
         tickets.forEach {
             printTicket(it)
@@ -317,50 +250,32 @@ class TicketPrinter @Inject constructor(
         val logo = getLogoBitmap()
 
         val tele = BitmapFactory.decodeResource(
-            application.applicationContext.resources,
-            R.drawable.tele
+            application.applicationContext.resources, R.drawable.tele
         )
 
         val page = paxGLPage.createPage()
 
-        page.addLine()
-            .addUnit(
-                ticket.ticketId.toString(),
-                TEXT_SIZE,
-                EAlign.CENTER,
-                TEXT_STYLE
+        page.addLine().addUnit(
+                ticket.ticketId.toString(), TEXT_SIZE, EAlign.CENTER, TEXT_STYLE
             )
 
-        page.addLine()
-            .addUnit(
+        page.addLine().addUnit(
                 getTicketQr(ticket.ticketQr.toString()),
                 EAlign.CENTER,
             )
 
-        page.addLine()
-            .addUnit(
-                "$SOURCE${ticket.source}"
-                    .plus("\n")
-                    .plus("$DESTINATION${ticket.destination}")
+        page.addLine().addUnit(
+                "$SOURCE${ticket.source}".plus("\n").plus("$DESTINATION${ticket.destination}")
                     .plus("\n")
                     .plus("${ArabicParameters.RESERVATION_DATE}${DateOnly.toMonthDate(ticket.reservationDate)}")
-                    .plus("\n")
-                    .plus("$SERVICE_DEGREE${ticket.serviceType}")
-                    .plus("\n")
-                    .plus("${ArabicParameters.TRIP}${ticket.tripName}")
-                    .plus("\n")
-                    .plus("$SEAT_NO${ticket.seatNo}"),
-                TEXT_SIZE,
-                EAlign.CENTER,
-                TEXT_STYLE
+                    .plus("\n").plus("$SERVICE_DEGREE${ticket.serviceType}").plus("\n")
+                    .plus("${ArabicParameters.TRIP}${ticket.tripName}").plus("\n")
+                    .plus("$SEAT_NO${ticket.seatNo}"), TEXT_SIZE, EAlign.CENTER, TEXT_STYLE
             )
 
 
         XPrinterP300.print(
-            escPosPrinter,
-            logo,
-            tele,
-            page.toBitmap(5000)
+            escPosPrinter, logo, tele, page.toBitmap(5000)
         )
     }
 }
