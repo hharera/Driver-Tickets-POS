@@ -1,13 +1,6 @@
 <resources>
     <string name="app_name">ENGLIZYA STAFF</string>
-    <string name="sign_up">الاشتراك</string>
-    <string name="shop">تسوق</string>
-    <string name="categories">الاقسام</string>
-    <string name="account">حسابي</string>
-    <string name="welcome_text">الانجليزية \nطريقنا دايما واحد</string>
-    <string name="start">ابدأ</string>
     <string name="password">كلمة المرور</string>
-    <string name="email">الايميل</string>
     <string name="best_offers">أفضل العروض</string>
     <string name="last_offers">آخر العروض</string>
     <string name="checkout">الخروج</string>
@@ -33,9 +26,9 @@
     <string name="blank_list">العربه فارغه ،،، انتقل الي التسوق</string>
     <string name="error_toast">حدث خطأ ما</string>
     <string name="loading">جاري التحميل</string>
-    <string name="chaneg">تغيير</string>
+    <string name="change">تغيير</string>
     <string name="enter_quantity">أدخل الكمية</string>
-    <string name="cancell">الغاء</string>
+    <string name="cancel">الغاء</string>
     <string name="cart_added">المنتج المضاف إلى سلة التسوق</string>
     <string name="cart_removed">تمت إزالة المنتج من سلة التسوق</string>
     <string name="edit">Edit</string>
@@ -61,8 +54,6 @@
     <string name="enter_code">ادخل الكود</string>
     <string name="wrong_code">كود خاطئ</string>
     <string name="similar_offers">عروض مماثلة:</string>
-    <string name="company_name">WHITESIED DEV</string>
-    <string name="privacy_policy">لقد قرأت نص الخصوصية والأمان وأوافق عليه</string>
     <string name="qr_tickets">تذاكر qr</string>
     <string name="nfc_tickets">تذاكر NFC</string>
     <string name="cash_tickets">تذاكر كاش</string>
@@ -152,12 +143,6 @@
     <string name="empty_phone_error">رقم خاطئ</string>
     <string name="empty_category_name_error">اسم القسم فارغ</string>
     <string name="empty_image_error">ادخل صوره</string>
-    <string name="lower" translatable="false"><![CDATA[<]]></string>
-    <string name="greater" translatable="false"><![CDATA[>]]></string>
-    <string name="title_add_product">Add Product</string>
-    <string name="product_price">Product Price</string>
-    <string name="empty_email_error">Email is required</string>
-    <string name="invalid_email_error">Invalid email</string>
     <string name="empty_password">Password is required</string>
     <string name="last_name">Last name</string>
     <string name="empty_username_error">أدخل كود السائق</string>
@@ -192,4 +177,11 @@
     <string name="permission_rationale_location">الرجاء السماح بالوصول الي موقعك الجغرافي</string>
     <string name="relogin">من فضلك اعد تسجسل الدخول</string>
     <string name="not_authorized">غير مسموح</string>
+    <string name="warning_paper_out">الورق انتهي</string>
+    <string name="action_put_new_roll">ضع بكرة ورق جديدة ثم اطبع</string>
+    <string name="print_again">معاودة الطباعة</string>
+    <string name="scan_qr_txt">مسح تذكرة</string>
+    <string name="trip_no"> %1$s: رقم الرحلة</string>
+    <string name="ticket_id">%1$s : رقم التذكرة</string>
+    <string name="seat_no">%1$s : رقم المقعد</string>
 </resources>

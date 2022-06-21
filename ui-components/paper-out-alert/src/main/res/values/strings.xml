@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="warning_paper_out">الورق انتهي</string>
-    <string name="action_put_new_roll">ضع بكرة ورق جديدة ثم اطبع</string>
-    <string name="print_again">معاودة الطباعة</string>
-</resources>

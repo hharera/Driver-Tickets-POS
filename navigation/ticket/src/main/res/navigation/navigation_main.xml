@@ -40,4 +40,11 @@
         <argument android:name="redirect" />
         <deepLink app:uri="EnglizyaPay://ticket/{redirect}" />
     </fragment>
+    <fragment
+        android:id="@+id/navigation_scan_payed_ticket"
+        android:name="com.example.scan_reserved_ticket.ScanReservedTicketFragment"
+        tools:layout="@layout/fragment_scan_reserved_ticket">
+
+        <deepLink app:uri="EnglizyaPay://scan-qr" />
+    </fragment>
 </navigation>

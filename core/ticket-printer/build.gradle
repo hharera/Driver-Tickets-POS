@@ -1,14 +1,13 @@
-apply from: "$rootDir/${CommonBuild.FeatureModule}"
+apply from: "$rootDir/${CommonBuild.FUNCTION_MODULE}"
 
 dependencies {
-    api fileTree(dir: 'src/main/jniLibs', include: ['*.jar','*.aar'])
     api files('libs/gl-page-V1.03.00_20181030.jar')
 
     implementation(Libs.appcompat)
-    implementation(project(Base.common))
+    implementation(Libs.jodaTime)
     api(project(Core.X_PRINTER))
+    api(project(Base.COMMON))
     implementation(project(Data.model))
     api(BarCode.zxingEmbedded)
     api(BarCode.zxingCore)
-    api(Libs.playServicesMaps)
 }
