@@ -60,6 +60,7 @@ class TicketFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        ticketViewModel.fetchDriverManifesto()
         setupObserves()
         setupListeners()
         checkLocationPermission()

@@ -144,5 +144,11 @@ class BookingFragment : BaseFragment() {
         walletViewModel.longTickets.observe(viewLifecycleOwner) {
             walletViewModel.printLongTickets(it)
         }
+        walletViewModel.printingOperationCompleted.observe(viewLifecycleOwner) {
+            when (it) {
+                true -> activity?.onBackPressed()
+                else -> {}
+            }
+        }
     }
 }
