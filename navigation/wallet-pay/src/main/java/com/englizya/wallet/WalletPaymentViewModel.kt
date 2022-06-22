@@ -317,6 +317,7 @@ class WalletPaymentViewModel constructor(
             1 -> {
                 requestShortTickets()
             }
+            else -> {}
         }
     }
 
