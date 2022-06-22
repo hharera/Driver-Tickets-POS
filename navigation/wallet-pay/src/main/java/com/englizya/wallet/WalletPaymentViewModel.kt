@@ -444,6 +444,12 @@ class WalletPaymentViewModel constructor(
         }
 
     fun printLongTickets(list: List<UserTicket>) {
-        ticketPrinter.printTickets(list)
+        viewModelScope.launch (Dispatchers.IO){
+            ticketPrinter.printTickets(list)
+
+            _printingOperationCompleted.postValue(true)
+
+
+        }
     }
 }

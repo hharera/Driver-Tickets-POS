@@ -58,11 +58,16 @@ class TicketViewModel constructor(
     val isPaperOut: LiveData<Boolean> = _isPaperOut
 
     init {
-        _ticketCategories.value = preferences.getTicketCategories().also {
-            _selectedCategory.value =
-                (preferences.getTicketCategories()?.firstOrNull()?.toInt())
-        }
 
+        if (preferences.getTicketCategories().isNullOrEmpty()) {
+            fetchDriverManifesto()
+
+        } else {
+            _ticketCategories.value = preferences.getTicketCategories().also {
+                _selectedCategory.value =
+                    (preferences.getTicketCategories()?.firstOrNull()?.toInt())
+            }
+        }
         fetchDriverManifesto()
         getLocalTickets()
     }
@@ -74,19 +79,32 @@ class TicketViewModel constructor(
             }
     }
 
-    private fun fetchDriverManifesto() = viewModelScope.launch(Dispatchers.IO) {
+     fun fetchDriverManifesto() = viewModelScope.launch(Dispatchers.IO) {
         updateLoading(true)
-
         manifestoRepository
             .getManifesto(preferences.getToken())
             .onSuccess {
                 updateLoading(false)
                 _manifesto.postValue(it)
+                updateTicketCategories(it)
             }
             .onFailure {
                 updateLoading(false)
                 handleException(it)
             }
+    }
+
+    private fun updateTicketCategories(manifestoDetails: ManifestoDetails) =
+        viewModelScope.launch(Dispatchers.Main) {
+            Log.d("TicketCategory" , manifestoDetails.lineCategory.toString())
+            _ticketCategories.value = manifestoDetails.lineCategory.map { it.toString() }.toSet()
+            updateSelectedCategory(manifestoDetails.lineCategory)
+        }
+
+    private fun updateSelectedCategory(categoryList: List<Int>) {
+        categoryList.forEach {
+            _selectedCategory.value = it
+        }
     }
 
     fun decrementQuantity() {
