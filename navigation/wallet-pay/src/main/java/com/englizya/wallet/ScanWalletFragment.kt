@@ -152,6 +152,13 @@ class ScanWalletFragment : BaseFragment() {
 
             scanWalletViewModel.printTickets(tickets)
         }
+
+        scanWalletViewModel.printingOperationCompleted.observe(viewLifecycleOwner) {
+            when (it) {
+                true -> activity?.onBackPressed()
+                else -> {}
+            }
+        }
     }
 
     private fun updateUI(walletDetails: WalletDetails) {
@@ -188,15 +195,8 @@ class ScanWalletFragment : BaseFragment() {
             }
 
             1 -> {
+                scanWalletViewModel.whenPayClicked()
 
-                lifecycleScope.launch {
-                    scanWalletViewModel.whenPayClicked()
-                    Class.forName("com.englizya.navigation.HomeActivity").let {
-                        val intent = Intent(requireContext(), it)
-                        startActivity(intent)
-                    }
-
-                }
 
             }
         }
