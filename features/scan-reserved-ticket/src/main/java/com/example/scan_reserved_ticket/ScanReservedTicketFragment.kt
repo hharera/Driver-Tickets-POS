@@ -173,6 +173,7 @@ class ScanReservedTicketFragment : BaseFragment() {
 
     override fun onPause() {
         super.onPause()
+        scanReservedTicketViewModel.setQrContent(null)
         cameraSource.stop()
     }
 

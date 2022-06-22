@@ -37,7 +37,7 @@ class ScanReservedTicketViewModel constructor(
 
     private var _deactivationResponse = MutableLiveData<String>()
     val deactivationResponse: LiveData<String> = _deactivationResponse
-    fun setQrContent(contents: String) {
+    fun setQrContent(contents: String?) {
         Log.d(TAG, "setQrContent: $contents")
         _qrContent.postValue(contents)
     }
