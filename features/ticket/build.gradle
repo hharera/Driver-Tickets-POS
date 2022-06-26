@@ -3,4 +3,6 @@ apply from: "$rootDir/${CommonBuild.FeatureModule}"
 dependencies {
     implementation Libs.circleImage
     api project(Core.TICKET_PRINTER)
+    implementation 'com.vmadalin:easypermissions-ktx:1.0.0'
+
 }

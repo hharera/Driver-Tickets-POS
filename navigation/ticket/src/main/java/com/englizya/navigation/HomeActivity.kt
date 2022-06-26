@@ -2,8 +2,9 @@ package com.englizya.navigation
 
 import android.app.Activity
 import android.content.Intent
+import android.location.Location
+import android.location.LocationListener
 import android.location.LocationManager
-import android.net.Uri
 import android.os.Bundle
 import android.os.Looper
 import android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS
@@ -27,7 +28,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 //TODO extend from base activity
-class HomeActivity : BaseActivity() {
+class HomeActivity : BaseActivity(), LocationListener {
 
     private lateinit var bind: ActivityHomeBinding
     private val ticketViewModel: TicketViewModel by viewModel()
@@ -82,6 +83,8 @@ class HomeActivity : BaseActivity() {
             }
         } catch (ex: SecurityException) {
             ex.printStackTrace()
+        } catch (e: Exception) {
+            Log.d("Error", e.message.toString())
         }
     }
 
@@ -176,6 +179,29 @@ class HomeActivity : BaseActivity() {
         if (locationManager?.isProviderEnabled(LocationManager.GPS_PROVIDER) == false) {
             startActivity(Intent(ACTION_LOCATION_SOURCE_SETTINGS))
         }
+    }
+
+    override fun onLocationChanged(p0: Location) {
+        getLocation()
+    }
+
+    override fun onProviderDisabled(provider: String) {
+        Log.d("onProviderDisabled" , provider)
+        super.onProviderDisabled(provider)
+
+    }
+
+    override fun onProviderEnabled(provider: String) {
+        Log.d("onProviderEnabled" , provider)
+        super.onProviderEnabled(provider)
+
+
+    }
+
+    override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
+        Log.d("OnStatusChanged" , provider!! + status)
+        super.onStatusChanged(provider, status, extras)
+
     }
 
 

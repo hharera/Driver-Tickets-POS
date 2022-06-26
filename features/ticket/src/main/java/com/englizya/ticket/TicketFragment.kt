@@ -3,6 +3,8 @@ package com.englizya.ticket
 import android.Manifest.permission
 import android.content.Intent
 import android.content.pm.PackageManager.PERMISSION_GRANTED
+import android.location.Location
+import android.location.LocationListener
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -20,6 +22,8 @@ import com.englizya.ticket.ticket.R
 import com.englizya.ticket.ticket.databinding.FragmentTicketBinding
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.vmadalin.easypermissions.EasyPermissions
+import com.vmadalin.easypermissions.dialogs.SettingsDialog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -27,7 +31,7 @@ import kotlinx.coroutines.withContext
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import android.Manifest.permission.ACCESS_FINE_LOCATION as ACCESS_FINE_LOCATION1
 
-class TicketFragment : BaseFragment() {
+class TicketFragment : BaseFragment(), LocationListener, EasyPermissions.PermissionCallbacks {
 
     companion object {
         private const val TAG = "TicketFragment"
@@ -63,7 +67,11 @@ class TicketFragment : BaseFragment() {
         ticketViewModel.fetchDriverManifesto()
         setupObserves()
         setupListeners()
-        checkLocationPermission()
+//        checkLocationPermission()
+   //     hasLocationPermission()
+        if (!hasLocationPermission()) {
+            requestLocationPermission()
+        }
     }
 
     private fun setupPaymentAdapter(method: PaymentMethod) {
@@ -148,10 +156,10 @@ class TicketFragment : BaseFragment() {
 
     private fun updatePaymentMethods(method: PaymentMethod) {
         setupPaymentAdapter(method)
-        method.let{
-            method1 -> paymentMethodsAdapter.setSelectedPaymentMethod(method1)
+        method.let { method1 ->
+            paymentMethodsAdapter.setSelectedPaymentMethod(method1)
         }
-      //  setupPaymentAdapter(method)
+        //  setupPaymentAdapter(method)
 
         if (method == PaymentMethod.QR) {
             ticketViewModel.selectedCategory.value?.let {
@@ -230,37 +238,98 @@ class TicketFragment : BaseFragment() {
     override fun onResume() {
         super.onResume()
         ticketViewModel.setPaymentMethod(PaymentMethod.Cash)
+        if (!hasLocationPermission()) {
+            requestLocationPermission()
+        }
     }
 
-    private fun checkLocationPermission() {
-        if (ContextCompat.checkSelfPermission(
-                requireContext(),
-                permission.ACCESS_FINE_LOCATION
-            ) != PERMISSION_GRANTED
-        ) {
-            requestPermission(
-                requireActivity() as AppCompatActivity,
-                LOCATION_PERMISSION_REQUEST_CODE,
-                ACCESS_FINE_LOCATION1,
-                false
-            )
+    private fun hasLocationPermission() =
+        EasyPermissions.hasPermissions(
+            requireContext(),
+            android.Manifest.permission.ACCESS_FINE_LOCATION
+        )
+
+    private fun requestLocationPermission() {
+        EasyPermissions.requestPermissions(
+            this,
+            "This app can't run without Location Permission",
+            LOCATION_PERMISSION_REQUEST_CODE,
+            android.Manifest.permission.ACCESS_FINE_LOCATION
+        )
+    }
+
+//    private fun checkLocationPermission() {
+//        if (ContextCompat.checkSelfPermission(
+//                requireContext(),
+//                permission.ACCESS_FINE_LOCATION
+//            ) != PERMISSION_GRANTED
+//        ) {
+//            requestPermission(
+//                requireActivity() as AppCompatActivity,
+//                LOCATION_PERMISSION_REQUEST_CODE,
+//                ACCESS_FINE_LOCATION1,
+//                false
+//            )
+//        }
+//    }
+
+    override fun onPermissionsDenied(requestCode: Int, perms: List<String>) {
+        if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
+            SettingsDialog.Builder(requireActivity()).build().show()
+        } else {
+            requestLocationPermission()
         }
+    }
+
+    override fun onPermissionsGranted(requestCode: Int, perms: List<String>) {
+        showToast("Permission Granted")
     }
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
-        permissions: Array<String>,
+        permissions: Array<out String>,
         grantResults: IntArray
     ) {
-        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
-            if (isPermissionGranted(
-                    permissions,
-                    grantResults,
-                    permission.ACCESS_FINE_LOCATION
-                ).not()
-            ) {
-                checkLocationPermission()
-            }
-        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
+    }
+//    override fun onRequestPermissionsResult(
+//        requestCode: Int,
+//        permissions: Array<String>,
+//        grantResults: IntArray
+//    ) {
+//        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
+//            if (isPermissionGranted(
+//                    permissions,
+//                    grantResults,
+//                    permission.ACCESS_FINE_LOCATION
+//                ).not()
+//            ) {
+//                checkLocationPermission()
+//            }
+//        }
+//    }
+
+    override fun onLocationChanged(p0: Location) {
+    }
+
+    override fun onProviderDisabled(provider: String) {
+        Log.d("onProviderDisabled", provider)
+        super.onProviderDisabled(provider)
+        requestLocationPermission()
+
+    }
+
+    override fun onProviderEnabled(provider: String) {
+        Log.d("onProviderEnabled", provider)
+        super.onProviderEnabled(provider)
+
+
+    }
+
+    override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
+        Log.d("OnStatusChanged", provider!! + status)
+        super.onStatusChanged(provider, status, extras)
+
     }
 }
