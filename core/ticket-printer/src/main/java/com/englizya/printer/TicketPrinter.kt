@@ -1,8 +1,7 @@
 package com.englizya.printer
 
 import android.app.Application
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
+import android.graphics.*
 import com.dantsu.escposprinter.EscPosPrinter
 import com.englizya.common.date.DateOnly
 import com.englizya.common.utils.time.TimeUtils
@@ -244,6 +243,50 @@ class TicketPrinter constructor(
         tickets.forEach {
             printTicket(it)
         }
+    }
+
+    fun printArabicText() {
+        val bitmap = Bitmap.createBitmap(200, 200, Bitmap.Config.ARGB_8888)
+        bitmap.eraseColor(Color.WHITE)
+        val canvas = Canvas(bitmap)
+        canvas.drawText("السلام عليكم", 0f, 0f, Paint().apply { color = Color.BLACK })
+        XPrinterP300.print(escPosPrinter, bitmap)
+    }
+
+    fun printBitmap(bitmap: Bitmap) {
+        XPrinterP300.print(escPosPrinter, bitmap)
+    }
+
+    fun drawTextToBitmap(
+        text: String
+    ): Bitmap? {
+        var bitmap = Bitmap.createBitmap(420, 200, Bitmap.Config.ARGB_8888)
+        bitmap.eraseColor(Color.WHITE)
+        var bitmapConfig = bitmap.config
+        // set default bitmap config if none
+        if (bitmapConfig == null) {
+            bitmapConfig = Bitmap.Config.ARGB_8888
+        }
+        // resource bitmaps are imutable,
+        // so we need to convert it to mutable one
+        bitmap = bitmap.copy(bitmapConfig, true)
+        val canvas = Canvas(bitmap)
+        // new antialised Paint
+        val paint = Paint(Paint.ANTI_ALIAS_FLAG)
+        // text color - #3D3D3D
+        paint.color = Color.rgb(61, 61, 61)
+        // text size in pixels
+        paint.textSize = (14 * 3).toInt().toFloat()
+        // text shadow
+        paint.setShadowLayer(1f, 0f, 1f, Color.WHITE)
+
+        // draw text to the Canvas center
+        val bounds = Rect()
+        paint.getTextBounds(text, 0, text.length, bounds)
+        val x = (bitmap.width - bounds.width()) / 2
+        val y = (bitmap.height + bounds.height()) / 2
+        canvas.drawText(text, x.toFloat(), y.toFloat(), paint)
+        return bitmap
     }
 
     fun printTicket(ticket: UserTicket) {
