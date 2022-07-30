@@ -32,7 +32,7 @@ class ShortTicketPrinterTest : KoinTest {
     }
 
     @Test
-    fun useAppContext() {
+    fun test_to_print_short_ticket() {
         ticketPrinter.printTicket(
             shortTicket
         )

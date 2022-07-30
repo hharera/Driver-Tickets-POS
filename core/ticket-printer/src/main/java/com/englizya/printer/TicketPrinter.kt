@@ -192,11 +192,14 @@ class TicketPrinter constructor(
 
         page.addLine()
             .addUnit(
-                "$SERIAL${ticket.carCode}_${TimeUtils.getTicketTimeMillis()}",
+                ticket.ticketId,
                 TEXT_SIZE,
                 EAlign.CENTER,
                 TEXT_STYLE
             )
+        page.addLine().addUnit("\n", 5)
+
+        page.addLine().addUnit(getTicketQr(ticket.ticketId), EAlign.CENTER)
         page.addLine().addUnit("\n", 5)
 
         page.addLine()
@@ -290,12 +293,13 @@ class TicketPrinter constructor(
             BitmapFactory.decodeResource(application.applicationContext.resources, R.drawable.tele)
 
         page.addLine().addUnit(tele, EAlign.CENTER)
+        page.addLine().addUnit("\n", 28)
 
         sunmiPrinter.print(page.toBitmap(384))
     }
 
     private fun getTicketQr(ticketId: String): Bitmap {
-        return BarcodeEncoder().encodeBitmap(ticketId, BarcodeFormat.QR_CODE, 50, 50)
+        return BarcodeEncoder().encodeBitmap(ticketId, BarcodeFormat.QR_CODE, 150, 150)
     }
 
     fun printTickets(tickets: List<UserTicket>) {
