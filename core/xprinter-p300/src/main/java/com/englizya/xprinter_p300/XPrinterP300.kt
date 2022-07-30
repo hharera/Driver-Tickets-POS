@@ -135,46 +135,19 @@ object XPrinterP300 {
             )
     }
 
-    fun print() {
-        val escPosPrinter =
-            EscPosPrinter(
-                BluetoothPrintersConnections.selectFirstPaired(),
-                203,
-                58f,
-                32,
-                EscPosCharsetEncoding("UTF-8", 16)
-            )
-    }
-
-    fun print(logo: Bitmap?, pageBitmap: Bitmap) {
-        val escPosPrinter =
-            EscPosPrinter(
-                BluetoothPrintersConnections.selectFirstPaired(),
-                203,
-                58f,
-                32
-            )
-
-        val logoHex = PrinterTextParserImg.bitmapToHexadecimalString(
-            escPosPrinter,
-            logo
-        )
-
-        val pageHex = PrinterTextParserImg.bitmapToHexadecimalString(
-            escPosPrinter,
-            pageBitmap
-        )
-
-        escPosPrinter.printFormattedTextAndCut(
-            "[C]<img>$logoHex</img>\n" +
-                    "[C]=================\n" +
-                    "[C]<img>$pageHex</img>\n".let {
-                        String(
-                            it.toByteArray(),
-                            Charset.forName("UTF-8")
-                        )
-                    }
-        )
+    fun print(
+        escpos : EscPosPrinter,
+        bitmap: Bitmap
+    ) {
+        PrinterTextParserImg.bitmapToHexadecimalString(
+            escpos,
+            bitmap
+        ).let {
+            escpos
+                .printFormattedTextAndCut(
+                    "[C]<img>$it</img>\n"
+                )
+        }
     }
 }
 

@@ -11,9 +11,9 @@ import com.englizya.login.di.loginModule
 import com.englizya.printer.di.printerModule
 import com.englizya.repository.di.repositoryModule
 import com.englizya.splash.di.splashModule
+import com.englizya.sunmiprinter.di.sunmiPrinterModule
 import com.englizya.ticket.di.ticketModule
 import com.englizya.wallet.di.walletModule
-import com.englizya.xprinter_p300.di.xprinterModule
 import com.example.scan_reserved_ticket.di.scanReservedTicketModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
@@ -32,7 +32,7 @@ class TicketApplication : Application() {
             androidContext(this@TicketApplication)
             modules(
                 baseModule,
-                xprinterModule,
+                sunmiPrinterModule,
                 printerModule,
                 dataStoreModule,
                 databaseModule,
