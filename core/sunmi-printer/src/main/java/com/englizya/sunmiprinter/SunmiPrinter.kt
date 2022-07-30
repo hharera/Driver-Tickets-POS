@@ -4,7 +4,6 @@ import android.app.Application
 import android.graphics.Bitmap
 import android.util.Log
 import android.widget.Toast
-import com.englizya.printer.R
 import com.sunmi.peripheral.printer.InnerPrinterCallback
 import com.sunmi.peripheral.printer.InnerPrinterManager
 import com.sunmi.peripheral.printer.InnerResultCallback

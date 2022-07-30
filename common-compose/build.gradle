@@ -1,0 +1,7 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply from:"$rootDir/$CommonBuild.COMPOSE_MODULE"
+
+android {
+    namespace 'com.harera.compose.common_compose'
+}

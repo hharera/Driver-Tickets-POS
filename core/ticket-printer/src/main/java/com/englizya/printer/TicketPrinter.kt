@@ -78,7 +78,7 @@ class TicketPrinter constructor(
         page.addLine().addUnit("\n", 5)
 
         page.addLine().addUnit(
-            "$MANIFESTO_DATE${endShiftReportResponse.date}",
+            "${MANIFESTO_DATE.plus("\n")}${endShiftReportResponse.date}",
             TEXT_SIZE,
             EAlign.CENTER,
             TEXT_STYLE
@@ -118,7 +118,7 @@ class TicketPrinter constructor(
         page.addLine().addUnit("\n", 5)
 
         page.addLine().addUnit(
-            "$WORK_HOURS: ${TimeUtils.calculateWorkHours(endShiftReportResponse)}",
+            "${WORK_HOURS.plus("\n")}${TimeUtils.calculateWorkHours(endShiftReportResponse)}",
             TEXT_SIZE,
             EAlign.CENTER,
             TEXT_STYLE

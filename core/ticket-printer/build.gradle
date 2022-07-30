@@ -1,12 +1,14 @@
 apply from: "$rootDir/${CommonBuild.FUNCTION_MODULE}"
+apply from: "$rootDir/${CommonBuild.UI_TESTING_MODULE}"
+apply from: "$rootDir/${CommonBuild.TESTING_MODULE}"
 
 dependencies {
     api files('libs/gl-page-V1.03.00_20181030.jar')
 
-    implementation(Libs.appcompat)
     implementation(Libs.jodaTime)
     api(project(Core.SUNMI_PRINTER))
     api(project(Base.COMMON))
+    api(project(Base.COMMON_TEST))
     implementation(project(Data.model))
     api(BarCode.zxingEmbedded)
     api(BarCode.zxingCore)

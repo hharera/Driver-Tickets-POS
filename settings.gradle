@@ -12,6 +12,7 @@ rootProject.name = "Englizya-Staff"
 include ':app'
 
 include ':common'
+include ':common-test'
 
 
 include ':navigation:ticket'
