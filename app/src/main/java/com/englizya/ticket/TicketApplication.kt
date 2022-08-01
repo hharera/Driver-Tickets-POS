@@ -8,6 +8,7 @@ import com.englizya.datastore.di.dataStoreModule
 import com.englizya.end_shift.di.endShiftModule
 import com.englizya.local.di.databaseModule
 import com.englizya.login.di.loginModule
+import com.englizya.longtripbooking.di.longTripBookingModule
 import com.englizya.printer.di.printerModule
 import com.englizya.repository.di.repositoryModule
 import com.englizya.splash.di.splashModule
@@ -34,6 +35,7 @@ class TicketApplication : Application() {
                 baseModule,
                 sunmiPrinterModule,
                 printerModule,
+                longTripBookingModule,
                 dataStoreModule,
                 databaseModule,
                 clientModule,

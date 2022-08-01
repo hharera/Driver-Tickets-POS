@@ -32,6 +32,7 @@ class SunmiPrinter constructor(
                     }
 
                     override fun onRaiseException(p0: Int, p1: String?) {
+
                         Toast.makeText(application, application.getString(R.string.printing_error), Toast.LENGTH_SHORT).show()
                     }
 

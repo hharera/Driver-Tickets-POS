@@ -2,6 +2,7 @@ package com.englizya.splash
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.englizya.common.base.BaseActivity
@@ -24,7 +25,23 @@ class SplashActivity() : BaseActivity() {
         setContentView(bind.root)
 
         window?.statusBarColor = resources.getColor(R.color.splash_status_color)
+        setUpObservers()
     }
+
+    private fun setUpObservers() {
+        splashViewModel.manifesto.observe(this){
+            Log.d("ManifestoDetails" , it.isShortManifesto.toString())
+            if(it.isShortManifesto == 0){
+                goBooking()
+
+            }else if(it.isShortManifesto == 1){
+                goTicket()
+
+            }
+        }
+    }
+
+
 
     override fun onResume() {
         super.onResume()
@@ -41,7 +58,8 @@ class SplashActivity() : BaseActivity() {
 
     private fun checkLoginState(state: Boolean) {
         if (state) {
-            goTicket()
+            splashViewModel.fetchDriverManifesto()
+//            goTicket()
         } else {
             goLogin()
 //            goTicket()
@@ -66,5 +84,14 @@ class SplashActivity() : BaseActivity() {
             startActivity(intent)
             finish()
         }
+    }
+
+    private fun goBooking() {
+        val intent = Intent(this@SplashActivity, HomeActivity::class.java).putExtra(
+            Arguments.Destination,
+            Destination.LONGTRIPBOOKING
+        )
+        startActivity(intent)
+        finish()
     }
 }

@@ -19,7 +19,7 @@
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <application
-        android:name=".TicketApplication"
+        android:name="com.englizya.ticket.TicketApplication"
         android:allowBackup="true"
         android:configChanges="keyboardHidden|orientation|screenSize"
         android:extractNativeLibs="true"

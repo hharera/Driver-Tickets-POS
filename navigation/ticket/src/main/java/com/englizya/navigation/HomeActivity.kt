@@ -107,13 +107,24 @@ class HomeActivity : BaseActivity() {
 
     private fun getExtras() {
         intent?.extras?.getString(Arguments.Destination)?.let {
-            navController.navigate(
-                NavigationUtils.getUriNavigation(
-                    Domain.ENGLIZYA_PAY,
-                    it,
-                    Destination.TICKET
+            if (it == "long-trip-booking") {
+                navController.navigate(
+                    NavigationUtils.getUriNavigation(
+                        Domain.ENGLIZYA_PAY,
+                        it,
+                        false
+                    )
                 )
-            )
+            } else {
+                navController.navigate(
+                    NavigationUtils.getUriNavigation(
+                        Domain.ENGLIZYA_PAY,
+                        it,
+                        Destination.TICKET
+                    )
+                )
+            }
+
         }
     }
 

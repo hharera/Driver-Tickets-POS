@@ -23,4 +23,6 @@
     <color name="grey_400">#171B24</color>
     <color name="grey_350">#6D809B</color>
     <color name="splash_status_color">#021327</color>
+    <color name="blue_500">#003BAD</color>
+
 </resources>

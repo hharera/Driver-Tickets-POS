@@ -1,0 +1,6 @@
+apply from: "$rootDir/${CommonBuild.FeatureModule}"
+
+dependencies {
+    implementation(Libs.circleImage)
+
+}

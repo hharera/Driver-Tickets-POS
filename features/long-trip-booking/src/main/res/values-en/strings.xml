@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="round_trip">Round Trip</string>
+    <string name="one_way">One Way</string>
+    <string name="get_a_ticket">Get a Ticket!</string>
+    <string name="book_your_ticket_now">احجز تذكرتك الآن</string>
+    <string name="to">الي</string>
+    <string name="from">من</string>
+    <string name="book">احجز</string>
+
+</resources>

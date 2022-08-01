@@ -9,5 +9,7 @@ object Features {
     const val dayReport = ":features:day-report"
     const val endShift = ":features:end-shift"
     const val scanReservedTicket = ":features:scan-reserved-ticket"
+    const val longTripBooking = ":features:long-trip-booking"
+
 
 }

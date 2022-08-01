@@ -13,7 +13,13 @@
         <argument android:name="redirect" />
         <deepLink app:uri="EnglizyaPay://login/{redirect}" />
     </fragment>
+    <fragment
+        android:id="@+id/navigation_long_trip_booking"
+        android:name="com.englizya.longtripbooking.LongTripBookingFragment"
+        tools:layout="@layout/fragment_long_trip_booking">
 
+        <deepLink app:uri="EnglizyaPay://long-trip-booking" />
+    </fragment>
     <fragment
         android:id="@+id/navigation_end_shift"
         android:name="com.englizya.end_shift.EndShiftFragment"

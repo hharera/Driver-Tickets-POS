@@ -229,12 +229,15 @@ class TicketPrinter constructor(
         )
         page.addLine().addUnit("\n", 10)
 
-        val ticketCategoryBitmap =
-            BitmapFactory.decodeResource(
-                application.applicationContext.resources,
-                R.drawable.cat_5
-            )
-        page.addLine().addUnit(ticketCategoryBitmap, EAlign.CENTER)
+//        val ticketCategoryBitmap =
+//            BitmapFactory.decodeResource(
+//                application.applicationContext.resources,
+//                R.drawable.cat_5
+//            )
+        page.addLine().addUnit("$TICKET_CATEGORY${ticket.ticketCategory}",
+            TEXT_SIZE,
+            EAlign.CENTER,
+            TEXT_STYLE)
 
         val teleBitmap =
             BitmapFactory.decodeResource(
