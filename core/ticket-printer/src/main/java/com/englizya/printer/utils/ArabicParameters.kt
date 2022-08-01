@@ -30,4 +30,8 @@ object ArabicParameters {
     const val SERIAL = "رقم التذكرة : "
     const val SEAT_NO = "رقم المقعد : "
     const val TRIP = "رحلة : "
+    const val TICKET_PRICE = "سعر التذكرة : "
+    const val PRINTING_TIME = "تاريخ الطباعة : "
+
+
 }

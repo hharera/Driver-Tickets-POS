@@ -11,4 +11,12 @@
 
         <deepLink app:uri="EnglizyaPay://long-trip-booking/" />
     </fragment>
+
+    <fragment
+        android:id="@+id/navigation_qr_scanning"
+        android:name="com.englizya.longtripbooking.ScanQRFragment"
+        tools:layout="@layout/fragment_scan_qr">
+
+        <deepLink app:uri="EnglizyaPay://scan-qr-long/" />
+    </fragment>
 </navigation>

@@ -120,7 +120,7 @@ class HomeActivity : BaseActivity() {
                     NavigationUtils.getUriNavigation(
                         Domain.ENGLIZYA_PAY,
                         it,
-                        Destination.TICKET
+                        false
                     )
                 )
             }

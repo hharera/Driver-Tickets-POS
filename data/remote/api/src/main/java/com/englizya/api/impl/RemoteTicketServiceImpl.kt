@@ -4,6 +4,7 @@ import com.englizya.api.RemoteTicketService
 import com.englizya.api.utils.*
 import com.englizya.api.utils.Parameters
 import com.englizya.datastore.LocalTicketPreferences
+import com.englizya.model.PrintableTicket
 import com.englizya.model.request.Ticket
 import com.englizya.model.request.TourismTicketsWithWalletRequest
 import com.englizya.model.response.UserTicket
@@ -92,7 +93,19 @@ class RemoteTicketServiceImpl constructor(
             }
         }
     }
+    override suspend fun requestLongTicketsCash(token: String , sourceBranchId  :Int , destinationBranchId: Int , quantity: Int): List<PrintableTicket> {
+        return client.post {
+            url(Routing.REQUEST_LONG_TICKETS_CASH)
+            parameter(Parameters.SOURCE , sourceBranchId)
+            parameter(Parameters.DESTINATION , destinationBranchId)
+            parameter(Parameters.QUANTITY , quantity)
+            header(Header.DRIVER_TOKEN, "${AuthScheme.Bearer} $token")
+            timeout {
+                requestTimeoutMillis = 100000
+            }
 
+        }
+    }
     override suspend fun requestReservedTicket(token: String, uid: String): UserTicket {
         return client.get {
             url(Routing.GET_RESERVED_TICKET)

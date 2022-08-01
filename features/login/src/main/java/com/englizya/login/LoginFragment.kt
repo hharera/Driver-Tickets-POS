@@ -1,6 +1,8 @@
 package com.englizya.login
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,11 +29,11 @@ class LoginFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        arguments?.let {
-            it.getString(Arguments.REDIRECT)?.let { redirect ->
-                loginViewModel.setRedirectRouting(redirect)
-            }
-        }
+//        arguments?.let {
+//            it.getString(Arguments.REDIRECT)?.let { redirect ->
+//                loginViewModel.setRedirectRouting(redirect)
+//            }
+//        }
 
         changeStatusBarColor(R.color.blue_600)
     }
@@ -65,8 +67,16 @@ class LoginFragment : BaseFragment() {
             handleFailure(it)
         }
 
-        loginViewModel.loginOperationState.observe(this) { state ->
-            checkLoginState(state)
+//        loginViewModel.loginOperationState.observe(this) { state ->
+//            checkLoginState(state)
+//        }
+        loginViewModel.manifesto.observe(this) {
+            Log.d("ManifestoDetails",it.toString())
+            if (it.isShortManifesto == 0) {
+                goBooking()
+            } else {
+                goTicket()
+            }
         }
 
         loginViewModel.formValidity.observe(this) {
@@ -80,10 +90,30 @@ class LoginFragment : BaseFragment() {
         }
     }
 
-    private fun checkLoginState(state: Boolean) {
-        if (state) {
-            redirect()
-        }
+//    private fun checkLoginState(state: Boolean) {
+//        if (state) {
+//            redirect()
+//        }
+//    }
+
+    private fun goBooking() {
+        findNavController().navigate(
+            NavigationUtils.getUriNavigation(
+                Domain.ENGLIZYA_PAY,
+                Destination.LONG_TRIP_BOOKING,
+                false
+            )
+        )
+    }
+
+    private fun goTicket() {
+        findNavController().navigate(
+            NavigationUtils.getUriNavigation(
+                Domain.ENGLIZYA_PAY,
+                Destination.TICKET,
+                false
+            )
+        )
     }
 
     private fun redirect() {

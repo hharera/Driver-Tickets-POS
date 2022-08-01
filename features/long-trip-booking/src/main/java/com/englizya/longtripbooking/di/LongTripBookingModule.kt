@@ -12,6 +12,8 @@ val longTripBookingModule = module {
             get(),
             get(),
             get(),
+            get(),
+            get(),
         )
     }
 }

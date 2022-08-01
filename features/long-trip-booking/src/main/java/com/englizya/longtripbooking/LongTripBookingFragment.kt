@@ -11,7 +11,11 @@ import android.widget.ListPopupWindow
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.englizya.common.base.BaseFragment
+import com.englizya.common.utils.navigation.Destination
+import com.englizya.common.utils.navigation.Domain
+import com.englizya.common.utils.navigation.NavigationUtils
 import com.englizya.common.utils.permission.PermissionUtils
 import com.englizya.longtripbooking.databinding.FragmentLongTripBookingBinding
 import com.englizya.longtripbooking.di.longTripBookingModule
@@ -34,6 +38,7 @@ class LongTripBookingFragment : BaseFragment() {
         private const val TAG = "LongTripBookingFragment"
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1006
     }
+
     private lateinit var binding: FragmentLongTripBookingBinding
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
@@ -52,6 +57,7 @@ class LongTripBookingFragment : BaseFragment() {
 
         return binding.root
     }
+
     private fun setupPaymentAdapter(method: PaymentMethod) {
         paymentMethodsAdapter = PaymentMethodsAdapter {
             bookingViewModel.setPaymentMethod(it)
@@ -59,6 +65,7 @@ class LongTripBookingFragment : BaseFragment() {
 
         binding.paymentMethods.adapter = paymentMethodsAdapter
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpObservers()
@@ -66,6 +73,7 @@ class LongTripBookingFragment : BaseFragment() {
         checkLocationPermission()
 
     }
+
     private fun updateUI(it: List<Station>) {
         sourceAdapter = ArrayAdapter<String>(
             requireContext(),
@@ -107,6 +115,7 @@ class LongTripBookingFragment : BaseFragment() {
             show()
         }
     }
+
     private fun showSourceMenu(view: View) {
         ListPopupWindow(context!!).apply {
             setAdapter(destinationAdapter)
@@ -122,6 +131,7 @@ class LongTripBookingFragment : BaseFragment() {
             show()
         }
     }
+
     private fun setupListeners() {
         binding.ticketPlus.setOnClickListener {
             bookingViewModel.incrementQuantity()
@@ -137,7 +147,7 @@ class LongTripBookingFragment : BaseFragment() {
                         binding.print.isEnabled = false
                     }
 
-                    bookingViewModel.submitTickets()
+                    bookingViewModel.requestLongTicketCash()
 
                     delay(500)
 
@@ -146,17 +156,33 @@ class LongTripBookingFragment : BaseFragment() {
                     }
                 }
             }
+            else if (bookingViewModel.paymentMethod.value == PaymentMethod.QR) {
+
+                navigateToScanQR()
+
+
+            }
         }
     }
+
+    private fun navigateToScanQR() {
+        findNavController().navigate(
+            NavigationUtils.getUriNavigation(
+                Domain.ENGLIZYA_PAY,
+                Destination.SCAN_QR_LONG,
+                false
+            )
+        )
+    }
+
     private fun setUpObservers() {
         bookingViewModel.paymentMethod.observe(viewLifecycleOwner) { method ->
             updatePaymentMethods(method)
         }
         bookingViewModel.quantity.observe(viewLifecycleOwner) { quantity ->
-            updateTotal(quantity)
             updateQuantity(quantity)
         }
-        bookingViewModel.stations.observe(viewLifecycleOwner){
+        bookingViewModel.stations.observe(viewLifecycleOwner) {
             updateUI(it)
         }
         bookingViewModel.source.observe(viewLifecycleOwner) {
@@ -170,10 +196,22 @@ class LongTripBookingFragment : BaseFragment() {
                 binding.destination.setText(it)
             }
         }
+        bookingViewModel.cashLongTicket.observe(viewLifecycleOwner){
+            if(it!=null){
+                bookingViewModel.printCashLongTickets(it)
+
+            }
+        }
+
+        bookingViewModel.tripPrice.observe(viewLifecycleOwner){
+            updateTotal(it)
+        }
     }
+
     private fun updateQuantity(quantity: Int) {
         binding.ticketQuantity.text = "$quantity"
     }
+
     override fun onResume() {
         super.onResume()
 
@@ -181,29 +219,20 @@ class LongTripBookingFragment : BaseFragment() {
         bookingViewModel.setPaymentMethod(PaymentMethod.Cash)
 
     }
-    private fun updateTotal(quantity: Int) {
-//        bookingViewModel.selectedCategory.value?.let { price ->
-//            binding.total.text = "اجمالي: ${price * quantity}"
-//        }
+
+    private fun updateTotal(tripPrice: Double) {
+        bookingViewModel.quantity.value?.let { quantity ->
+            binding.total.text = "اجمالي: ${tripPrice * quantity}"
+        }
     }
+
     private fun updatePaymentMethods(method: PaymentMethod) {
         setupPaymentAdapter(method)
-        method.let{
-                method1 -> paymentMethodsAdapter.setSelectedPaymentMethod(method1)
+        method.let { method1 ->
+            paymentMethodsAdapter.setSelectedPaymentMethod(method1)
         }
-        //  setupPaymentAdapter(method)
-
-//        if (method == PaymentMethod.QR) {
-//            ticketViewModel.selectedCategory.value?.let {
-//                ticketViewModel.quantity.value?.let { it1 ->
-//                    navigateToScanWalletQr(
-//                        quantity = it1,
-//                        category = it
-//                    )
-//                }
-//            }
-//        }
     }
+
     private fun checkLocationPermission() {
         if (ContextCompat.checkSelfPermission(
                 requireContext(),

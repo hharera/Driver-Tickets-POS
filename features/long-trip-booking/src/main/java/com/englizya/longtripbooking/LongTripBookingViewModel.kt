@@ -5,25 +5,27 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.englizya.common.base.BaseViewModel
-import com.englizya.common.utils.time.TimeUtils
 import com.englizya.datastore.LocalTicketPreferences
+import com.englizya.model.PrintableTicket
 import com.englizya.model.Station
+import com.englizya.model.request.SeatPriceRequest
 import com.englizya.model.request.Ticket
+import com.englizya.model.request.TourismTicketsWithWalletRequest
 import com.englizya.model.response.ManifestoDetails
+import com.englizya.model.response.UserTicket
+import com.englizya.model.response.WalletDetails
 import com.englizya.printer.TicketPrinter
-import com.englizya.printer.utils.PrinterState
-import com.englizya.repository.ManifestoRepository
-import com.englizya.repository.R
-import com.englizya.repository.StationRepository
-import com.englizya.repository.TicketRepository
+import com.englizya.repository.*
 import com.englizya.ticket.utils.Constants
+import io.ktor.http.auth.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.joda.time.DateTime
 
 class LongTripBookingViewModel constructor(
     private val ticketPrinter: TicketPrinter,
     private val ticketRepository: TicketRepository,
+    private val walletRepository: WalletRepository,
+    private val seatRepository: SeatPricingRepository,
     private val manifestoRepository: ManifestoRepository,
     private val stationRepository: StationRepository,
     private val preferences: LocalTicketPreferences,
@@ -54,9 +56,11 @@ class LongTripBookingViewModel constructor(
     private var _total = MutableLiveData<Int>(0)
     val total: LiveData<Int> = _total
 
-    private var _tripPrice = MutableLiveData<Int>(0)
-    val tripPrice: LiveData<Int> = _tripPrice
+    private var _tripPrice = MutableLiveData<Double>(0.0)
+    val tripPrice: LiveData<Double> = _tripPrice
 
+    private var _cashLongTicket = MutableLiveData<List<PrintableTicket>>(null)
+    val cashLongTicket: LiveData<List<PrintableTicket>> = _cashLongTicket
 
     private var _lastTicket = MutableLiveData<Ticket>()
     val lastTicket: LiveData<Ticket> = _lastTicket
@@ -66,6 +70,21 @@ class LongTripBookingViewModel constructor(
 
     private var _ticketsInMemory = MutableLiveData<Set<Ticket>>(HashSet())
     val ticketsInMemory: LiveData<Set<Ticket>> = _ticketsInMemory
+
+    //                 Scan Qr Live Data
+    private var _qrContent = MutableLiveData<String>()
+    val qrContent: LiveData<String> = _qrContent
+
+    private var _walletDetails = MutableLiveData<WalletDetails>()
+    val walletDetails: LiveData<WalletDetails> = _walletDetails
+
+
+    private var _longTickets = MutableLiveData<List<UserTicket>>(null)
+    val longTickets: LiveData<List<UserTicket>> = _longTickets
+
+
+    var _printingOperationCompleted = MutableLiveData<Boolean>(false)
+    val printingOperationCompleted: LiveData<Boolean> = _printingOperationCompleted
 
     fun setPaymentMethod(method: PaymentMethod) {
         _paymentMethod.value = method
@@ -87,27 +106,33 @@ class LongTripBookingViewModel constructor(
         fetchDriverManifesto()
     }
 
-    fun getBookingOffices() = viewModelScope.launch(Dispatchers.IO) {
+    fun setQrContent(contents: String) {
+        Log.d(TAG, "setQrContent: $contents")
+        _qrContent.postValue(contents)
+    }
+
+    fun getBookingOffices() = viewModelScope.launch(Dispatchers.Main) {
         updateLoading(true)
         stationRepository.getAllStations()
             .onSuccess {
                 updateLoading(false)
                 Log.d("Stations", it.toString())
-                _stations.postValue(it)
+                _stations.value = it
             }
             .onFailure {
                 updateLoading(false)
                 handleException(it)
             }
     }
-   private fun fetchDriverManifesto() = viewModelScope.launch(Dispatchers.IO) {
+
+    private fun fetchDriverManifesto() = viewModelScope.launch(Dispatchers.Main) {
         updateLoading(true)
 
         manifestoRepository
             .getManifesto(preferences.getToken())
             .onSuccess {
                 updateLoading(false)
-                _manifesto.postValue(it)
+                _manifesto.value = it
             }
             .onFailure {
                 updateLoading(false)
@@ -115,15 +140,46 @@ class LongTripBookingViewModel constructor(
             }
     }
 
-    private fun getPrice() = viewModelScope.launch(Dispatchers.IO) {
+    // Get Seat Price
+    private fun getSeatPrice() {
         updateLoading(true)
+        encapsulateSeatPriceRequest()
+            .onSuccess {
+                updateLoading(false)
+                getPrice(it)
+            }
+            .onFailure {
+                updateLoading(false)
+                handleException(it)
+            }
+    }
 
+    private fun encapsulateSeatPriceRequest(): Result<SeatPriceRequest> =
+        kotlin.runCatching {
+            SeatPriceRequest(
+                tripId = manifesto.value?.tripId!!,
+                sourceBranchId = source.value?.branchId!!,
+                destinationBranchId = destination.value?.branchId!!
+            )
 
+        }
+
+    private fun getPrice(request: SeatPriceRequest) = viewModelScope.launch(Dispatchers.IO) {
+        updateLoading(true)
+        seatRepository.getSeatPrice(request)
+            .onSuccess {
+                updateLoading(false)
+                _tripPrice.postValue(it)
+            }.onFailure {
+                updateLoading(false)
+                handleException(it)
+            }
 
 
     }
 
-    fun getStations() = viewModelScope.launch(Dispatchers.IO) {
+
+    fun getStations() = viewModelScope.launch(Dispatchers.Main) {
         if (stations.value.isNullOrEmpty())
             getBookingOffices()
     }
@@ -132,100 +188,133 @@ class LongTripBookingViewModel constructor(
         _destination.value = stations.value?.firstOrNull {
             it.branchName == destination
         }
-//        checkFormValidity()
+        getTripPrice()
     }
 
     fun setSource(source: String) {
-//        Log.d(TAG, "setSource: $source")
         _source.value = stations.value?.firstOrNull {
             it.branchName == source
         }
-//        checkFormValidity()
+        getTripPrice()
     }
-    private fun createTicketId(currentTime: Long): String {
-        return preferences.getCarCode()
-            .plus("-")
-            .plus(preferences.getDriverCode())
-            .plus("-")
-            .plus(currentTime)
-    }
-    private fun getPaymentMethod(): String {
-        return when (paymentMethod.value!!) {
-            PaymentMethod.Cash -> "CASH"
-            PaymentMethod.Card -> "CARD"
-            PaymentMethod.QR -> "QR"
+
+    private fun getTripPrice() {
+        if (destination.value != null && source.value != null) {
+            getSeatPrice()
         }
     }
 
-    suspend fun submitTickets() {
-        generateTickets(quantity.value!!).let { tickets ->
-            Log.d("tickets" , tickets.toString())
-            insertTickets(tickets, true)
-        }
-    }
     private fun resetQuantity() {
         _quantity.postValue(1)
     }
-    private fun printTickets(tickets: ArrayList<Ticket>) {
+
+
+    // Booking with wallet
+    fun loadWalletDetails() {
+        synchronized(_qrContent) {
+            loadWalletDetails(qrContent.value!!)
+        }
+    }
+
+    private fun loadWalletDetails(qrContent: String) =
         viewModelScope.launch(Dispatchers.IO) {
-            _lastTicket.postValue(tickets.last())
-            tickets.forEach { ticket ->
-                Log.d("ticket" , ticket.toString())
-                ticketPrinter.printTicket(ticket)
-//                    .let { printState ->
-//                    checkPrintState(printState, ticket)
-//                }
-            }
+            Log.d(TAG, "updateQR: $qrContent")
+            updateLoading(true)
+            walletRepository
+                .getWallet(
+                    driverToken = preferences.getToken(),
+                    uid = qrContent
+                )
+                .onSuccess {
+                    updateLoading(false)
+                    _walletDetails.postValue(it)
+                }
+                .onFailure {
+                    updateLoading(false)
+                    handleException(it)
+                }
         }
-    }
-    private suspend fun checkPrintState(printState: String, ticket: Ticket) {
-        Log.d(TAG, "checkPrintState: $printState")
-        if (printState == PrinterState.OUT_OF_PAPER) {
-            _isPaperOut.postValue(true)
-            Log.d(TAG, "checkPrintState: $ticket")
-            _ticketsInMemory.postValue(ticketsInMemory.value!!.plus(ticket))
-        }
-    }
-    private suspend fun insertTickets(tickets: ArrayList<Ticket>, pushRemote: Boolean) {
+
+    fun requestLongTicketsWithWallet() {
         updateLoading(true)
-        ticketRepository
-            .insertTickets(tickets, pushRemote)
+        encapsulateRequest()
             .onSuccess {
                 updateLoading(false)
-                resetQuantity()
-                printTickets(tickets)
-                Log.d(TAG, "orderTickets: $tickets")
+                requestLongTickets(it)
             }
             .onFailure {
-                if (pushRemote)
-                    insertTickets(tickets, false)
                 updateLoading(false)
                 handleException(it)
             }
     }
-    private fun generateTickets(quantity: Int): ArrayList<Ticket> {
-        val currentMillis = TimeUtils.getTicketTimeMillis()
-        val tickets = ArrayList<Ticket>()
 
-        for (i in 1..quantity) {
-            tickets.add(
-                Ticket(
-                    ticketId = createTicketId(currentMillis + i * 5),
-                    lineCode = preferences.getCarLineCode(),
-                    driverCode = preferences.getDriverCode(),
-                    carCode = preferences.getCarCode(),
-                    time = DateTime.now().toString(),
-                    paymentWay = getPaymentMethod(),
-                    ticketCategory = 100,
-                    manifestoId = preferences.getManifestoNo(),
-                    manifestoYear = preferences.getManifestoYear(),
+    private fun requestLongTickets(it: TourismTicketsWithWalletRequest) =
+        viewModelScope.launch(Dispatchers.Main) {
+            updateLoading(true)
+            ticketRepository
+                .requestLongTicketsWithWallet(it)
+                .onSuccess {
+                    updateLoading(false)
+                    _longTickets.value = it
+                }
+                .onFailure {
+                    updateLoading(false)
+                    handleException(it)
+                }
+        }
 
-                )
+    private fun encapsulateRequest(): Result<TourismTicketsWithWalletRequest> =
+        kotlin.runCatching {
+            TourismTicketsWithWalletRequest(
+                AuthScheme.Bearer + " " + preferences.getToken(),
+                preferences.getReservationId(),
+                preferences.getTripId(),
+                qrContent.value!!,
+                source.value!!.branchId,
+                destination.value!!.branchId,
+                quantity.value!!
             )
         }
 
-        return tickets
+    fun printLongTickets(list: List<UserTicket>) {
+        viewModelScope.launch(Dispatchers.Main) {
+            ticketPrinter.printTickets(list)
+
+            _printingOperationCompleted.value = true
+            _longTickets.value = null
+
+
+        }
     }
+// Booking with Cash
+    fun requestLongTicketCash() =
+        viewModelScope.launch(Dispatchers.Main) {
+            updateLoading(true)
+            ticketRepository
+                .requestLongTicketsWithCash(
+                    preferences.getToken(), source.value?.branchId!!,
+                    destination.value!!.branchId,
+                    quantity.value!!
+                )
+                .onSuccess {
+                    updateLoading(false)
+                    resetQuantity()
+                    _cashLongTicket.value = it
+                }
+                .onFailure {
+                    updateLoading(false)
+                    handleException(it)
+                }
+        }
+
+    fun printCashLongTickets(list: List<PrintableTicket>) {
+        viewModelScope.launch(Dispatchers.Main) {
+            ticketPrinter.printCashTickets(list)
+
+            _printingOperationCompleted.value = true
+            _longTickets.value = null
 
 
+        }
+    }
 }

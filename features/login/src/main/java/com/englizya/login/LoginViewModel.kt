@@ -31,6 +31,9 @@ class LoginViewModel constructor(
     private var _redirectRouting = MutableLiveData<String>(null)
     val redirectRouting: LiveData<String> = _redirectRouting
 
+    private var _manifesto = MutableLiveData<ManifestoDetails>()
+    val manifesto: LiveData<ManifestoDetails> = _manifesto
+
     private val _loginOperationState = MutableLiveData<Boolean>()
     val loginOperationState: LiveData<Boolean> = _loginOperationState
 
@@ -86,6 +89,7 @@ class LoginViewModel constructor(
                 updateLoading(false)
                 updateLocalData(it)
                 _loginOperationState.postValue(true)
+                _manifesto.postValue(it)
             }
             .onFailure {
                 updateLoading(false)

@@ -7,5 +7,6 @@
     <string name="to">الي</string>
     <string name="from">من</string>
     <string name="book">احجز</string>
+    <string name="pay">دفع</string>
 
 </resources>

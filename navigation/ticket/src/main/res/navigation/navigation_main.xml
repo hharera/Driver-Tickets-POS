@@ -3,15 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_main"
-    app:startDestination="@id/navigation_ticket">
+    app:startDestination="@id/navigation_login">
 
     <fragment
         android:id="@+id/navigation_login"
         android:name="com.englizya.login.LoginFragment"
         tools:layout="@layout/fragment_login">
 
-        <argument android:name="redirect" />
-        <deepLink app:uri="EnglizyaPay://login/{redirect}" />
+
+        <deepLink app:uri="EnglizyaPay://login" />
     </fragment>
     <fragment
         android:id="@+id/navigation_long_trip_booking"
@@ -43,8 +43,8 @@
         android:name="com.englizya.ticket.TicketFragment"
         tools:layout="@layout/fragment_ticket">
 
-        <argument android:name="redirect" />
-        <deepLink app:uri="EnglizyaPay://ticket/{redirect}" />
+
+        <deepLink app:uri="EnglizyaPay://ticket" />
     </fragment>
     <fragment
         android:id="@+id/navigation_scan_payed_ticket"
@@ -52,5 +52,12 @@
         tools:layout="@layout/fragment_scan_reserved_ticket">
 
         <deepLink app:uri="EnglizyaPay://scan-qr" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_qr_scanning"
+        android:name="com.englizya.longtripbooking.ScanQRFragment"
+        tools:layout="@layout/fragment_scan_qr">
+
+        <deepLink app:uri="EnglizyaPay://scan-qr-long" />
     </fragment>
 </navigation>

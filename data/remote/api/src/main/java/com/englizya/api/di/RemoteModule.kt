@@ -1,10 +1,7 @@
 package com.englizya.api.di
 
 import com.englizya.api.*
-import com.englizya.api.impl.RemoteManifestoServiceImpl
-import com.englizya.api.impl.RemoteTicketServiceImpl
-import com.englizya.api.impl.RemoteUserServiceImpl
-import com.englizya.api.impl.StationServiceImpl
+import com.englizya.api.impl.*
 import org.koin.dsl.module
 
 
@@ -32,5 +29,8 @@ val remoteModule = module {
 
     single<TripService> {
         TripServiceImpl(get())
+    }
+    single<SeatPriceService> {
+        SeatPriceServiceImpl(get())
     }
 }

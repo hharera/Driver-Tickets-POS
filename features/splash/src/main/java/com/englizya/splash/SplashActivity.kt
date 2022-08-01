@@ -89,7 +89,7 @@ class SplashActivity() : BaseActivity() {
     private fun goBooking() {
         val intent = Intent(this@SplashActivity, HomeActivity::class.java).putExtra(
             Arguments.Destination,
-            Destination.LONGTRIPBOOKING
+            Destination.LONG_TRIP_BOOKING
         )
         startActivity(intent)
         finish()

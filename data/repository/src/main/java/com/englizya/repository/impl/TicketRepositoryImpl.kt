@@ -2,6 +2,7 @@ package com.englizya.repository.impl
 
 import com.englizya.api.RemoteTicketService
 import com.englizya.local.TicketDao
+import com.englizya.model.PrintableTicket
 import com.englizya.model.UnPrintedTicket
 import com.englizya.model.request.Ticket
 import com.englizya.model.request.TourismTicketsWithWalletRequest
@@ -117,6 +118,10 @@ class TicketRepositoryImpl constructor(
         kotlin.runCatching {
             ticketService.requestLongTicketsWithWallet(request)
         }
+
+    override suspend fun requestLongTicketsWithCash(token: String , sourceBranchId  :Int , destinationBranchId: Int , quantity: Int): Result<List<PrintableTicket>> =kotlin.runCatching {
+        ticketService.requestLongTicketsCash(token,sourceBranchId , destinationBranchId , quantity)
+    }
 
     override suspend fun requestReservedTicket(
         token: String,

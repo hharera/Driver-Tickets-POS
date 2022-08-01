@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import com.englizya.common.date.DateOnly
 import com.englizya.common.utils.time.TimeUtils
+import com.englizya.model.PrintableTicket
 import com.englizya.model.request.Ticket
 import com.englizya.model.response.ShiftReportResponse
 import com.englizya.model.response.UserTicket
@@ -238,6 +239,7 @@ class TicketPrinter constructor(
             TEXT_SIZE,
             EAlign.CENTER,
             TEXT_STYLE)
+        page.addLine().addUnit("\n", 5)
 
         val teleBitmap =
             BitmapFactory.decodeResource(
@@ -300,12 +302,55 @@ class TicketPrinter constructor(
 
         sunmiPrinter.print(page.toBitmap(384))
     }
+    fun printTicket(ticket: PrintableTicket) {
+        val page = paxGLPage.createPage()
+
+        val logo = getLogoBitmap()
+
+        page.addLine().addUnit(logo, EAlign.CENTER)
+
+        page.addLine().addUnit(ticket.ticketId.toString(), TEXT_SIZE, EAlign.CENTER, TEXT_STYLE)
+
+        page.addLine().addUnit(getTicketQr(ticket.ticketQr), EAlign.CENTER)
+
+        page.addLine().addUnit(
+            "${ArabicParameters.SOURCE}${ticket.source}".plus("\n")
+                .plus("${ArabicParameters.DESTINATION}${ticket.destination}")
+                .plus("\n")
+                .plus("${ArabicParameters.PRINTING_TIME}${DateOnly.toMonthDate(ticket.ticketingTime)}")
+                .plus("\n").plus("${ArabicParameters.SERVICE_DEGREE}${ticket.serviceDegree}")
+                .plus("\n")
+                .plus("${ArabicParameters.TRIP}${ticket.tripName}").plus("\n")
+                .plus("${ArabicParameters.SEAT_NO}${ticket.seatNo}")
+                .plus("\n")
+                .plus("${ArabicParameters.TICKET_PRICE}${ticket.ticketPrice}")
+            ,
+            TEXT_SIZE,
+            EAlign.CENTER,
+            TEXT_STYLE
+                )
+
+        val tele =
+            BitmapFactory.decodeResource(application.applicationContext.resources, R.drawable.tele)
+
+        page.addLine().addUnit(tele, EAlign.CENTER)
+        page.addLine().addUnit("\n", 28)
+
+        sunmiPrinter.print(page.toBitmap(384))
+    }
 
     private fun getTicketQr(ticketId: String): Bitmap {
         return BarcodeEncoder().encodeBitmap(ticketId, BarcodeFormat.QR_CODE, 150, 150)
     }
 
     fun printTickets(tickets: List<UserTicket>) {
+        tickets.forEach { ticket ->
+            printTicket(ticket)
+        }
+    }
+
+
+    fun printCashTickets(tickets: List<PrintableTicket>) {
         tickets.forEach { ticket ->
             printTicket(ticket)
         }

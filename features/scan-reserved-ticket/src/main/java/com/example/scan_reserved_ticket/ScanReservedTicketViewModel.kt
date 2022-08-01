@@ -50,7 +50,7 @@ class ScanReservedTicketViewModel constructor(
         )
             .onSuccess {
                 updateLoading(false)
-                _reservedTicketResponse.postValue(it)
+                _reservedTicketResponse.value = it
             }
             .onFailure {
                 updateLoading(false)
@@ -66,7 +66,7 @@ class ScanReservedTicketViewModel constructor(
         )
             .onSuccess {
                 updateLoading(false)
-                _deactivationResponse.postValue(it)
+                _deactivationResponse.value = it
             }
             .onFailure {
                 updateLoading(false)
@@ -79,11 +79,11 @@ class ScanReservedTicketViewModel constructor(
 
     fun printTickets(ticket: UserTicket) {
 
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.Main) {
             ticketPrinter.printTicket(ticket).let { printState ->
             }
 
-            _printingOperationCompleted.postValue(true)
+            _printingOperationCompleted.value = true
         }
     }
 }

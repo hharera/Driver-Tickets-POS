@@ -18,7 +18,7 @@
         <ImageView
             android:id="@+id/payment_image"
             android:layout_width="@dimen/_60sdp"
-            android:layout_height="@dimen/_30sdp"
+            android:layout_height="@dimen/_25sdp"
             android:src="@drawable/cash_100"
             android:tint="@color/white"
             app:layout_constraintEnd_toEndOf="parent"

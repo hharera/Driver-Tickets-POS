@@ -1,10 +1,7 @@
 package com.englizya.repository.di
 
 import com.englizya.repository.*
-import com.englizya.repository.impl.ManifestoRepositoryImpl
-import com.englizya.repository.impl.StationRepositoryImpl
-import com.englizya.repository.impl.TicketRepositoryImpl
-import com.englizya.repository.impl.UserRepositoryImpl
+import com.englizya.repository.impl.*
 import org.koin.dsl.module
 
 
@@ -22,5 +19,8 @@ val repositoryModule = module {
 
     single<StationRepository> {
         StationRepositoryImpl(get())
+    }
+    single<SeatPricingRepository> {
+        SeatPricingRepositoryImpl(get())
     }
 }
