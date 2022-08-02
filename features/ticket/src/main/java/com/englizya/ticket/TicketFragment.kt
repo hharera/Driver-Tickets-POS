@@ -11,8 +11,13 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavDeepLinkRequest
+import androidx.navigation.fragment.findNavController
 import com.englizya.common.base.BaseFragment
 import com.englizya.common.ui.PaperOutDialog
+import com.englizya.common.utils.navigation.Destination
+import com.englizya.common.utils.navigation.Domain
+import com.englizya.common.utils.navigation.NavigationUtils
 import com.englizya.common.utils.permission.PermissionUtils.isPermissionGranted
 import com.englizya.common.utils.permission.PermissionUtils.requestPermission
 import com.englizya.model.request.Ticket
@@ -134,7 +139,7 @@ class TicketFragment : BaseFragment() {
 
     private fun updateTotal(quantity: Int) {
         ticketViewModel.selectedCategory.value?.let { price ->
-            binding.total.text = "اجمالي: ${price * quantity}"
+            binding.total.text = "اجمالي: ${price * quantity} جنيهات "
         }
     }
 
@@ -148,33 +153,22 @@ class TicketFragment : BaseFragment() {
 
     private fun updatePaymentMethods(method: PaymentMethod) {
         setupPaymentAdapter(method)
-        method.let{
-            method1 -> paymentMethodsAdapter.setSelectedPaymentMethod(method1)
+        method.let { method1 ->
+            paymentMethodsAdapter.setSelectedPaymentMethod(method1)
         }
-      //  setupPaymentAdapter(method)
 
-        if (method == PaymentMethod.QR) {
-            ticketViewModel.selectedCategory.value?.let {
-                ticketViewModel.quantity.value?.let { it1 ->
-                    navigateToScanWalletQr(
-                        quantity = it1,
-                        category = it
-                    )
-                }
-            }
-        }
     }
 
     private fun navigateToScanWalletQr(quantity: Int, category: Int) {
-
-        Class.forName("com.englizya.wallet.WalletPayActivity").let {
-            val intent = Intent(requireContext(), it)
-            Log.d(TAG, "navigateToScanWalletQr: $quantity, $category")
-            intent.putExtra("quantity", quantity)
-            intent.putExtra("category", category)
-            startActivity(intent)
-
-        }
+        findNavController().navigate(
+            NavigationUtils.getUriNavigation(
+                Domain.ENGLIZYA_PAY,
+                Destination.SCAN_WALLET,
+                true,
+                quantity.toString(),
+                category.toString()
+            )
+        )
     }
 
     private fun checkSavedTicketsSize(tickets: Set<Ticket>) {
@@ -211,18 +205,30 @@ class TicketFragment : BaseFragment() {
 
 
         binding.print.setOnClickListener {
-            lifecycleScope.launch(Dispatchers.IO) {
-                withContext(Dispatchers.Main) {
-                    binding.print.isEnabled = false
+            if(ticketViewModel.paymentMethod.value == PaymentMethod.QR){
+                ticketViewModel.selectedCategory.value?.let {
+                    ticketViewModel.quantity.value?.let { it1 ->
+                        navigateToScanWalletQr(
+                            quantity = it1,
+                            category = it
+                        )
+                    }
+                }
+            }else{
+                lifecycleScope.launch(Dispatchers.IO) {
+                    withContext(Dispatchers.Main) {
+                        binding.print.isEnabled = false
+                    }
+
+                    ticketViewModel.submitTickets()
+
+                    delay(500)
+
+                    withContext(Dispatchers.Main) {
+                        binding.print.isEnabled = true
+                    }
                 }
 
-                ticketViewModel.submitTickets()
-
-                delay(500)
-
-                withContext(Dispatchers.Main) {
-                    binding.print.isEnabled = true
-                }
             }
         }
     }

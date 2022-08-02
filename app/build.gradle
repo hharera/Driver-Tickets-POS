@@ -49,7 +49,7 @@ android {
 dependencies {
     implementation project(Base.COMMON)
     implementation project(Feature.SPLASH)
-    implementation project(Navigation.WALLET)
+    implementation project(Feature.SCAN_WALLET)
 
 
     def appCenterSdkVersion = '4.3.1'

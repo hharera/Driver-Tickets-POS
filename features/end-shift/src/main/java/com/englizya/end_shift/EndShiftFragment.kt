@@ -76,8 +76,7 @@ class EndShiftFragment : BaseFragment() {
             NavigationUtils.getUriNavigation(
                 Domain.ENGLIZYA_PAY,
                 Destination.LOGIN,
-                Destination.TICKET
-            )
+false            )
         )
     }
 

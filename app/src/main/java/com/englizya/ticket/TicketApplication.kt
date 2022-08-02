@@ -11,10 +11,10 @@ import com.englizya.login.di.loginModule
 import com.englizya.longtripbooking.di.longTripBookingModule
 import com.englizya.printer.di.printerModule
 import com.englizya.repository.di.repositoryModule
+import com.englizya.scan_wallet.di.walletModule
 import com.englizya.splash.di.splashModule
 import com.englizya.sunmiprinter.di.sunmiPrinterModule
 import com.englizya.ticket.di.ticketModule
-import com.englizya.wallet.di.walletModule
 import com.example.scan_reserved_ticket.di.scanReservedTicketModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
@@ -42,9 +42,9 @@ class TicketApplication : Application() {
                 remoteModule,
                 repositoryModule,
                 splashModule,
-                walletModule,
                 ticketModule,
                 scanReservedTicketModule,
+                walletModule,
                 loginModule,
                 endShiftModule,
             )

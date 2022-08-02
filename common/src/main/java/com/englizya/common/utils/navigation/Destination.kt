@@ -11,6 +11,8 @@ object Destination {
     const val SCAN_QR   = "scan-qr"
     const val LONG_TRIP_BOOKING = "long-trip-booking"
     const val SCAN_QR_LONG  = "scan-qr-long"
+    const val SCAN_WALLET   = "scan-wallet"
+
 
 
 }

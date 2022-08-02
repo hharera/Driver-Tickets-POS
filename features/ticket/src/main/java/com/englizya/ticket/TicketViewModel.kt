@@ -63,10 +63,14 @@ class TicketViewModel constructor(
             fetchDriverManifesto()
 
         } else {
-            _ticketCategories.value = preferences.getTicketCategories().also {
-                _selectedCategory.value =
-                    (preferences.getTicketCategories()?.firstOrNull()?.toInt())
-            }
+           updateTicketCategories(preferences.getTicketCategories()!!)
+//            _ticketCategories.value = preferences.getTicketCategories().also {
+//                Log.d("setOf Categories" , it.toString())
+//
+//                _selectedCategory.value =
+//                    (preferences.getTicketCategories()?.firstOrNull()?.toInt())
+//                Log.d("TicketCategoryList" , _selectedCategory.value.toString())
+//            }
         }
         fetchDriverManifesto()
         getLocalTickets()
@@ -100,7 +104,12 @@ class TicketViewModel constructor(
             _ticketCategories.value = manifestoDetails.lineCategory.map { it.toString() }.toSet()
             updateSelectedCategory(manifestoDetails.lineCategory)
         }
-
+    private fun updateTicketCategories(ticketCategories: Set<String>) =
+        viewModelScope.launch(Dispatchers.Main) {
+            Log.d("TicketCategory" , ticketCategories.toString())
+            _ticketCategories.value = ticketCategories
+            updateSelectedCategory(ticketCategories.map { it.toInt() }.toList())
+        }
     private fun updateSelectedCategory(categoryList: List<Int>) {
         categoryList.forEach {
             _selectedCategory.value = it
