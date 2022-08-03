@@ -6,6 +6,7 @@ import com.englizya.api.di.remoteModule
 import com.englizya.common.di.baseModule
 import com.englizya.datastore.di.dataStoreModule
 import com.englizya.end_shift.di.endShiftModule
+import com.englizya.end_shift.di.longManifestoEndShiftModule
 import com.englizya.local.di.databaseModule
 import com.englizya.login.di.loginModule
 import com.englizya.longtripbooking.di.longTripBookingModule
@@ -47,6 +48,7 @@ class TicketApplication : Application() {
                 walletModule,
                 loginModule,
                 endShiftModule,
+                longManifestoEndShiftModule,
             )
         }
     }

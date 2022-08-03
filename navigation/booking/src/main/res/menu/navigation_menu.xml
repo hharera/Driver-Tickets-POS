@@ -4,7 +4,7 @@
 
 
 
-    <item android:id="@+id/navigation_booking_end_shift"
+    <item android:id="@+id/navigation_end_shift"
         android:icon="@drawable/ic_shift"
         android:iconTint="@color/grey"
         android:title="@string/end_shift"/>

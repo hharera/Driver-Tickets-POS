@@ -3,40 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_main"
-    app:startDestination="@id/navigation_login">
-
-    <fragment
-        android:id="@+id/navigation_login"
-        android:name="com.englizya.login.LoginFragment"
-        tools:layout="@layout/fragment_login">
+    app:startDestination="@id/navigation_ticket">
 
 
-        <deepLink app:uri="EnglizyaPay://login" />
-    </fragment>
-    <fragment
-        android:id="@+id/navigation_long_trip_booking"
-        android:name="com.englizya.longtripbooking.LongTripBookingFragment"
-        tools:layout="@layout/fragment_long_trip_booking">
-
-        <deepLink app:uri="EnglizyaPay://long-trip-booking" />
-    </fragment>
     <fragment
         android:id="@+id/navigation_end_shift"
         android:name="com.englizya.end_shift.EndShiftFragment"
         tools:layout="@layout/fragment_day_report">
 
-        <argument android:name="redirect" />
-        <deepLink app:uri="EnglizyaPay://end-shift/{redirect}" />
+
+        <deepLink app:uri="EnglizyaPay://end-shift" />
     </fragment>
 
-    <fragment
-        android:id="@+id/navigation_day_report"
-        android:name="com.englizya.day_report.DayReportFragment"
-        tools:layout="@layout/fragment_day_report">
-
-        <argument android:name="redirect" />
-        <deepLink app:uri="EnglizyaPay://day-report/{redirect}" />
-    </fragment>
 
     <fragment
         android:id="@+id/navigation_ticket"
@@ -61,19 +39,6 @@
         <argument android:name="category" />
         <deepLink app:uri="EnglizyaPay://scan-wallet/{quantity}/{category}" />
     </fragment>
-    <fragment
-        android:id="@+id/navigation_qr_scanning"
-        android:name="com.englizya.longtripbooking.ScanQRFragment"
-        tools:layout="@layout/fragment_scan_qr">
-
-        <deepLink app:uri="EnglizyaPay://scan-qr-long" />
-    </fragment>
-    <fragment
-        android:id="@+id/navigation_long_manifesto_end_shift"
-        android:name="com.englizya.end_shift.LongManifestoEndShiftFragment"
-        tools:layout="@layout/fragment_long_manifesto_end_shift">
 
 
-        <deepLink app:uri="EnglizyaPay://long-manifesto-end-shift" />
-    </fragment>
 </navigation>

@@ -27,7 +27,7 @@ class LongManifestoEndShiftFragment : BaseFragment() {
 
     private lateinit var binding: FragmentLongManifestoEndShiftBinding
 
-    private val endShiftViewModel: EndShiftViewModel by viewModel()
+    private val endShiftViewModel: LongManifestoEndShiftViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -139,5 +139,6 @@ class LongManifestoEndShiftFragment : BaseFragment() {
             endShiftViewModel.longManifestoShiftReport.value?.let { endShiftViewModel.printReport(it) }
         }.show(childFragmentManager, "")
     }
+
 
 }

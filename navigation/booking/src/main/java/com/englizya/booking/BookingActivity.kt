@@ -49,7 +49,7 @@ class BookingActivity : BaseActivity() {
         setupLocationListener()
         turnGPSOn()
 
-        getExtras()
+//        getExtras()
         getLocation()
     }
 
@@ -78,20 +78,20 @@ class BookingActivity : BaseActivity() {
         }
     }
 
-    private fun getExtras() {
-        intent?.extras?.getString(Arguments.Destination)?.let {
-
-            navController.navigate(
-                NavigationUtils.getUriNavigation(
-                    Domain.ENGLIZYA_PAY,
-                    it,
-                    false
-                )
-            )
-
-
-        }
-    }
+//    private fun getExtras() {
+//        intent?.extras?.getString(Arguments.Destination)?.let {
+//
+//            navController.navigate(
+//                NavigationUtils.getUriNavigation(
+//                    Domain.ENGLIZYA_PAY,
+//                    it,
+//                    false
+//                )
+//            )
+//
+//
+//        }
+//    }
 
     private fun getLocation() {
         val fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
@@ -127,8 +127,8 @@ class BookingActivity : BaseActivity() {
         bind.navView.bringToFront()
         bind.navView.setNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.navigation_booking_end_shift -> {
-                    //Long
+                R.id.navigation_end_shift -> {
+                    Log.d("EndShift ", "Clicked")
                     navController.navigate(
                         NavigationUtils.getUriNavigation(
                             Domain.ENGLIZYA_PAY,
@@ -178,4 +178,11 @@ class BookingActivity : BaseActivity() {
         }
     }
 
+    override fun onBackPressed() {
+        if (navController.backQueue.size > 1) {
+            navController.popBackStack()
+        } else {
+            finish()
+        }
+    }
 }

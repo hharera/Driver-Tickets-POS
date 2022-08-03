@@ -149,7 +149,8 @@ class HomeActivity : BaseActivity() {
                         navController.navigate(
                             NavigationUtils.getUriNavigation(
                                 Domain.ENGLIZYA_PAY,
-                                Destination.END_SHIFT
+                                Destination.END_SHIFT,
+                                false
                             )
                         )
                         bind.root.closeDrawer(GravityCompat.END, true)
@@ -194,7 +195,10 @@ class HomeActivity : BaseActivity() {
     }
 
     override fun onBackPressed() {
-
+        if (navController.backQueue.size > 1) {
+            navController.popBackStack()
+        } else {
+            finish()
+        }
     }
-
 }

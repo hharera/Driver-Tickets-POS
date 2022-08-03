@@ -15,6 +15,7 @@ import com.englizya.common.utils.navigation.Arguments
 import com.englizya.common.utils.navigation.Destination
 import com.englizya.common.utils.navigation.Domain
 import com.englizya.common.utils.navigation.NavigationUtils
+import com.englizya.navigation.HomeActivity
 import com.englizya.ticket.login.R
 import com.englizya.ticket.login.databinding.FragmentLoginBinding
 import kotlinx.coroutines.Dispatchers
@@ -113,13 +114,20 @@ class LoginFragment : BaseFragment() {
     }
 
     private fun goTicket() {
-        findNavController().navigate(
-            NavigationUtils.getUriNavigation(
-                Domain.ENGLIZYA_PAY,
-                Destination.TICKET,
-                false
-            )
+        val intent = Intent(activity, HomeActivity::class.java).putExtra(
+            Arguments.Destination,
+            Destination.TICKET
         )
+        startActivity(intent)
+        activity?.finish()
+//        findNavController().navigate(
+//            NavigationUtils.getUriNavigation(
+//                Domain.ENGLIZYA_PAY,
+//                Destination.TICKET,
+//                false
+//            )
+//        )
+
     }
 
     private fun redirect() {

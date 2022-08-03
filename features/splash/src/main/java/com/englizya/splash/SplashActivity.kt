@@ -9,6 +9,7 @@ import com.englizya.booking.BookingActivity
 import com.englizya.common.base.BaseActivity
 import com.englizya.common.utils.navigation.Arguments
 import com.englizya.common.utils.navigation.Destination
+import com.englizya.login.LoginActivity
 import com.englizya.navigation.HomeActivity
 import com.englizya.splash.databinding.ActivitySplashBinding
 import io.ktor.client.features.*
@@ -74,7 +75,7 @@ class SplashActivity() : BaseActivity() {
     }
 
     private fun goLogin() {
-        val intent = Intent(this@SplashActivity, HomeActivity::class.java).putExtra(
+        val intent = Intent(this@SplashActivity, LoginActivity::class.java).putExtra(
             Arguments.Destination,
             Destination.LOGIN
         )
@@ -94,7 +95,8 @@ class SplashActivity() : BaseActivity() {
     }
 
     private fun goBooking() {
-        val intent = Intent(this@SplashActivity, BookingActivity::class.java).putExtra(
+        val intent = Intent(this@SplashActivity, BookingActivity::class.java)
+            .putExtra(
             Arguments.Destination,
             Destination.LONG_TRIP_BOOKING
         )

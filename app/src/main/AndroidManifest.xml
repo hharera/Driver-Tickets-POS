@@ -36,6 +36,9 @@
             android:name="com.englizya.navigation.HomeActivity"
             android:exported="true" />
         <activity
+            android:name="com.englizya.login.LoginActivity"
+            android:exported="true" />
+        <activity
             android:name="com.englizya.booking.BookingActivity"
             android:exported="true" />
 

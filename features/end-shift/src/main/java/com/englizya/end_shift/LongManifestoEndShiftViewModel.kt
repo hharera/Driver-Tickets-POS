@@ -7,37 +7,34 @@ import androidx.lifecycle.viewModelScope
 import com.englizya.common.base.BaseViewModel
 import com.englizya.datastore.LocalTicketPreferences
 import com.englizya.datastore.utils.Value
-import com.englizya.model.request.EndShiftRequest
 import com.englizya.model.request.Ticket
 import com.englizya.model.response.LongManifestoEndShiftResponse
 import com.englizya.model.response.ManifestoDetails
-import com.englizya.model.response.ShiftReportResponse
 import com.englizya.printer.TicketPrinter
-import com.englizya.printer.utils.PrinterState.OUT_OF_PAPER
+import com.englizya.printer.utils.PrinterState
 import com.englizya.repository.ManifestoRepository
 import com.englizya.repository.TicketRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class EndShiftViewModel constructor(
+class LongManifestoEndShiftViewModel  constructor(
     private val ticketRepository: TicketRepository,
     private val ticketPrinter: TicketPrinter,
     private val manifestoRepository: ManifestoRepository,
-    private val dataStore: LocalTicketPreferences,
-) : BaseViewModel() {
+    private val dataStore: LocalTicketPreferences
+): BaseViewModel(){
+    private val TAG = "LongManifestoEndShiftViewModel"
 
-    private val TAG = "EndShiftViewModel"
-
-    private val _shiftReport = MutableLiveData<ShiftReportResponse>()
-    val shiftReport: LiveData<ShiftReportResponse> = _shiftReport
-
-
-
+    private val _longManifestoShiftReport = MutableLiveData<LongManifestoEndShiftResponse>()
+    val longManifestoShiftReport: LiveData<LongManifestoEndShiftResponse> =
+        _longManifestoShiftReport
 
     private val _isPaperOut = MutableLiveData<Boolean>(false)
     val isPaperOut: LiveData<Boolean> = _isPaperOut
+
     private var _manifesto = MutableLiveData<ManifestoDetails>()
     val manifesto: LiveData<ManifestoDetails> = _manifesto
+
     suspend fun endShift() {
         getLocalTickets()
     }
@@ -113,23 +110,15 @@ class EndShiftViewModel constructor(
                 handleException(it)
             }
     }
-
     private suspend fun getShiftReport() {
-
-            updateLoading(true)
-
-            manifestoRepository
-                .getShiftReport(
-                    EndShiftRequest(
-                        dataStore.getManifestoYear(),
-                        dataStore.getManifestoNo()
-                    )
-                )
+            //Long Manifesto
+        updateLoading(true)
+            manifestoRepository.getLongManifestoShiftReport()
                 .onSuccess {
                     updateLoading(false)
-                    _shiftReport.postValue(it)
-                }
-                .onFailure {
+                    _longManifestoShiftReport.postValue(it)
+
+                }.onFailure {
                     updateLoading(false)
                     handleException(it)
                 }
@@ -140,18 +129,15 @@ class EndShiftViewModel constructor(
     fun logout() {
         dataStore.setToken(Value.NULL_STRING)
     }
-
-    fun printReport(shiftReport: ShiftReportResponse) {
+    fun printReport(shiftReport: LongManifestoEndShiftResponse) {
         ticketPrinter.printShiftReport(shiftReport).let {
             checkPrintResult(it)
         }
     }
-
-
-
     private fun checkPrintResult(printState: String) {
-        if (printState == OUT_OF_PAPER) {
+        if (printState == PrinterState.OUT_OF_PAPER) {
             _isPaperOut.postValue(true)
         }
     }
+
 }
