@@ -1,5 +1,6 @@
 package com.englizya.end_shift
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -72,14 +73,21 @@ class LongManifestoEndShiftFragment : BaseFragment() {
     }
 
     private fun navigateToLogin() {
-        Log.d("Navigate To Login ", " I am navigating")
-        findNavController().navigate(
-            NavigationUtils.getUriNavigation(
-                Domain.ENGLIZYA_PAY,
-                Destination.LOGIN,
-                false
+        startActivity(
+            Intent(
+                context,
+                Class.forName("com.englizya.login.LoginActivity")
             )
         )
+        activity?.finish()
+        Log.d("Navigate To Login ", " I am navigating")
+//        findNavController().navigate(
+//            NavigationUtils.getUriNavigation(
+//                Domain.ENGLIZYA_PAY,
+//                Destination.LOGIN,
+//                false
+//            )
+//        )
     }
 
     private fun setupObservers() {
