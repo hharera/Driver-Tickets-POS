@@ -70,7 +70,7 @@ open class BaseFragment : Fragment() {
                 }
 
                 when (throwable.response.status) {
-                    HttpStatusCode.Forbidden -> showErrorDialog(R.string.not_authorized)
+                    HttpStatusCode.Forbidden -> showToast(R.string.not_authorized)
                 }
             }
 

@@ -1,6 +1,7 @@
 package com.englizya.common.utils.time
 
 import com.englizya.model.WorkTime
+import com.englizya.model.response.LongManifestoEndShiftResponse
 import com.englizya.model.response.ShiftReportResponse
 import org.joda.time.DateTime
 import java.text.SimpleDateFormat
@@ -41,7 +42,17 @@ object TimeUtils {
             .plus(" ${workTime.minutes} ")
             .plus("M")
     }
+    fun calculateWorkHours(shiftReportResponse: LongManifestoEndShiftResponse): String {
+        val startTime = SimpleDateFormat(START_SHIFT_DATE_FORMAT).parse(shiftReportResponse.shiftStartTime)
+        val endTime = SimpleDateFormat(END_SHIFT_DATE_FORMAT).parse(shiftReportResponse.shiftEndTime)
 
+        val millis = endTime.time - startTime.time
+        val workTime = calculateWorkTime(millis)
+        return " ${workTime.hours} "
+            .plus("H")
+            .plus(" ${workTime.minutes} ")
+            .plus("M")
+    }
     private fun calculateWorkTime(millis: Long): WorkTime {
         val years = calculateYears(millis)
         val months = calculateMonths(millis - (years * MILLIS_IN_YEAR))
@@ -88,5 +99,18 @@ object TimeUtils {
 
     private fun calculateYears(millis: Long): Long {
         return millis / MILLIS_IN_YEAR
+    }
+     fun calculateWorkHoursAndMinutes(shiftReportResponse: LongManifestoEndShiftResponse) :String{
+        val totalSecondMilliSeconds = shiftReportResponse.workSeconds
+        val seconds = totalSecondMilliSeconds/1000
+        val hours = seconds /3600
+        val minutes = (seconds%3600)/60
+        return getWorkTimeString(hours , minutes)
+    }
+    private fun getWorkTimeString(hours:Long , minutes:Long):String{
+        return " $hours "
+            .plus("H")
+            .plus(" $minutes ")
+            .plus("M")
     }
 }

@@ -186,6 +186,7 @@
     <string name="trip_no">%1$s : رقم الرحلة</string>
     <string name="ticket_id">%1$s : رقم التذكرة</string>
     <string name="seat_no">%1$s : رقم المقعد</string>
+    <string name="tickets_details">بيان التذاكر</string>
 
 
 </resources>

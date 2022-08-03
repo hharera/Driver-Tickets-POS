@@ -68,4 +68,11 @@
 
         <deepLink app:uri="EnglizyaPay://scan-qr-long" />
     </fragment>
+    <fragment
+        android:id="@+id/navigation_long_manifesto_end_shift"
+        android:name="com.englizya.end_shift.LongManifestoEndShiftFragment"
+        tools:layout="@layout/fragment_long_manifesto_end_shift">
+
+        <deepLink app:uri="EnglizyaPay://long-manifesto-end-shift" />
+    </fragment>
 </navigation>

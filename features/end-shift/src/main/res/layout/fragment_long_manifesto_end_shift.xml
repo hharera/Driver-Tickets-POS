@@ -312,108 +312,40 @@
                 android:layout_width="match_parent"
                 android:layout_height="30dp" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/qr_tickets"
-                    style="@style/TextView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="start|center"
-                    android:layout_margin="5dp"
-                    android:layout_weight="1"
-                    android:gravity="start|center"
-                    android:textColor="@color/grey"
-                    android:textSize="18sp"
-                    app:layout_constraintEnd_toEndOf="parent" />
-
-                <TextView
-                    android:id="@+id/qr_text"
-                    style="@style/TextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end|center"
-                    android:layout_margin="5dp"
-                    android:fontFamily="@font/el_messiri_bold"
-                    android:gravity="end|center"
-                    android:text="@string/qr_tickets"
-                    android:textColor="@color/black"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent" />
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/nfc_tickets"
-                    style="@style/TextView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="start|center"
-                    android:layout_margin="5dp"
-                    android:layout_weight="1"
-                    android:gravity="start|center"
-
-                    android:textColor="@color/grey"
-                    android:textSize="18sp"
-                    app:layout_constraintEnd_toEndOf="parent" />
-
-                <TextView
-                    android:id="@+id/nfc_text"
-                    style="@style/TextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end|center"
-                    android:layout_margin="5dp"
-                    android:fontFamily="@font/el_messiri_bold"
-                    android:gravity="end|center"
-                    android:text="@string/nfc_tickets"
-                    android:textColor="@color/black"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/cash_tickets"
-                    style="@style/TextView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="start|center"
-                    android:layout_margin="5dp"
-                    android:layout_weight="1"
-                    android:gravity="start|center"
-
-                    android:textColor="@color/grey"
-                    android:textSize="18sp"
-                    app:layout_constraintEnd_toEndOf="parent" />
-
+                android:orientation="vertical">
                 <TextView
                     android:id="@+id/cash_text"
                     style="@style/TextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="end|center"
+                    android:layout_gravity="center"
                     android:layout_margin="5dp"
                     android:fontFamily="@font/el_messiri_bold"
-                    android:gravity="end|center"
-                    android:text="@string/cash_tickets"
+                    android:gravity="center"
+                    android:text="@string/tickets_details"
                     android:textColor="@color/black"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent" />
+                <TextView
+                    android:id="@+id/tickets_details"
+                    style="@style/TextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textColor="@color/grey"
+                    android:textSize="18sp"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+
             </LinearLayout>
 
             <LinearLayout
@@ -450,39 +382,6 @@
                     app:layout_constraintEnd_toEndOf="parent" />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/ticket_price"
-                    style="@style/TextView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="start|center"
-                    android:layout_margin="5dp"
-                    android:layout_weight="1"
-                    android:gravity="start|center"
-
-                    android:textColor="@color/grey"
-                    android:textSize="18sp"
-                    app:layout_constraintEnd_toEndOf="parent" />
-
-                <TextView
-                    style="@style/TextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end|center"
-                    android:layout_margin="5dp"
-                    android:fontFamily="@font/el_messiri_bold"
-                    android:gravity="end|center"
-                    android:text="@string/total_category"
-                    android:textColor="@color/black"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent" />
-            </LinearLayout>
 
             <com.google.android.material.internal.BaselineLayout
                 android:layout_width="match_parent"

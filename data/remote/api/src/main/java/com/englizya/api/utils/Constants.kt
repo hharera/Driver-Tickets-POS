@@ -14,6 +14,8 @@ object Routing {
 
 
     const val END_SHIFT = "${Domain.ENGLIZYA_STAFF}/end-shift"
+    const val LONG_MANIFESTO_END_SHIFT = "${Domain.ENGLIZYA_BUS}/api/v1/driver/shift/report"
+
     const val LOGIN = "${Domain.ENGLIZYA_STAFF}/login"
     const val GET_MANIFESTO = "${Domain.ENGLIZYA_STAFF}/manifesto"
     const val TICKET = "${Domain.ENGLIZYA_STAFF}/ticket"

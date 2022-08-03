@@ -19,10 +19,13 @@ import com.englizya.common.utils.navigation.Arguments
 import com.englizya.common.utils.navigation.Destination
 import com.englizya.common.utils.navigation.Domain
 import com.englizya.common.utils.navigation.NavigationUtils
+import com.englizya.datastore.LocalTicketPreferences
+import com.englizya.longtripbooking.LongTripBookingViewModel
 import com.englizya.ticket.TicketViewModel
 import com.englizya.ticket.navigation.R
 import com.englizya.ticket.navigation.databinding.ActivityHomeBinding
 import com.google.android.gms.location.*
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -31,16 +34,23 @@ class HomeActivity : BaseActivity() {
 
     private lateinit var bind: ActivityHomeBinding
     private val ticketViewModel: TicketViewModel by viewModel()
+    private val longticketViewModel: LongTripBookingViewModel by viewModel()
+
     private lateinit var navController: NavController
     private val TAG = "HomeActivity"
     private lateinit var locationCallback: LocationCallback
     private var locationManager: LocationManager? = null
+
+    private val userDataStore: LocalTicketPreferences by inject()
+    private var manifestoType: Int? =  null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         bind = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(bind.root)
 
+        manifestoType = userDataStore.getManifestoType()
         navController = Navigation.findNavController(this, R.id.nav_host)
         bind.navView.setupWithNavController(navController)
         NavigationUI.setupWithNavController(bind.navView, navController)
@@ -144,13 +154,26 @@ class HomeActivity : BaseActivity() {
         bind.navView.setNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.navigation_end_shift -> {
-                    navController.navigate(
-                        NavigationUtils.getUriNavigation(
-                            Domain.ENGLIZYA_PAY,
-                            Destination.END_SHIFT
+                    if(longticketViewModel.manifesto.value?.isShortManifesto == 0){
+                        //Long
+                        navController.navigate(
+                            NavigationUtils.getUriNavigation(
+                                Domain.ENGLIZYA_PAY,
+                                Destination.LONG_MANIFESTO_END_SHIFT,
+                                false
+                            )
                         )
-                    )
-                    bind.root.closeDrawer(GravityCompat.END, true)
+                        bind.root.closeDrawer(GravityCompat.END, true)
+                    }else{
+                        navController.navigate(
+                            NavigationUtils.getUriNavigation(
+                                Domain.ENGLIZYA_PAY,
+                                Destination.END_SHIFT
+                            )
+                        )
+                        bind.root.closeDrawer(GravityCompat.END, true)
+                    }
+
                 }
                 R.id.navigation_scan_payed_ticket -> {
                     navController.navigate(

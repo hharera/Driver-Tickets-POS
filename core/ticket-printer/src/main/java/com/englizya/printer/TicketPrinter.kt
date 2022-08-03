@@ -7,6 +7,7 @@ import com.englizya.common.date.DateOnly
 import com.englizya.common.utils.time.TimeUtils
 import com.englizya.model.PrintableTicket
 import com.englizya.model.request.Ticket
+import com.englizya.model.response.LongManifestoEndShiftResponse
 import com.englizya.model.response.ShiftReportResponse
 import com.englizya.model.response.UserTicket
 import com.englizya.printer.utils.ArabicParameters
@@ -22,6 +23,7 @@ import com.englizya.printer.utils.ArabicParameters.SHIFT_END
 import com.englizya.printer.utils.ArabicParameters.SHIFT_START
 import com.englizya.printer.utils.ArabicParameters.TICKET_CATEGORY
 import com.englizya.printer.utils.ArabicParameters.TICKET_DATE
+import com.englizya.printer.utils.ArabicParameters.TICKET_DETAILS
 import com.englizya.printer.utils.ArabicParameters.TICKET_TIME
 import com.englizya.printer.utils.ArabicParameters.TOTAL_INCOME
 import com.englizya.printer.utils.ArabicParameters.TOTAL_TICKETS
@@ -166,6 +168,136 @@ class TicketPrinter constructor(
             TEXT_STYLE
         )
         page.addLine().addUnit("\n", 5)
+
+        page.addLine().addUnit(
+            "$TOTAL_INCOME${endShiftReportResponse.totalIncome}",
+            TEXT_SIZE,
+            EAlign.CENTER,
+            TEXT_STYLE
+        )
+
+        page.addLine().addUnit("\n", 35)
+        val pageBitmap = paxGLPage.pageToBitmap(page, 384)
+
+        sunmiPrinter.print(pageBitmap)
+//        TODO : return state
+        return ""
+    }
+    fun printShiftReport(endShiftReportResponse: LongManifestoEndShiftResponse): String {
+        val page = paxGLPage.createPage()
+        page.adjustLineSpace(-9)
+
+        val logo =
+            BitmapFactory.decodeResource(
+                application.baseContext.resources,
+                R.drawable.ic_ticket_logo
+            )
+        page.addLine().addUnit(logo, EAlign.CENTER)
+        page.addLine().addUnit("\n", 7)
+
+        page.addLine().addUnit(
+            "$DRIVER_CODE${endShiftReportResponse.driverCode}",
+            TEXT_SIZE,
+            EAlign.CENTER,
+            TEXT_STYLE
+        )
+        page.addLine().addUnit("\n", 5)
+
+        page.addLine().addUnit(
+            "$CAR_CODE${endShiftReportResponse.carCode}",
+            TEXT_SIZE,
+            EAlign.CENTER,
+            TEXT_STYLE
+        )
+        page.addLine().addUnit("\n", 5)
+
+        page.addLine().addUnit(
+            "$LINE_CODE${endShiftReportResponse.lineCode}",
+            TEXT_SIZE,
+            EAlign.CENTER,
+            TEXT_STYLE
+        )
+        page.addLine().addUnit("\n", 5)
+
+        page.addLine().addUnit(
+            "${MANIFESTO_DATE.plus("\n")}${TimeUtils.getDate(endShiftReportResponse.manifestoDate)}",
+            TEXT_SIZE,
+            EAlign.CENTER,
+            TEXT_STYLE
+        )
+        page.addLine().addUnit("\n", 5)
+
+        page.addLine().addUnit(
+            SHIFT_START,
+            TEXT_SIZE,
+            EAlign.CENTER,
+            TEXT_STYLE
+        )
+        page.addLine().addUnit("\n", 5)
+
+        page.addLine().addUnit(
+            "${TimeUtils.getDate(endShiftReportResponse.shiftStartTime)}  ${TimeUtils.getTime(endShiftReportResponse.shiftStartTime)}",
+
+            TEXT_SIZE,
+            EAlign.CENTER,
+            TEXT_STYLE
+        )
+        page.addLine().addUnit("\n", 5)
+
+        page.addLine().addUnit(
+            SHIFT_END,
+            TEXT_SIZE,
+            EAlign.CENTER,
+            TEXT_STYLE
+        )
+        page.addLine().addUnit("\n", 5)
+
+        page.addLine().addUnit(
+            "${TimeUtils.getDate(endShiftReportResponse.shiftEndTime)}  ${TimeUtils.getTime(endShiftReportResponse.shiftEndTime)}",
+            TEXT_SIZE,
+            EAlign.CENTER,
+            TEXT_STYLE
+        )
+        page.addLine().addUnit("\n", 5)
+
+        page.addLine().addUnit(
+            "${WORK_HOURS.plus("\n")}${TimeUtils.calculateWorkHoursAndMinutes(endShiftReportResponse)}",
+            TEXT_SIZE,
+            EAlign.CENTER,
+            TEXT_STYLE
+        )
+        page.addLine().addUnit("\n", 5)
+        page.addLine().addUnit(
+            TICKET_DETAILS,
+            TEXT_SIZE,
+            EAlign.CENTER,
+            TEXT_STYLE
+        )
+        page.addLine().addUnit("\n", 5)
+
+        endShiftReportResponse.ticketDetails.forEach { (key, value) ->
+            page.addLine().addUnit(
+                "$value X $key",
+                TEXT_SIZE,
+                EAlign.CENTER,
+                TEXT_STYLE
+            )
+            page.addLine().addUnit("\n", 5)
+        }
+
+
+
+        page.addLine().addUnit("\n", 5)
+
+        page.addLine().addUnit(
+            "$TOTAL_TICKETS${endShiftReportResponse.totalTickets}",
+            TEXT_SIZE,
+            EAlign.CENTER,
+            TEXT_STYLE
+        )
+        page.addLine().addUnit("\n", 5)
+
+
 
         page.addLine().addUnit(
             "$TOTAL_INCOME${endShiftReportResponse.totalIncome}",

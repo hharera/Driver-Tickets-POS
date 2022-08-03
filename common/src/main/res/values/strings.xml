@@ -57,6 +57,8 @@
     <string name="qr_tickets">تذاكر qr</string>
     <string name="nfc_tickets">تذاكر NFC</string>
     <string name="cash_tickets">تذاكر كاش</string>
+    <string name="tickets_details">بيان التذاكر</string>
+
     <string name="total_tickets">اجمالي التذاكر</string>
     <string name="total_category">فئة التذكرة</string>
     <string name="_1">1</string>

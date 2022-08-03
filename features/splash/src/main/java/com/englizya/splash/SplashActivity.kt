@@ -10,6 +10,8 @@ import com.englizya.common.utils.navigation.Arguments
 import com.englizya.common.utils.navigation.Destination
 import com.englizya.navigation.HomeActivity
 import com.englizya.splash.databinding.ActivitySplashBinding
+import io.ktor.client.features.*
+import io.ktor.http.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -38,6 +40,10 @@ class SplashActivity() : BaseActivity() {
                 goTicket()
 
             }
+        }
+        splashViewModel.error.observe(this){
+            handleFailure(it)
+            goLogin()
         }
     }
 

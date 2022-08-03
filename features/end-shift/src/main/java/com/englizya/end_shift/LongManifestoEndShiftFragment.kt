@@ -1,33 +1,31 @@
 package com.englizya.end_shift
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.englizya.common.base.BaseFragment
-import com.englizya.common.utils.time.TimeUtils
-import com.englizya.model.response.ShiftReportResponse
-import com.englizya.ticket.end_shift.R
-import com.englizya.ticket.end_shift.databinding.FragmentEndShiftBinding
 import com.englizya.common.ui.PaperOutDialog
-import com.englizya.common.utils.navigation.Arguments
 import com.englizya.common.utils.navigation.Destination
 import com.englizya.common.utils.navigation.Domain
 import com.englizya.common.utils.navigation.NavigationUtils
+import com.englizya.common.utils.time.TimeUtils
 import com.englizya.model.response.LongManifestoEndShiftResponse
+import com.englizya.ticket.end_shift.R
+import com.englizya.ticket.end_shift.databinding.FragmentLongManifestoEndShiftBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class EndShiftFragment : BaseFragment() {
+class LongManifestoEndShiftFragment : BaseFragment() {
 
-    private lateinit var binding: FragmentEndShiftBinding
+
+    private lateinit var binding: FragmentLongManifestoEndShiftBinding
 
     private val endShiftViewModel: EndShiftViewModel by viewModel()
 
@@ -38,9 +36,9 @@ class EndShiftFragment : BaseFragment() {
     ): View {
         super.onCreateView(inflater, container, savedInstanceState)
 
-            binding = FragmentEndShiftBinding.inflate(layoutInflater)
+        binding = FragmentLongManifestoEndShiftBinding.inflate(layoutInflater)
 
-            return binding.root
+        return binding.root
 
 
     }
@@ -55,7 +53,7 @@ class EndShiftFragment : BaseFragment() {
         binding.print.setOnClickListener {
             binding.print.isEnabled = false
 
-            endShiftViewModel.shiftReport.value?.let { report ->
+            endShiftViewModel.longManifestoShiftReport.value?.let { report ->
                 endShiftViewModel.printReport(
                     report
                 )
@@ -85,19 +83,19 @@ class EndShiftFragment : BaseFragment() {
     }
 
     private fun setupObservers() {
-     
-        endShiftViewModel.shiftReport.observe(viewLifecycleOwner) { shiftReport ->
+        endShiftViewModel.longManifestoShiftReport.observe(viewLifecycleOwner) { shiftReport ->
             updateUI(shiftReport)
         }
 
-        endShiftViewModel.isPaperOut.observe(viewLifecycleOwner) { paperOutState ->
-            checkPaperOutState(paperOutState)
-        }
         endShiftViewModel.manifesto.observe(viewLifecycleOwner) {
             lifecycleScope.launch(Dispatchers.IO) {
                 endShiftViewModel.endShift()
             }
         }
+        endShiftViewModel.isPaperOut.observe(viewLifecycleOwner) { paperOutState ->
+            checkPaperOutState(paperOutState)
+        }
+
         connectionLiveData.observe(viewLifecycleOwner) { connected ->
             lifecycleScope.launch(Dispatchers.IO) {
                 endShiftViewModel.endShift()
@@ -107,11 +105,28 @@ class EndShiftFragment : BaseFragment() {
                 showToast(R.string.check_your_internet)
             }
         }
-        endShiftViewModel.error.observe(viewLifecycleOwner){
+
+        endShiftViewModel.error.observe(viewLifecycleOwner) {
             handleFailure(it)
         }
     }
 
+    private fun updateUI(shiftReport: LongManifestoEndShiftResponse) {
+        binding.apply {
+            carCode.text = shiftReport.carCode
+            driverCode.text = shiftReport.driverCode.toString()
+            lineCode.text = shiftReport.lineCode
+            date.text = TimeUtils.getDate(shiftReport.manifestoDate)
+            shiftStart.text = "${TimeUtils.getDate(shiftReport.shiftStartTime)}  ${TimeUtils.getTime(shiftReport.shiftStartTime)}"
+            shiftEnd.text =  "${TimeUtils.getDate(shiftReport.shiftEndTime)}  ${TimeUtils.getTime(shiftReport.shiftEndTime)}"
+            workHours.text = TimeUtils.calculateWorkHoursAndMinutes(shiftReport)
+            shiftReport.ticketDetails.forEach { key, value ->
+                ticketsDetails.text = "$value X $key \n"
+            }
+            totalTickets.text = shiftReport.totalTickets.toString()
+            total.text = shiftReport.totalIncome.toString()
+        }
+    }
 
     private fun checkPaperOutState(paperOutState: Boolean) {
         if (paperOutState) {
@@ -121,25 +136,8 @@ class EndShiftFragment : BaseFragment() {
 
     private fun showPaperOutDialog() {
         PaperOutDialog {
-            endShiftViewModel.shiftReport.value?.let { endShiftViewModel.printReport(it) }
+            endShiftViewModel.longManifestoShiftReport.value?.let { endShiftViewModel.printReport(it) }
         }.show(childFragmentManager, "")
     }
 
-    private fun updateUI(shiftReport: ShiftReportResponse) {
-        binding.apply {
-            carCode.text = shiftReport.carCode
-            driverCode.text = shiftReport.driverCode.toString()
-            lineCode.text = shiftReport.lineCode
-            date.text = shiftReport.date
-            shiftStart.text = shiftReport.startTime
-            shiftEnd.text = shiftReport.endTime
-            workHours.text = TimeUtils.calculateWorkHours(shiftReport)
-            cashTickets.text = shiftReport.cash.toString()
-            qrTickets.text = shiftReport.qr.toString()
-            nfcTickets.text = shiftReport.card.toString()
-            totalTickets.text = shiftReport.totalTickets.toString()
-            ticketPrice.text = shiftReport.ticketCategory.toString()
-            total.text = shiftReport.totalIncome.toString()
-        }
-    }
 }

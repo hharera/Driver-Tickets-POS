@@ -4,7 +4,12 @@ import android.content.Intent
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.englizya.common.R
+import com.englizya.common.ui.ErrorDialog
 import com.englizya.common.ui.LoadingDialog
+import com.englizya.common.ui.NoInternetDialog
+import io.ktor.client.features.*
+import io.ktor.http.*
 
 open class BaseActivity : AppCompatActivity() {
 
@@ -48,11 +53,40 @@ open class BaseActivity : AppCompatActivity() {
         }
     }
 
-    fun handleFailure(throwable: Throwable?, messageRes: Int? = null) {
+//    fun handleFailure(throwable: Throwable?, messageRes: Int? = null) {
+//        throwable?.printStackTrace()
+//        messageRes?.let { res ->
+//            showToast(res)
+//        }
+//    }
+    fun handleFailure(throwable: Throwable?) {
         throwable?.printStackTrace()
-        messageRes?.let { res ->
-            showToast(res)
+        checkExceptionType(throwable)
+    }
+
+    private fun checkExceptionType(throwable: Throwable?) {
+        when (throwable) {
+            is ClientRequestException -> {
+                when(throwable.response.status) {
+                    HttpStatusCode.BadRequest -> showErrorDialog(throwable.message.split("Text:")[1].dropWhile { it == '"' })
+                }
+
+                when (throwable.response.status) {
+                    HttpStatusCode.Forbidden -> showErrorDialog(getString(R.string.not_authorized))
+                }
+            }
+
+            is HttpRequestTimeoutException -> showNoInternetDialog(R.string.check_your_internet)
         }
+    }
+
+    private fun showErrorDialog(message: String) {
+        val dialog = ErrorDialog(message)
+        dialog.show(supportFragmentManager, "errorDialog")
+    }
+    private fun showNoInternetDialog(messageId : Int) {
+        val dialog = NoInternetDialog(getString(messageId))
+        dialog.show(supportFragmentManager, "NoInternetDialog")
     }
 
     fun <T : AppCompatActivity> gotToActivity(activityClass: Class<T>) {

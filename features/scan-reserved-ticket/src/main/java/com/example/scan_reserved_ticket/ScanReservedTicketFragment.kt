@@ -21,6 +21,7 @@ import com.google.android.gms.vision.Detector
 import com.google.android.gms.vision.barcode.Barcode
 import com.google.android.gms.vision.barcode.BarcodeDetector
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ScanReservedTicketFragment : BaseFragment() {
     companion object {
@@ -29,7 +30,7 @@ class ScanReservedTicketFragment : BaseFragment() {
     }
 
     private lateinit var binding: FragmentScanReservedTicketBinding
-    private val scanReservedTicketViewModel: ScanReservedTicketViewModel by sharedViewModel()
+    private val scanReservedTicketViewModel: ScanReservedTicketViewModel by viewModel()
 
     private lateinit var cameraSource: CameraSource
     private lateinit var barcodeDetector: BarcodeDetector

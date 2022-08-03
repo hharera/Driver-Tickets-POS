@@ -1,10 +1,12 @@
 package com.englizya.api.impl
 
+import androidx.compose.runtime.internal.composableLambdaInstance
 import com.englizya.api.RemoteManifestoService
 import com.englizya.api.utils.AuthenticationParameters
 import com.englizya.api.utils.Routing
 import com.englizya.datastore.LocalTicketPreferences
 import com.englizya.model.request.EndShiftRequest
+import com.englizya.model.response.LongManifestoEndShiftResponse
 import com.englizya.model.response.ManifestoDetails
 import com.englizya.model.response.ShiftReportResponse
 import io.ktor.client.*
@@ -47,6 +49,17 @@ class RemoteManifestoServiceImpl constructor(
                 name = HttpHeaders.Authorization,
                 value = "${AuthenticationParameters.BEARER} ${driverDataStore.getToken()}"
             )
+        }
+    }
+
+    override suspend fun getLongManifestoShiftReport(): LongManifestoEndShiftResponse {
+        return client.get{
+            url(Routing.LONG_MANIFESTO_END_SHIFT)
+            headers.append(
+                name = "driver_header",
+                value = "${AuthenticationParameters.BEARER} ${driverDataStore.getToken()}"
+            )
+
         }
     }
 }

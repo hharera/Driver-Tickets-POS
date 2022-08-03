@@ -206,6 +206,9 @@ class LongTripBookingFragment : BaseFragment() {
         bookingViewModel.tripPrice.observe(viewLifecycleOwner){
             updateTotal(it)
         }
+        bookingViewModel.error.observe(viewLifecycleOwner){
+            handleFailure(it)
+        }
     }
 
     private fun updateQuantity(quantity: Int) {
