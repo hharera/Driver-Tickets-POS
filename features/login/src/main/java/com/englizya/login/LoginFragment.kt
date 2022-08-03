@@ -6,9 +6,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.englizya.booking.BookingActivity
 import com.englizya.common.base.BaseFragment
 import com.englizya.common.extension.afterTextChanged
 import com.englizya.common.utils.navigation.Arguments
@@ -72,7 +72,7 @@ class LoginFragment : BaseFragment() {
 //        }
         loginViewModel.manifesto.observe(this) {
             Log.d("ManifestoDetails",it.toString())
-            if (it.isShortManifesto == 0) {
+           if (it.isShortManifesto == 0) {
                 goBooking()
             } else {
                 goTicket()
@@ -97,13 +97,19 @@ class LoginFragment : BaseFragment() {
 //    }
 
     private fun goBooking() {
-        findNavController().navigate(
-            NavigationUtils.getUriNavigation(
-                Domain.ENGLIZYA_PAY,
-                Destination.LONG_TRIP_BOOKING,
-                false
-            )
+        val intent = Intent(activity, BookingActivity::class.java).putExtra(
+            Arguments.Destination,
+            Destination.LONG_TRIP_BOOKING
         )
+        startActivity(intent)
+        activity?.finish()
+//        findNavController().navigate(
+//            NavigationUtils.getUriNavigation(
+//                Domain.ENGLIZYA_PAY,
+//                Destination.LONG_TRIP_BOOKING,
+//                false
+//            )
+//        )
     }
 
     private fun goTicket() {

@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_long_trip"
-    app:startDestination="@layout/fragment_long_trip_booking">
+    app:startDestination="@id/navigation_long_trip_booking">
     <fragment
         android:id="@+id/navigation_long_trip_booking"
         android:name="com.englizya.longtripbooking.LongTripBookingFragment"
         tools:layout="@layout/fragment_long_trip_booking">
 
-        <deepLink app:uri="EnglizyaPay://long-trip-booking/" />
+        <deepLink app:uri="EnglizyaPay://long-trip-booking" />
     </fragment>
 
     <fragment
@@ -17,6 +17,20 @@
         android:name="com.englizya.longtripbooking.ScanQRFragment"
         tools:layout="@layout/fragment_scan_qr">
 
-        <deepLink app:uri="EnglizyaPay://scan-qr-long/" />
+        <deepLink app:uri="EnglizyaPay://scan-qr-long" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_long_manifesto_end_shift"
+        android:name="com.englizya.end_shift.LongManifestoEndShiftFragment"
+        tools:layout="@layout/fragment_long_manifesto_end_shift">
+
+        <deepLink app:uri="EnglizyaPay://long-manifesto-end-shift" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_scan_payed_ticket"
+        android:name="com.example.scan_reserved_ticket.ScanReservedTicketFragment"
+        tools:layout="@layout/fragment_scan_reserved_ticket">
+
+        <deepLink app:uri="EnglizyaPay://scan-qr" />
     </fragment>
 </navigation>

@@ -88,7 +88,7 @@ open class BaseFragment : Fragment() {
         dialog.show(childFragmentManager, "errorDialog")
     }
 
-    private fun showErrorDialog(message: String) {
+     fun showErrorDialog(message: String) {
         val dialog = ErrorDialog(message)
         dialog.show(childFragmentManager, "errorDialog")
     }

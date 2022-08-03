@@ -141,26 +141,30 @@ class LongTripBookingFragment : BaseFragment() {
             bookingViewModel.decrementQuantity()
         }
         binding.print.setOnClickListener {
-            if (bookingViewModel.paymentMethod.value == PaymentMethod.Cash) {
-                lifecycleScope.launch(Dispatchers.IO) {
-                    withContext(Dispatchers.Main) {
-                        binding.print.isEnabled = false
+            if(bookingViewModel.source.value != null && bookingViewModel.destination.value != null){
+                if (bookingViewModel.paymentMethod.value == PaymentMethod.Cash) {
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        withContext(Dispatchers.Main) {
+                            binding.print.isEnabled = false
+                        }
+
+                        bookingViewModel.requestLongTicketCash()
+
+                        delay(500)
+
+                        withContext(Dispatchers.Main) {
+                            binding.print.isEnabled = true
+                        }
                     }
+                } else if (bookingViewModel.paymentMethod.value == PaymentMethod.QR ) {
 
-                    bookingViewModel.requestLongTicketCash()
+                    navigateToScanQR()
 
-                    delay(500)
 
-                    withContext(Dispatchers.Main) {
-                        binding.print.isEnabled = true
-                    }
                 }
-            }
-            else if (bookingViewModel.paymentMethod.value == PaymentMethod.QR) {
 
-                navigateToScanQR()
-
-
+            }else{
+                showErrorDialog("يرجى ادخال البيانات ")
             }
         }
     }
@@ -196,17 +200,17 @@ class LongTripBookingFragment : BaseFragment() {
                 binding.destination.setText(it)
             }
         }
-        bookingViewModel.cashLongTicket.observe(viewLifecycleOwner){
-            if(it!=null){
+        bookingViewModel.cashLongTicket.observe(viewLifecycleOwner) {
+            if (it != null) {
                 bookingViewModel.printCashLongTickets(it)
 
             }
         }
 
-        bookingViewModel.tripPrice.observe(viewLifecycleOwner){
+        bookingViewModel.tripPrice.observe(viewLifecycleOwner) {
             updateTotal(it)
         }
-        bookingViewModel.error.observe(viewLifecycleOwner){
+        bookingViewModel.error.observe(viewLifecycleOwner) {
             handleFailure(it)
         }
     }

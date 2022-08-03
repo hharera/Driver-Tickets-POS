@@ -34,7 +34,6 @@ class HomeActivity : BaseActivity() {
 
     private lateinit var bind: ActivityHomeBinding
     private val ticketViewModel: TicketViewModel by viewModel()
-    private val longticketViewModel: LongTripBookingViewModel by viewModel()
 
     private lateinit var navController: NavController
     private val TAG = "HomeActivity"
@@ -117,7 +116,7 @@ class HomeActivity : BaseActivity() {
 
     private fun getExtras() {
         intent?.extras?.getString(Arguments.Destination)?.let {
-            if (it == "long-trip-booking") {
+
                 navController.navigate(
                     NavigationUtils.getUriNavigation(
                         Domain.ENGLIZYA_PAY,
@@ -125,15 +124,7 @@ class HomeActivity : BaseActivity() {
                         false
                     )
                 )
-            } else {
-                navController.navigate(
-                    NavigationUtils.getUriNavigation(
-                        Domain.ENGLIZYA_PAY,
-                        it,
-                        false
-                    )
-                )
-            }
+
 
         }
     }
@@ -154,17 +145,7 @@ class HomeActivity : BaseActivity() {
         bind.navView.setNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.navigation_end_shift -> {
-                    if(longticketViewModel.manifesto.value?.isShortManifesto == 0){
-                        //Long
-                        navController.navigate(
-                            NavigationUtils.getUriNavigation(
-                                Domain.ENGLIZYA_PAY,
-                                Destination.LONG_MANIFESTO_END_SHIFT,
-                                false
-                            )
-                        )
-                        bind.root.closeDrawer(GravityCompat.END, true)
-                    }else{
+
                         navController.navigate(
                             NavigationUtils.getUriNavigation(
                                 Domain.ENGLIZYA_PAY,
@@ -172,7 +153,7 @@ class HomeActivity : BaseActivity() {
                             )
                         )
                         bind.root.closeDrawer(GravityCompat.END, true)
-                    }
+
 
                 }
                 R.id.navigation_scan_payed_ticket -> {
@@ -212,5 +193,8 @@ class HomeActivity : BaseActivity() {
         }
     }
 
+    override fun onBackPressed() {
+
+    }
 
 }

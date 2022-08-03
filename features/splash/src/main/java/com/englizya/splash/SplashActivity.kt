@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.englizya.booking.BookingActivity
 import com.englizya.common.base.BaseActivity
 import com.englizya.common.utils.navigation.Arguments
 import com.englizya.common.utils.navigation.Destination
@@ -93,7 +94,7 @@ class SplashActivity() : BaseActivity() {
     }
 
     private fun goBooking() {
-        val intent = Intent(this@SplashActivity, HomeActivity::class.java).putExtra(
+        val intent = Intent(this@SplashActivity, BookingActivity::class.java).putExtra(
             Arguments.Destination,
             Destination.LONG_TRIP_BOOKING
         )

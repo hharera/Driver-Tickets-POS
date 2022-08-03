@@ -2,5 +2,8 @@ apply from: "$rootDir/${CommonBuild.FeatureModule}"
 
 dependencies {
     api(project(Features.longTripBooking))
-
+    api((Libs.navigationFragment))
+    api((Libs.navigationUi))
+    api(project(Features.endShift))
+    api(project(Features.scanReservedTicket))
 }

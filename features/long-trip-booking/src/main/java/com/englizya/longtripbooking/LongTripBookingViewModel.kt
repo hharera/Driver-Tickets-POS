@@ -1,5 +1,6 @@
 package com.englizya.longtripbooking
 
+import android.location.Location
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -34,6 +35,9 @@ class LongTripBookingViewModel constructor(
 
     private var _manifesto = MutableLiveData<ManifestoDetails>()
     val manifesto: LiveData<ManifestoDetails> = _manifesto
+
+    private var _location = MutableLiveData<Location>()
+    val location: LiveData<Location> = _location
 
     private var _formValidity = MutableLiveData<BookingFormState>()
     val formValidity: LiveData<BookingFormState> = _formValidity
@@ -316,5 +320,10 @@ class LongTripBookingViewModel constructor(
 
 
         }
+    }
+
+    fun updateLocation(location: Location) {
+        _location.value = location
+        Log.d(TAG, "updateLocation: ${location.latitude}")
     }
 }
