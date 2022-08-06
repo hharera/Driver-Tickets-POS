@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id("com.github.triplet.play")
 }
 apply plugin: 'kotlin-kapt'
 apply from: "$rootDir/${CommonBuild.KOIN_MODULE}"
@@ -25,7 +26,7 @@ android {
     }
     signingConfigs {
         release {
-            storeFile file("$rootDir/englizya.jks")
+            storeFile file("$rootDir/englizya-pay.jks")
             storePassword "englizya"
             keyAlias "key0"
             keyPassword "englizya"
@@ -44,6 +45,13 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+}
+
+play {
+    serviceAccountCredentials.set(file("pc-api-7814527509238064419-392-2cc9b670dfa5.json"))
+    track.set("production")
+    updatePriority.set(5)
+    defaultToAppBundles.set(true)
 }
 
 dependencies {

@@ -56,4 +56,6 @@ dependencies {
     testImplementation(Testing.androidCoreTesting)
 
     api(Libs.jodaTime)
+
+    implementation("androidx.test:core-ktx:1.4.0")
 }
