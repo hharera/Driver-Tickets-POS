@@ -19,7 +19,7 @@ class ShortTicketPrinterTest : KoinTest {
 
 
     private val modules = listOf(sunmiPrinterModule, printerModule)
-    private val ticketPrinter: TicketPrinter by inject()
+    private val ticketPrinterImpl: TicketPrinter by inject()
 
     @Before
     fun setUp() {
@@ -33,7 +33,7 @@ class ShortTicketPrinterTest : KoinTest {
 
     @Test
     fun test_to_print_short_ticket() {
-        ticketPrinter.printTicket(
+        ticketPrinterImpl.printTicket(
             shortTicket
         )
     }

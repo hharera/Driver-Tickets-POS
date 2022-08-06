@@ -17,6 +17,7 @@ import com.englizya.repository.TicketRepository
 import com.englizya.ticket.utils.Constant
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.joda.time.DateTime
 import java.lang.Integer.max
 import java.lang.Integer.min
@@ -63,7 +64,7 @@ class TicketViewModel constructor(
             fetchDriverManifesto()
 
         } else {
-           updateTicketCategories(preferences.getTicketCategories()!!)
+            updateTicketCategories(preferences.getTicketCategories()!!)
 //            _ticketCategories.value = preferences.getTicketCategories().also {
 //                Log.d("setOf Categories" , it.toString())
 //
@@ -83,7 +84,7 @@ class TicketViewModel constructor(
             }
     }
 
-     fun fetchDriverManifesto() = viewModelScope.launch(Dispatchers.IO) {
+    fun fetchDriverManifesto() = viewModelScope.launch(Dispatchers.IO) {
         updateLoading(true)
         manifestoRepository
             .getManifesto(preferences.getToken())
@@ -100,16 +101,18 @@ class TicketViewModel constructor(
 
     private fun updateTicketCategories(manifestoDetails: ManifestoDetails) =
         viewModelScope.launch(Dispatchers.Main) {
-            Log.d("TicketCategory" , manifestoDetails.lineCategory.toString())
+            Log.d("TicketCategory", manifestoDetails.lineCategory.toString())
             _ticketCategories.value = manifestoDetails.lineCategory.map { it.toString() }.toSet()
             updateSelectedCategory(manifestoDetails.lineCategory)
         }
+
     private fun updateTicketCategories(ticketCategories: Set<String>) =
         viewModelScope.launch(Dispatchers.Main) {
-            Log.d("TicketCategory" , ticketCategories.toString())
+            Log.d("TicketCategory", ticketCategories.toString())
             _ticketCategories.value = ticketCategories
             updateSelectedCategory(ticketCategories.map { it.toInt() }.toList())
         }
+
     private fun updateSelectedCategory(categoryList: List<Int>) {
         categoryList.forEach {
             _selectedCategory.value = it
@@ -165,21 +168,19 @@ class TicketViewModel constructor(
             }
     }
 
-    private fun printTickets(tickets: ArrayList<Ticket>) {
+    private fun printTickets(tickets: ArrayList<Ticket>) = runBlocking(Dispatchers.IO) {
         viewModelScope.launch(Dispatchers.IO) {
             _lastTicket.postValue(tickets.last())
             tickets.forEach { ticket ->
                 ticketPrinter.printTicket(ticket).let { printState ->
-                    checkPrintState(printState, ticket)
                 }
             }
         }
     }
 
-    fun printTicketsInMemory() {
+    fun printTicketsInMemory() = runBlocking(Dispatchers.IO) {
         ticketsInMemory.value!!.forEach { ticket ->
             ticketPrinter.printTicket(ticket).let { printState ->
-                checkPrintTicketsInMemoryState(printState, ticket)
             }
         }
     }

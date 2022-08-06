@@ -20,7 +20,7 @@ class ReportPrinterTest : KoinTest {
 
 
     private val modules = listOf(sunmiPrinterModule, printerModule)
-    private val ticketPrinter: TicketPrinter by inject()
+    private val ticketPrinterImpl: TicketPrinter by inject()
 
     @Before
     fun setUp() {
@@ -34,7 +34,7 @@ class ReportPrinterTest : KoinTest {
 
     @Test
     fun test_to_print_end_shift_report() {
-        ticketPrinter.printShiftReport(
+        ticketPrinterImpl.printShiftReport(
             ShiftReportResponse(
                 "Dummy",
                 125,

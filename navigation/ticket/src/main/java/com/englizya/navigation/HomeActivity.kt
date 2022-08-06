@@ -34,6 +34,7 @@ class HomeActivity : BaseActivity() {
 
     private lateinit var bind: ActivityHomeBinding
     private val ticketViewModel: TicketViewModel by viewModel()
+    private val longticketViewModel: LongTripBookingViewModel by viewModel()
 
     private lateinit var navController: NavController
     private val TAG = "HomeActivity"
@@ -54,18 +55,19 @@ class HomeActivity : BaseActivity() {
         bind.navView.setupWithNavController(navController)
         NavigationUI.setupWithNavController(bind.navView, navController)
         locationManager = getSystemService(LOCATION_SERVICE) as LocationManager?
-        setupLocationListener()
-        turnGPSOn()
+        checkGPS()
 
         getExtras()
-        getLocation()
+//        getLocation()
     }
 
     private fun checkGPS() {
-        if (locationManager?.isProviderEnabled(LocationManager.GPS_PROVIDER) == false) {
-            turnGPSOn()
-        } else {
-            Log.d(TAG, "checkGPS: GPS is enabled")
+        if (locationManager != null) {
+            if (locationManager?.isProviderEnabled(LocationManager.GPS_PROVIDER) == false) {
+                turnGPSOn()
+            } else {
+//                setupLocationListener()
+            }
         }
     }
 
@@ -83,13 +85,13 @@ class HomeActivity : BaseActivity() {
     private fun setupLocationListener() {
         try {
             locationManager?.requestLocationUpdates(
-                LocationManager.NETWORK_PROVIDER,
+                LocationManager.GPS_PROVIDER,
                 0L,
                 0f
             ) { location ->
                 ticketViewModel.updateLocation(location)
             }
-        } catch (ex: SecurityException) {
+        } catch (ex: Exception) {
             ex.printStackTrace()
         }
     }
@@ -104,6 +106,8 @@ class HomeActivity : BaseActivity() {
                     Log.d(TAG, "onLocationResult: $location")
                 }
             }
+
+
         }
 
         fusedLocationClient.requestLocationUpdates(
@@ -116,7 +120,7 @@ class HomeActivity : BaseActivity() {
 
     private fun getExtras() {
         intent?.extras?.getString(Arguments.Destination)?.let {
-
+            if (it == "long-trip-booking") {
                 navController.navigate(
                     NavigationUtils.getUriNavigation(
                         Domain.ENGLIZYA_PAY,
@@ -124,7 +128,15 @@ class HomeActivity : BaseActivity() {
                         false
                     )
                 )
-
+            } else {
+                navController.navigate(
+                    NavigationUtils.getUriNavigation(
+                        Domain.ENGLIZYA_PAY,
+                        it,
+                        false
+                    )
+                )
+            }
 
         }
     }
@@ -145,7 +157,17 @@ class HomeActivity : BaseActivity() {
         bind.navView.setNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.navigation_end_shift -> {
-
+                    if(longticketViewModel.manifesto.value?.isShortManifesto == 0){
+                        //Long
+                        navController.navigate(
+                            NavigationUtils.getUriNavigation(
+                                Domain.ENGLIZYA_PAY,
+                                Destination.LONG_MANIFESTO_END_SHIFT,
+                                false
+                            )
+                        )
+                        bind.root.closeDrawer(GravityCompat.END, true)
+                    }else{
                         navController.navigate(
                             NavigationUtils.getUriNavigation(
                                 Domain.ENGLIZYA_PAY,
@@ -154,7 +176,7 @@ class HomeActivity : BaseActivity() {
                             )
                         )
                         bind.root.closeDrawer(GravityCompat.END, true)
-
+                    }
 
                 }
                 R.id.navigation_scan_payed_ticket -> {
@@ -179,7 +201,7 @@ class HomeActivity : BaseActivity() {
         if (requestCode == LocationRequest.PRIORITY_HIGH_ACCURACY)
             when (resultCode) {
                 Activity.RESULT_OK -> {
-                    setupLocationListener()
+//                    setupLocationListener()
                 }
 
                 Activity.RESULT_CANCELED -> {
@@ -189,16 +211,10 @@ class HomeActivity : BaseActivity() {
     }
 
     private fun turnGPSOn() {
-        if (locationManager?.isProviderEnabled(LocationManager.GPS_PROVIDER) == false) {
-            startActivity(Intent(ACTION_LOCATION_SOURCE_SETTINGS))
-        }
-    }
-
-    override fun onBackPressed() {
-        if (navController.backQueue.size > 1) {
-            navController.popBackStack()
-        } else {
-            finish()
+        if (locationManager != null) {
+            if (locationManager?.isProviderEnabled(LocationManager.GPS_PROVIDER) == false) {
+                startActivity(Intent(ACTION_LOCATION_SOURCE_SETTINGS))
+            }
         }
     }
 }

@@ -21,6 +21,7 @@ import com.englizya.ticket.utils.Constants
 import io.ktor.http.auth.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class LongTripBookingViewModel constructor(
     private val ticketPrinter: TicketPrinter,
@@ -280,17 +281,13 @@ class LongTripBookingViewModel constructor(
             )
         }
 
-    fun printLongTickets(list: List<UserTicket>) {
-        viewModelScope.launch(Dispatchers.Main) {
-            ticketPrinter.printTickets(list)
-
-            _printingOperationCompleted.value = true
-            _longTickets.value = null
-
-
-        }
+    fun printLongTickets(list: List<UserTicket>) = runBlocking(Dispatchers.IO) {
+        ticketPrinter.printTickets(list)
+        _printingOperationCompleted.postValue(true)
+        _longTickets.postValue(null)
     }
-// Booking with Cash
+
+    // Booking with Cash
     fun requestLongTicketCash() =
         viewModelScope.launch(Dispatchers.Main) {
             updateLoading(true)
@@ -303,7 +300,7 @@ class LongTripBookingViewModel constructor(
                 .onSuccess {
                     updateLoading(false)
                     resetQuantity()
-                    _cashLongTicket.value = it
+                    printCashLongTickets(it)
                 }
                 .onFailure {
                     updateLoading(false)
@@ -312,13 +309,10 @@ class LongTripBookingViewModel constructor(
         }
 
     fun printCashLongTickets(list: List<PrintableTicket>) {
-        viewModelScope.launch(Dispatchers.Main) {
+        runBlocking(Dispatchers.IO) {
             ticketPrinter.printCashTickets(list)
-
-            _printingOperationCompleted.value = true
-            _longTickets.value = null
-
-
+//        _printingOperationCompleted.postValue(true)
+//        _longTickets.postValue(null)
         }
     }
 

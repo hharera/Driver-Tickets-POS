@@ -13,11 +13,11 @@ import com.englizya.model.response.LongManifestoEndShiftResponse
 import com.englizya.model.response.ManifestoDetails
 import com.englizya.model.response.ShiftReportResponse
 import com.englizya.printer.TicketPrinter
-import com.englizya.printer.utils.PrinterState.OUT_OF_PAPER
 import com.englizya.repository.ManifestoRepository
 import com.englizya.repository.TicketRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class EndShiftViewModel constructor(
     private val ticketRepository: TicketRepository,
@@ -32,7 +32,9 @@ class EndShiftViewModel constructor(
     val shiftReport: LiveData<ShiftReportResponse> = _shiftReport
 
 
-
+    private val _longManifestoShiftReport = MutableLiveData<LongManifestoEndShiftResponse>()
+    val longManifestoShiftReport: LiveData<LongManifestoEndShiftResponse> =
+        _longManifestoShiftReport
 
     private val _isPaperOut = MutableLiveData<Boolean>(false)
     val isPaperOut: LiveData<Boolean> = _isPaperOut
@@ -91,7 +93,7 @@ class EndShiftViewModel constructor(
             .onSuccess {
                 updateLoading(false)
                 _manifesto.postValue(it)
-                Log.d("Manifesto",_manifesto.value?.isShortManifesto.toString())
+                Log.d("Manifesto", _manifesto.value?.isShortManifesto.toString())
             }
             .onFailure {
                 updateLoading(false)
@@ -115,7 +117,19 @@ class EndShiftViewModel constructor(
     }
 
     private suspend fun getShiftReport() {
+        if (_manifesto.value?.isShortManifesto == 0) {
+            //Long Manifesto
+            manifestoRepository.getLongManifestoShiftReport()
+                .onSuccess {
+                    updateLoading(false)
+                    _longManifestoShiftReport.postValue(it)
 
+                }.onFailure {
+                    updateLoading(false)
+                    handleException(it)
+                }
+
+        } else {
             updateLoading(true)
 
             manifestoRepository
@@ -133,7 +147,7 @@ class EndShiftViewModel constructor(
                     updateLoading(false)
                     handleException(it)
                 }
-
+        }
 
     }
 
@@ -141,17 +155,11 @@ class EndShiftViewModel constructor(
         dataStore.setToken(Value.NULL_STRING)
     }
 
-    fun printReport(shiftReport: ShiftReportResponse) {
-        ticketPrinter.printShiftReport(shiftReport).let {
-            checkPrintResult(it)
-        }
+    fun printReport(shiftReport: ShiftReportResponse) = runBlocking(Dispatchers.IO) {
+        ticketPrinter.printShiftReport(shiftReport)
     }
 
-
-
-    private fun checkPrintResult(printState: String) {
-        if (printState == OUT_OF_PAPER) {
-            _isPaperOut.postValue(true)
-        }
+    fun printReport(shiftReport: LongManifestoEndShiftResponse) = runBlocking(Dispatchers.IO) {
+        ticketPrinter.printShiftReport(shiftReport)
     }
 }

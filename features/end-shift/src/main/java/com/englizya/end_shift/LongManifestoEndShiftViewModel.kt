@@ -129,11 +129,11 @@ class LongManifestoEndShiftViewModel  constructor(
     fun logout() {
         dataStore.setToken(Value.NULL_STRING)
     }
+
     fun printReport(shiftReport: LongManifestoEndShiftResponse) {
-        ticketPrinter.printShiftReport(shiftReport).let {
-            checkPrintResult(it)
-        }
+        ticketPrinter.printShiftReport(shiftReport)
     }
+
     private fun checkPrintResult(printState: String) {
         if (printState == PrinterState.OUT_OF_PAPER) {
             _isPaperOut.postValue(true)

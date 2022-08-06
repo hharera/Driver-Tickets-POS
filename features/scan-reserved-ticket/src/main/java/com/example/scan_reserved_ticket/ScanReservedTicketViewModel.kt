@@ -6,20 +6,19 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.englizya.common.base.BaseViewModel
 import com.englizya.datastore.LocalTicketPreferences
-import com.englizya.model.request.Ticket
 import com.englizya.model.response.UserTicket
 import com.englizya.printer.TicketPrinter
 import com.englizya.repository.TicketRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class ScanReservedTicketViewModel constructor(
     private val ticketRepository: TicketRepository,
     private val localTicketPreferences: LocalTicketPreferences,
-    private val ticketPrinter: TicketPrinter,
+    private val ticketPrinterImpl: TicketPrinter,
+) : BaseViewModel() {
 
-
-    ) : BaseViewModel() {
     companion object {
         private const val TAG = "ScanReservedTicketViewModel"
     }
@@ -73,14 +72,15 @@ class ScanReservedTicketViewModel constructor(
                 handleException(it)
             }
     }
-    fun whenPrintClicked(){
+
+    fun whenPrintClicked() = runBlocking(Dispatchers.IO) {
         reservedTicketResponse.value?.let { printTickets(it) }
     }
 
     fun printTickets(ticket: UserTicket) {
 
         viewModelScope.launch(Dispatchers.Main) {
-            ticketPrinter.printTicket(ticket).let { printState ->
+            ticketPrinterImpl.printTicket(ticket).let { printState ->
             }
 
             _printingOperationCompleted.value = true

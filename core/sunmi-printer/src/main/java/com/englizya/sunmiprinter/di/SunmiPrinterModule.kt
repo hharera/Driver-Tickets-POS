@@ -5,7 +5,12 @@ import com.sunmi.peripheral.printer.InnerPrinterManager
 import org.koin.dsl.module
 
 val sunmiPrinterModule = module {
+
     single {
-        SunmiPrinter(InnerPrinterManager.getInstance(), get())
+        InnerPrinterManager.getInstance()
+    }
+
+    single {
+        SunmiPrinter(get(), get())
     }
 }
