@@ -3,6 +3,7 @@ package com.englizya.ticket
 import android.app.Application
 import com.englizya.api.di.clientModule
 import com.englizya.api.di.remoteModule
+import com.englizya.booking_report.di.bookingReportModule
 import com.englizya.common.di.baseModule
 import com.englizya.datastore.di.dataStoreModule
 import com.englizya.end_shift.di.endShiftModule
@@ -46,6 +47,7 @@ class TicketApplication : Application() {
                 ticketModule,
                 scanReservedTicketModule,
                 walletModule,
+                bookingReportModule,
                 loginModule,
                 endShiftModule,
                 longManifestoEndShiftModule,

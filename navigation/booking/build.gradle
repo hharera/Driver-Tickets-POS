@@ -6,4 +6,5 @@ dependencies {
     api((Libs.navigationUi))
     api(project(Features.endShift))
     api(project(Features.scanReservedTicket))
+    api(project(Features.BOOKING_REPORT))
 }

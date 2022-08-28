@@ -153,6 +153,18 @@ class BookingActivity : BaseActivity() {
 
 
                 }
+                R.id.navigation_booking_report -> {
+                    navController.navigate(
+                        NavigationUtils.getUriNavigation(
+                            Domain.ENGLIZYA_PAY,
+                            Destination.BOOKING_REPORT,
+                            false
+                        )
+                    )
+                    bind.root.closeDrawer(GravityCompat.END, true)
+
+
+                }
             }
             return@setNavigationItemSelectedListener true
         }

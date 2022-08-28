@@ -42,7 +42,7 @@ class HomeActivity : BaseActivity() {
     private var locationManager: LocationManager? = null
 
     private val userDataStore: LocalTicketPreferences by inject()
-    private var manifestoType: Int? =  null
+    private var manifestoType: Int? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -157,7 +157,7 @@ class HomeActivity : BaseActivity() {
         bind.navView.setNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.navigation_end_shift -> {
-                    if(longticketViewModel.manifesto.value?.isShortManifesto == 0){
+                    if (longticketViewModel.manifesto.value?.isShortManifesto == 0) {
                         //Long
                         navController.navigate(
                             NavigationUtils.getUriNavigation(
@@ -167,7 +167,7 @@ class HomeActivity : BaseActivity() {
                             )
                         )
                         bind.root.closeDrawer(GravityCompat.END, true)
-                    }else{
+                    } else {
                         navController.navigate(
                             NavigationUtils.getUriNavigation(
                                 Domain.ENGLIZYA_PAY,
@@ -191,7 +191,19 @@ class HomeActivity : BaseActivity() {
 
 
                 }
+                R.id.navigation_booking_report -> {
+                    navController.navigate(
+                        NavigationUtils.getUriNavigation(
+                            Domain.ENGLIZYA_PAY,
+                            Destination.BOOKING_REPORT,
+                            false
+                        )
+                    )
+                    bind.root.closeDrawer(GravityCompat.END, true)
+
+                }
             }
+
             return@setNavigationItemSelectedListener true
         }
     }

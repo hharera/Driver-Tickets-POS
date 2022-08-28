@@ -14,4 +14,9 @@
         android:icon="@drawable/qr_100"
         android:iconTint="@color/grey"
         android:title="@string/scan_qr_txt" />
+    <item
+        android:id="@+id/navigation_booking_report"
+        android:icon="@drawable/ic_seat_booked"
+        android:iconTint="@color/grey"
+        android:title="@string/booked_seats" />
 </menu>

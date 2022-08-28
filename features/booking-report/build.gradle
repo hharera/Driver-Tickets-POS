@@ -1,0 +1,10 @@
+apply from: "$rootDir/${CommonBuild.FeatureModule}"
+
+dependencies {
+    implementation('androidx.swiperefreshlayout:swiperefreshlayout:1.1.0')
+
+}
+
+android {
+    namespace 'com.englizya.booked_seats'
+}

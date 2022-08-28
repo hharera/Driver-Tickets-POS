@@ -7,6 +7,7 @@ dependencies {
     api(project(Features.scanReservedTicket))
     api(project(Features.longTripBooking))
     api(project(Feature.SCAN_WALLET))
+    api(project(Features.BOOKING_REPORT))
 
 
     api((Libs.navigationFragment))

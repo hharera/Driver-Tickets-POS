@@ -13,6 +13,7 @@ object Destination {
     const val SCAN_QR_LONG  = "scan-qr-long"
     const val SCAN_WALLET   = "scan-wallet"
     const val LONG_MANIFESTO_END_SHIFT = "long-manifesto-end-shift"
+    const val BOOKING_REPORT = "booking-report"
 
 
 

@@ -12,6 +12,8 @@ object Routing {
     const val GET_RESERVED_TICKET = "${Domain.ENGLIZYA_BUS}/api/driver/ticket"
     const val DEACTIVATE_TICKET = "${Domain.ENGLIZYA_BUS}/api/driver/ticket/deactivate"
 
+    const val GET_BOOKING_REPORT = "${Domain.ENGLIZYA_BUS}/api/driver/trips-report"
+
 
     const val END_SHIFT = "${Domain.ENGLIZYA_STAFF}/end-shift"
     const val LONG_MANIFESTO_END_SHIFT = "${Domain.ENGLIZYA_BUS}/api/v1/driver/shift/report"
@@ -20,6 +22,7 @@ object Routing {
     const val GET_MANIFESTO = "${Domain.ENGLIZYA_STAFF}/manifesto"
     const val TICKET = "${Domain.ENGLIZYA_STAFF}/ticket"
     const val TICKETS = "${Domain.ENGLIZYA_STAFF}/tickets"
+
 }
 
 object Request {

@@ -187,6 +187,9 @@
     <string name="ticket_id">%1$s : رقم التذكرة</string>
     <string name="seat_no">%1$s : رقم المقعد</string>
     <string name="tickets_details">بيان التذاكر</string>
+    <string name="track_booking"> متابعة الحجز</string>
 
-
+    <string name="booked_seats">المقاعد المحجوزة</string>
+    <string name="booking_office">طريقة الدفع / مكتب الحجز :</string>
+    <string name="seats"> عدد المقاعد المحجوزة :</string>
 </resources>

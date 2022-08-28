@@ -33,4 +33,11 @@
 
         <deepLink app:uri="EnglizyaPay://scan-qr" />
     </fragment>
+    <fragment
+        android:id="@+id/navigation_booking_report"
+        android:name="com.englizya.booking_report.BookingReportFragment"
+        tools:layout="@layout/fragment_booking_report">
+
+        <deepLink app:uri="EnglizyaPay://booking-report" />
+    </fragment>
 </navigation>
